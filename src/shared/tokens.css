@@ -1,0 +1,13 @@
+:root {
+  --font-body: system-ui, sans-serif;
+  --color-background: #ffffff;
+  --color-text: #202124;
+  --color-muted: #53565c;
+  --color-link: #174ea6;
+  --color-focus: #174ea6;
+  --color-border: #c4c7cd;
+  --space-small: 0.5rem;
+  --space-medium: 1rem;
+  --space-large: 2rem;
+  --content-width: 48rem;
+}
