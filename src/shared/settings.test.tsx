@@ -20,12 +20,12 @@ test('respects reduced motion while keeping full detail and sound enabled', () =
 
 test('restores the site appearance, palette and language', () => {
   vi.stubGlobal('localStorage', {
-    getItem: () => JSON.stringify({ motion: 'reduced', quality: 'lite', sound: false, appearance: 'light', palette: 'lagoon', language: 'vi' }),
+    getItem: () => JSON.stringify({ motion: 'reduced', quality: 'lite', sound: false, appearance: 'light', palette: 'dream', language: 'vi' }),
   });
-  expect(renderSettings()).toContain('full/full/true/light/lagoon/vi');
+  expect(renderSettings()).toContain('full/full/true/light/dream/vi');
 });
 
-test.each([['moonlit', 'iris'], ['rosewater', 'sakura'], ['tidal', 'jade']])('migrates the old %s palette to %s', (old, next) => {
+test.each([['moonlit', 'iris'], ['rosewater', 'sakura'], ['tidal', 'jade'], ['lagoon', 'dream']])('migrates the old %s palette to %s', (old, next) => {
   vi.stubGlobal('localStorage', { getItem: () => JSON.stringify({ palette: old }) });
   expect(renderSettings()).toContain(`/${next}/`);
 });

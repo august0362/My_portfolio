@@ -6,7 +6,7 @@ const meta: WorldMeta = {
   id: 'information',
   title: 'Chronicle',
   tagline: 'Building ideas into reality, and imagination into worlds.',
-  accent: '#bca5d4',
+  accent: '#8d91b5',
 };
 
 export default meta;

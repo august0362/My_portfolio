@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useStat
 import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 /** Site color stories (P-17). Each one has a light and a dark appearance. */
-export const PALETTES = ['iris', 'sakura', 'jade', 'pearl', 'lagoon'] as const;
+export const PALETTES = ['iris', 'sakura', 'jade', 'pearl', 'dream'] as const;
 export type Palette = (typeof PALETTES)[number];
 
 /** Site languages (P-17). */
@@ -24,8 +24,8 @@ interface SettingsContextValue {
 }
 
 const STORAGE_KEY = 'mobius-settings';
-/** Palettes saved before P-17 map onto their closest new color story. */
-const LEGACY_PALETTES: Record<string, Palette> = { moonlit: 'iris', rosewater: 'sakura', tidal: 'jade' };
+/** Retired palettes map onto their closest current color story. */
+const LEGACY_PALETTES: Record<string, Palette> = { moonlit: 'iris', rosewater: 'sakura', tidal: 'jade', lagoon: 'dream' };
 const SettingsContext = createContext<SettingsContextValue | undefined>(undefined);
 
 const isPalette = (value: unknown): value is Palette => PALETTES.includes(value as Palette);

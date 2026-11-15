@@ -9,8 +9,8 @@ import type { ThemeDef } from './theme';
                          every page stays in one color story (P-16). Point a palette at
                          any theme number below to re-pair it.
    2. ACTIVE_THEME       fallback theme; it is the one paired with the default palette.
-   3. THEMES             edit any hex value; save and the page updates. The five themes
-                         come from the owner's moodboards in data/Image/Theme (P-17).
+   3. THEMES             edit any hex value; save and the page updates. Each theme uses only the colors
+                         of one moodboard in data/Image/Theme (P-17).
 
    Each section needs:  tone ('light' | 'dark'), bg, text, accent, particle, cloudA, cloudB.
    Optional overrides:  bgAlt, textMuted, accentInk, surface, border, glow.
@@ -25,11 +25,11 @@ import type { ThemeDef } from './theme';
    ══════════════════════════════════════════════════════════════════════════ */
 
 export const PAIRED_THEMES: Record<Settings['palette'], number> = {
-  iris: 1, // Iris Reverie: iris petals, jacaranda and lavender
-  sakura: 2, // Sakura Haze: cherry blossom, dusty rose and dream sky
-  jade: 3, // Jade Silk: forest jade and silver mint
-  pearl: 4, // Pearl Dew: iridescent pearl, peach rose and ivory
-  lagoon: 5, // Pink Lagoon: veranda blue, lychee and melon pink
+  iris: 1, // Iris Reverie: f996cc3f2a1f556469bc6e165d8d476f.jpg
+  sakura: 2, // Sakura Rose: bf9369d6ef4568bb9d20c610b23d6163.jpg
+  jade: 3, // Jade Silk: 4c65dc070bc7af2bf5ef456285cb80ba.jpg
+  pearl: 4, // Pearl Sheen: 417300860fc91c1ac899b0bf28bb66b3.jpg
+  dream: 5, // Dream Haze: 7a23aac0d5b3974c2c3e7331746eca5e.jpg
 };
 export const ACTIVE_THEME = PAIRED_THEMES.iris;
 
@@ -39,73 +39,73 @@ export const FONTS = {
 };
 
 export const themes: ThemeDef[] = [
-  /* ── 01 · Iris Reverie ── iris mist, periwinkle, lavender field, jacaranda sky. */
+  /* ── 01 · Iris Reverie ── only the colors of f996cc3f2a1f556469bc6e165d8d476f.jpg. */
   {
     no: 1,
     name: 'Iris Reverie',
-    palette: ['#383b67', '#6f6d97', '#8d91b5', '#c7c6df', '#bacbfe', '#efe2fa', '#7164b4', '#78acc1'],
+    palette: ['#c7c6df',  '#8d91b5',  '#6f6d97',  '#383b67'],
     sections: {
-      identity: { tone: 'light', bg: '#f5f3fb', text: '#2c2f5c', accent: '#bca5d4', accentInk: '#4b4a86', particle: '#8f9fe4', cloudA: '#efe2fa', cloudB: '#bacbfe', glow: '#dcd3f3' },
-      journey: { tone: 'dark', bg: '#1d1f42', text: '#f1eefa', accent: '#bacbfe', particle: '#efe2fa', cloudA: '#6f6d97', cloudB: '#7164b4', glow: '#8d91b5' },
-      gallery: { tone: 'light', bg: '#f1f3fa', text: '#2f3460', accent: '#8488b5', particle: '#ffffff', cloudA: '#bcb9d8', cloudB: '#98bfd0', glow: '#dedeea' },
-      skills: { tone: 'light', bg: '#f6f1fb', text: '#33305e', accent: '#bca5d4', particle: '#7164b4', cloudA: '#efe2fa', cloudB: '#c7c6df' },
-      connect: { tone: 'dark', bg: '#262856', text: '#f3f0fb', accent: '#bacbfe', particle: '#efe2fa', cloudA: '#7164b4', cloudB: '#383b67', glow: '#8f9fe4' },
+      identity: { tone: 'light', bg: '#f5f5f9', text: '#383b67', accent: '#8d91b5', accentInk: '#636186', particle: '#6f6d97', cloudA: '#e0e0ed', cloudB: '#c0c2d6', glow: '#d8d7e9' },
+      journey: { tone: 'dark', bg: '#191b2e', text: '#f4f4f9', accent: '#cdcce2', particle: '#ddddec', cloudA: '#6f6d97', cloudB: '#8d91b5', glow: '#8d91b5' },
+      gallery: { tone: 'light', bg: '#f7f7fb', text: '#383b67', accent: '#6f6d97', particle: '#ffffff', cloudA: '#bbbdd3', cloudB: '#d8d7e9', glow: '#e3e2ef' },
+      skills: { tone: 'light', bg: '#f1f2f6', text: '#383b67', accent: '#c7c6df', particle: '#6f6d97', cloudA: '#ddddec', cloudB: '#d8d7e9' },
+      connect: { tone: 'dark', bg: '#25263d', text: '#f7f6fa', accent: '#cdcce2', particle: '#ddddec', cloudA: '#6f6d97', cloudB: '#383b67', glow: '#8d91b5' },
     },
   },
 
-  /* ── 02 · Sakura Haze ── cherry blossom, dusty rose, rosewood, dream-sky periwinkle. */
+  /* ── 02 · Sakura Rose ── only the colors of bf9369d6ef4568bb9d20c610b23d6163.jpg. */
   {
     no: 2,
-    name: 'Sakura Haze',
-    palette: ['#fee3ec', '#f4c9da', '#f5c4e2', '#eeadaa', '#d38f8f', '#c87377', '#a77370', '#b1bef2'],
+    name: 'Sakura Rose',
+    palette: ['#a77370',  '#c87377',  '#d38f8f',  '#eeadaa',  '#fdd4d7',  '#fee3e5'],
     sections: {
-      identity: { tone: 'light', bg: '#fff5f8', text: '#5a2f40', accent: '#f4c9da', accentInk: '#8e4a5c', particle: '#eeadaa', cloudA: '#fee3ec', cloudB: '#b1bef2', glow: '#fdd4d7' },
-      journey: { tone: 'dark', bg: '#2e1b26', text: '#fff0f4', accent: '#f4c9da', particle: '#fee3ec', cloudA: '#a77370', cloudB: '#7181c8', glow: '#c87377' },
-      gallery: { tone: 'light', bg: '#fdf2f5', text: '#4f2c3b', accent: '#d38f8f', particle: '#ffffff', cloudA: '#f5c4e2', cloudB: '#b7d3f4', glow: '#f1e5f6' },
-      skills: { tone: 'light', bg: '#f9f1f7', text: '#4a2d45', accent: '#ababdc', particle: '#c87377', cloudA: '#f1cfed', cloudB: '#b1bef2' },
-      connect: { tone: 'dark', bg: '#3a2230', text: '#fff1f4', accent: '#eeadaa', particle: '#fdd4d7', cloudA: '#c87377', cloudB: '#7181c8', glow: '#d38f8f' },
+      identity: { tone: 'light', bg: '#fffafa', text: '#704d4b', accent: '#d38f8f', accentInk: '#9c5a5d', particle: '#c87377', cloudA: '#f6d2d0', cloudB: '#e7c1c1', glow: '#f3c6c4' },
+      journey: { tone: 'dark', bg: '#1c1413', text: '#fff9fa', accent: '#f0b5b2', particle: '#feeeef', cloudA: '#c87377', cloudB: '#d38f8f', glow: '#d38f8f' },
+      gallery: { tone: 'light', bg: '#fdf4f3', text: '#6d4b49', accent: '#c87377', particle: '#ffffff', cloudA: '#e5bcbc', cloudB: '#feebed', glow: '#f6d6d4' },
+      skills: { tone: 'light', bg: '#faf2f2', text: '#6b4a48', accent: '#eeadaa', particle: '#c87377', cloudA: '#f5cecc', cloudB: '#feebed' },
+      connect: { tone: 'dark', bg: '#342121', text: '#fffbfb', accent: '#f0b5b2', particle: '#feeeef', cloudA: '#c87377', cloudB: '#a77370', glow: '#d38f8f' },
     },
   },
 
-  /* ── 03 · Jade Silk ── forest jade, sage, silver mint. */
+  /* ── 03 · Jade Silk ── only the colors of 4c65dc070bc7af2bf5ef456285cb80ba.jpg. */
   {
     no: 3,
     name: 'Jade Silk',
-    palette: ['#0d3021', '#406250', '#688777', '#8aaca0', '#bedbd3'],
+    palette: ['#0d3021',  '#406250',  '#688777',  '#8aaca0',  '#bedbd3'],
     sections: {
-      identity: { tone: 'light', bg: '#f2f8f5', text: '#123326', accent: '#8aaca0', accentInk: '#2f5242', particle: '#688777', cloudA: '#d6ebe3', cloudB: '#bedbd3', glow: '#cfe5dc' },
-      journey: { tone: 'dark', bg: '#0d2a1f', text: '#eef7f2', accent: '#bedbd3', particle: '#d6ebe3', cloudA: '#406250', cloudB: '#688777', glow: '#8aaca0' },
-      gallery: { tone: 'light', bg: '#f0f6f3', text: '#163a2c', accent: '#688777', particle: '#ffffff', cloudA: '#bedbd3', cloudB: '#e4efe9', glow: '#d9ebe3' },
-      skills: { tone: 'light', bg: '#f5f7f2', text: '#1f3a2c', accent: '#8aaca0', particle: '#406250', cloudA: '#d6e8df', cloudB: '#bedbd3' },
-      connect: { tone: 'dark', bg: '#123d2d', text: '#f0f8f4', accent: '#bedbd3', particle: '#e2f1eb', cloudA: '#688777', cloudB: '#0d3021', glow: '#8aaca0' },
+      identity: { tone: 'light', bg: '#f3f9f7', text: '#0d3021', accent: '#688777', accentInk: '#406250', particle: '#406250', cloudA: '#bfd1cb', cloudB: '#acbdb4', glow: '#adc5bc' },
+      journey: { tone: 'dark', bg: '#092217', text: '#f2f8f6', accent: '#96b4aa', particle: '#d8e9e5', cloudA: '#406250', cloudB: '#688777', glow: '#688777' },
+      gallery: { tone: 'light', bg: '#eff3f2', text: '#0d3021', accent: '#406250', particle: '#ffffff', cloudA: '#a4b7ad', cloudB: '#d2e6e0', glow: '#c4d6d0' },
+      skills: { tone: 'light', bg: '#edf1ef', text: '#0d3021', accent: '#8aaca0', particle: '#406250', cloudA: '#b9cdc6', cloudB: '#d2e6e0' },
+      connect: { tone: 'dark', bg: '#112b1f', text: '#f5faf8', accent: '#96b4aa', particle: '#d8e9e5', cloudA: '#406250', cloudB: '#0d3021', glow: '#688777' },
     },
   },
 
-  /* ── 04 · Pearl Dew ── iridescent pearl, lilac sheen, peach rose, ivory, warm taupe. */
+  /* ── 04 · Pearl Sheen ── only the colors of 417300860fc91c1ac899b0bf28bb66b3.jpg. */
   {
     no: 4,
-    name: 'Pearl Dew',
-    palette: ['#e6dedd', '#e9d8c6', '#ddbda5', '#c49b85', '#a37e66', '#8c7466', '#af9292', '#bcaec4'],
+    name: 'Pearl Sheen',
+    palette: ['#af9292',  '#bcaec4',  '#b7937a',  '#c8b5a9',  '#e6dedd'],
     sections: {
-      identity: { tone: 'light', bg: '#faf6f2', text: '#43332c', accent: '#ddbda5', accentInk: '#7a5a49', particle: '#bcaec4', cloudA: '#e9d8c6', cloudB: '#e6dedd', glow: '#efe2d6' },
-      journey: { tone: 'dark', bg: '#2b2220', text: '#f6eee9', accent: '#d4c4dc', particle: '#e9d8c6', cloudA: '#8c7466', cloudB: '#af9292', glow: '#bcaec4' },
-      gallery: { tone: 'light', bg: '#f8f2ef', text: '#45322f', accent: '#af9292', particle: '#ffffff', cloudA: '#e6dedd', cloudB: '#dccfe2', glow: '#e8dcd6' },
-      skills: { tone: 'light', bg: '#f7f2ec', text: '#47372d', accent: '#c49b85', particle: '#b7937a', cloudA: '#e9d8c6', cloudB: '#e2ddd4' },
-      connect: { tone: 'dark', bg: '#362b29', text: '#f8f0eb', accent: '#ddbda5', particle: '#efe2d6', cloudA: '#a37e66', cloudB: '#bcaec4', glow: '#c49b85' },
+      identity: { tone: 'light', bg: '#faf9f9', text: '#625252', accent: '#bcaec4', accentInk: '#7e6554', particle: '#b7937a', cloudA: '#e1d6d0', cloudB: '#dad2df', glow: '#d8cbc3' },
+      journey: { tone: 'dark', bg: '#1a1616', text: '#faf8f8', accent: '#cebcb2', particle: '#f0ebeb', cloudA: '#b7937a', cloudB: '#bcaec4', glow: '#bcaec4' },
+      gallery: { tone: 'light', bg: '#f7f5f3', text: '#5e4f4f', accent: '#b7937a', particle: '#ffffff', cloudA: '#d7cedc', cloudB: '#eee8e7', glow: '#e4dad4' },
+      skills: { tone: 'light', bg: '#f7f5f8', text: '#605050', accent: '#c8b5a9', particle: '#b7937a', cloudA: '#ded3cb', cloudB: '#eee8e7' },
+      connect: { tone: 'dark', bg: '#302824', text: '#fbfafa', accent: '#cebcb2', particle: '#f0ebeb', cloudA: '#b7937a', cloudB: '#af9292', glow: '#bcaec4' },
     },
   },
 
-  /* ── 05 · Pink Lagoon ── veranda blue, sky cloud, lychee, melon, cupid pink. */
+  /* ── 05 · Dream Haze ── only the colors of 7a23aac0d5b3974c2c3e7331746eca5e.jpg. */
   {
     no: 5,
-    name: 'Pink Lagoon',
-    palette: ['#6bb1ad', '#a7bcbd', '#edecdb', '#e5a9a9', '#e6748e'],
+    name: 'Dream Haze',
+    palette: ['#7181c8',  '#ababdc',  '#b7d3f4',  '#f1cfed',  '#f1e5f6'],
     sections: {
-      identity: { tone: 'light', bg: '#f8f7ee', text: '#1d4446', accent: '#e5a9a9', accentInk: '#a3405e', particle: '#6bb1ad', cloudA: '#f5d6d6', cloudB: '#cfe4e2', glow: '#f1dcd4' },
-      journey: { tone: 'dark', bg: '#0f2b2f', text: '#f5f6ec', accent: '#8fd0cb', particle: '#f5d0d4', cloudA: '#3d7f7b', cloudB: '#b8697b', glow: '#6bb1ad' },
-      gallery: { tone: 'light', bg: '#f1f6f3', text: '#1f4446', accent: '#6bb1ad', particle: '#ffffff', cloudA: '#cfe4e2', cloudB: '#f6d9d9', glow: '#edecdb' },
-      skills: { tone: 'light', bg: '#fbf4ef', text: '#4a2b33', accent: '#e6748e', particle: '#e5a9a9', cloudA: '#f8dede', cloudB: '#d6e6e4' },
-      connect: { tone: 'dark', bg: '#173a3d', text: '#f6f5ec', accent: '#f0a9b4', particle: '#f8dfe2', cloudA: '#e6748e', cloudB: '#6bb1ad', glow: '#e5a9a9' },
+      identity: { tone: 'light', bg: '#fcfafd', text: '#495482', accent: '#b7d3f4', accentInk: '#6a6a88', particle: '#ababdc', cloudA: '#f7e5f5', cloudB: '#d7e7f9', glow: '#f5ddf2' },
+      journey: { tone: 'dark', bg: '#171a28', text: '#fcfafd', accent: '#f2d4ef', particle: '#f7effa', cloudA: '#ababdc', cloudB: '#b7d3f4', glow: '#b7d3f4' },
+      gallery: { tone: 'light', bg: '#fdf8fc', text: '#485380', accent: '#ababdc', particle: '#ffffff', cloudA: '#d4e5f8', cloudB: '#f5edf9', glow: '#f8e7f6' },
+      skills: { tone: 'light', bg: '#f6fafe', text: '#485380', accent: '#f1cfed', particle: '#ababdc', cloudA: '#f7e2f4', cloudB: '#f5edf9' },
+      connect: { tone: 'dark', bg: '#2c2e41', text: '#fdfbfe', accent: '#f2d4ef', particle: '#f7effa', cloudA: '#ababdc', cloudB: '#7181c8', glow: '#b7d3f4' },
     },
   },
 ];

@@ -18,15 +18,15 @@ The overview follows the presentation structure of the owner's Genshin map refer
 
 ## Color stories and languages
 
-`Theme.module.css` is the color source for this world. It follows the site's five color stories (P-17), each with Midnight and Daylight surfaces, all drawn from the owner's moodboards in `data/Image/Theme/`:
+`Theme.module.css` is the color source for this world. It follows the site's five color stories (P-17), each with Midnight and Daylight surfaces and each built from exactly one of the owner's moodboards in `data/Image/Theme/`:
 
-| Palette | Reference colors |
+| Palette | Moodboard (only these colors, plus their tints and shades) |
 | --- | --- |
-| Iris | `#C7C6DF`, `#6F6D97`, `#383B67`, `#BACBFE`, `#EFE2FA` |
-| Sakura | `#F4C9DA`, `#FEE3EC`, `#C87377`, `#A77370`, `#B1BEF2` |
-| Jade | `#0D3021`, `#406250`, `#8AACA0`, `#BEDBD3` |
-| Pearl | `#E9D8C6`, `#DDBDA5`, `#A37E66`, `#8C7466`, `#BCAEC4` |
-| Lagoon | `#6BB1AD`, `#A7BCBD`, `#EDECDB`, `#E5A9A9`, `#E6748E` |
+| Iris | iris flower: `#C7C6DF`, `#8D91B5`, `#6F6D97`, `#383B67` |
+| Sakura | dusty-rose sakura: `#A77370`, `#C87377`, `#D38F8F`, `#EEADAA`, `#FDD4D7`, `#FEE3E5` |
+| Jade | jade silk: `#0D3021`, `#406250`, `#688777`, `#8AACA0`, `#BEDBD3` |
+| Pearl | iridescent pearl: `#AF9292`, `#BCAEC4`, `#B7937A`, `#C8B5A9`, `#E6DEDD` |
+| Dream | dream haze: `#7181C8`, `#ABABDC`, `#B7D3F4`, `#F1CFED`, `#F1E5F6` |
 
 Surfaces, controls, lines, scene tint, light, particles and water share these tokens; Canvas reads them when palette or appearance changes. Reference photographs stay read-only and are never imported. Copy follows `settings.language`: `data/locale.ts` holds the interface strings and the Vietnamese project text, while `data/projects.ts` stays the English source.
 

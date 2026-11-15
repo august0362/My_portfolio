@@ -174,7 +174,7 @@ export default function CharacterWorld() {
   - `quality: 'full' | 'lite' | 'static'` starts at `full`.
   - `sound: boolean` defaults to `true`.
   - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
-  - `palette: 'iris' | 'sakura' | 'jade' | 'pearl' | 'lagoon'` defaults to `iris` (P-17). Saved pre-P-17 values migrate: moonlit → iris, rosewater → sakura, tidal → jade.
+  - `palette: 'iris' | 'sakura' | 'jade' | 'pearl' | 'dream'` defaults to `iris` (P-17). Retired values migrate: moonlit → iris, rosewater → sakura, tidal → jade, lagoon → dream.
   - `language: 'en' | 'vi'` defaults to the browser language and sets `<html lang>` (P-17).
 - Core renders the settings control (the Atmosphere panel). Only `appearance`, `palette` and `language` can be chosen there (language beside the Atmosphere button) and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
 - Paired themes ([P-16](CONTEXT.md#4-architecture-decisions)): the Atmosphere panel is the only color control, and it stays visible in worlds. Each world reads `appearance` and `palette` from `useSettings()`, renders light or dark to match, and maps each of the five palettes to one paired world theme (for example Information's `PAIRED_THEMES` in `theme.config.ts`). Worlds do not add their own palette or light/dark controls.

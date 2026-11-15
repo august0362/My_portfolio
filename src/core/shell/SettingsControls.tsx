@@ -5,13 +5,13 @@ import { LANGUAGES, useSettings, type Palette } from '@shared/settings';
 import type { AudioStatus } from './useCelestialAudio';
 import styles from './SettingsControls.module.css';
 
-/** Swatches: [base, bloom, highlight] per appearance. Values come from the owner's moodboards (P-17). */
+/** Swatches: [base, bloom, highlight] per appearance. Each palette uses one owner moodboard (P-17). */
 const palettes: readonly { id: Palette; name: string; note: Localized; dark: readonly string[]; light: readonly string[] }[] = [
-  { id: 'iris', name: 'Iris', note: { en: 'Iris & lavender mist', vi: 'Diên vĩ & sương oải hương' }, dark: ['#1e2042', '#6f6d97', '#bacbfe'], light: ['#f4f3fa', '#c7c6df', '#6f6d97'] },
-  { id: 'sakura', name: 'Sakura', note: { en: 'Cherry blossom & rosewood', vi: 'Anh đào & gỗ hồng' }, dark: ['#33202d', '#a77370', '#f4c9da'], light: ['#fdf4f6', '#f4c9da', '#c87377'] },
-  { id: 'jade', name: 'Jade', note: { en: 'Jade silk & silver mint', vi: 'Lụa ngọc & bạc hà' }, dark: ['#133528', '#406250', '#bedbd3'], light: ['#f1f7f4', '#bedbd3', '#406250'] },
-  { id: 'pearl', name: 'Pearl', note: { en: 'Pearl, nude & lilac sheen', vi: 'Ngọc trai & ánh tím nhạt' }, dark: ['#2a2322', '#8c7466', '#d4c4dc'], light: ['#f8f4f1', '#ddbda5', '#af9292'] },
-  { id: 'lagoon', name: 'Lagoon', note: { en: 'Lagoon & melon pink', vi: 'Đầm xanh & hồng dưa' }, dark: ['#143238', '#6bb1ad', '#f0a9b4'], light: ['#f7f6ec', '#a7bcbd', '#e6748e'] },
+  { id: 'iris', name: 'Iris', note: { en: 'Iris petals & dusk violet', vi: 'Hoa diên vĩ & tím hoàng hôn' }, dark: ['#23253b', '#6f6d97', '#c7c6df'], light: ['#f3f2f8', '#c7c6df', '#383b67'] },
+  { id: 'sakura', name: 'Sakura', note: { en: 'Dusty sakura & rosewood', vi: 'Anh đào & hồng đất' }, dark: ['#311f1f', '#c87377', '#eeadaa'], light: ['#fff9f9', '#eeadaa', '#a77370'] },
+  { id: 'jade', name: 'Jade', note: { en: 'Jade silk & silver mint', vi: 'Lụa ngọc & bạc hà' }, dark: ['#102a1e', '#406250', '#8aaca0'], light: ['#f1f7f5', '#8aaca0', '#0d3021'] },
+  { id: 'pearl', name: 'Pearl', note: { en: 'Pearl, nude & lilac sheen', vi: 'Ngọc trai & ánh tím nhạt' }, dark: ['#2d2522', '#b7937a', '#c8b5a9'], light: ['#faf8f8', '#c8b5a9', '#af9292'] },
+  { id: 'dream', name: 'Dream', note: { en: 'Dream sky & candy pink', vi: 'Trời mộng & hồng kẹo' }, dark: ['#292b3e', '#ababdc', '#f1cfed'], light: ['#fcf9fd', '#f1cfed', '#7181c8'] },
 ];
 
 const COPY = {

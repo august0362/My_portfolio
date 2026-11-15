@@ -1,201 +1,201 @@
-/* Color source for The Forge (P-17). Five color stories from the owner's moodboards in
-   data/Image/Theme, each with a Midnight (dark) and Daylight (light) appearance.
+/* Color source for The Forge (P-17): the site's five color stories, each from exactly one
+   moodboard in data/Image/Theme (see core/shell/appearance.css), with Midnight and Daylight surfaces.
    The artwork stays original; only these palette values enter the application. */
 
 .theme {
-  --forge-bg: #14152b;
-  --forge-panel: #1f2142;
-  --forge-raised: #2c2e57;
-  --forge-text: #f1f0fa;
-  --forge-muted: #c7c6df;
-  --forge-accent: #bacbfe;
-  --forge-gold: #ecd9c6;
-  --forge-button: #c7c6df;
-  --forge-button-text: #25264a;
-  --forge-effects: #bacbfe;
-  --forge-highlight: #efe2fa;
-  --forge-shadow: #07081a;
+  --forge-bg: #191b2e;
+  --forge-panel: #282a40;
+  --forge-raised: #303349;
+  --forge-text: #f1f1f7;
+  --forge-muted: #d8d7e9;
+  --forge-accent: #c7c6df;
+  --forge-gold: #aaacc8;
+  --forge-button: #d5d4e7;
+  --forge-button-text: #383b67;
+  --forge-effects: #cfcfe4;
+  --forge-highlight: #e9e8f2;
+  --forge-shadow: #0b0c15;
   --forge-scene-tint: #6f6d97;
-  --forge-on-scene: #f1f0fa;
-  --forge-on-scene-muted: #c7c6df;
-  --forge-scene-accent: #c7c6df;
+  --forge-on-scene: #f1f1f7;
+  --forge-on-scene-muted: #dbdaea;
+  --forge-scene-accent: #afb2cb;
   --forge-board-opacity: 88%;
   --forge-line-opacity: 35%;
   --forge-text-shadow: 0 2px 14px var(--forge-shadow);
 }
 
 .theme[data-palette='sakura'] {
-  --forge-bg: #22151e;
-  --forge-panel: #321f2d;
-  --forge-raised: #452a3b;
-  --forge-text: #fff0f4;
-  --forge-muted: #ecc6d3;
-  --forge-accent: #f4c9da;
-  --forge-gold: #f6d3c4;
-  --forge-button: #f4c9da;
-  --forge-button-text: #4a2636;
-  --forge-effects: #f4c9da;
-  --forge-highlight: #fee3ec;
-  --forge-shadow: #12090f;
-  --forge-scene-tint: #a77370;
-  --forge-on-scene: #fff0f4;
-  --forge-on-scene-muted: #f4c9da;
-  --forge-scene-accent: #fdd4d7;
+  --forge-bg: #1c1413;
+  --forge-panel: #342423;
+  --forge-raised: #412d2c;
+  --forge-text: #fff8f8;
+  --forge-muted: #f3c6c4;
+  --forge-accent: #eeadaa;
+  --forge-gold: #fedfe1;
+  --forge-button: #f2c2bf;
+  --forge-button-text: #6d4b49;
+  --forge-effects: #f1b9b7;
+  --forge-highlight: #fff4f5;
+  --forge-shadow: #0d0909;
+  --forge-scene-tint: #c87377;
+  --forge-on-scene: #fff8f8;
+  --forge-on-scene-muted: #f4cac8;
+  --forge-scene-accent: #fee1e3;
 }
 
 .theme[data-palette='jade'] {
-  --forge-bg: #0a1f18;
-  --forge-panel: #133025;
-  --forge-raised: #1f4234;
-  --forge-text: #eef7f2;
-  --forge-muted: #bedbd3;
-  --forge-accent: #a9cfc3;
-  --forge-gold: #e3d6b4;
-  --forge-button: #bedbd3;
+  --forge-bg: #092217;
+  --forge-panel: #152f23;
+  --forge-raised: #1c362a;
+  --forge-text: #eff6f4;
+  --forge-muted: #adc5bc;
+  --forge-accent: #8aaca0;
+  --forge-gold: #cee4de;
+  --forge-button: #a7c1b8;
   --forge-button-text: #0d3021;
-  --forge-effects: #bedbd3;
-  --forge-highlight: #e4f2ec;
-  --forge-shadow: #030f0a;
+  --forge-effects: #9cb8ae;
+  --forge-highlight: #e5f1ed;
+  --forge-shadow: #040f0a;
   --forge-scene-tint: #406250;
-  --forge-on-scene: #eef7f2;
-  --forge-on-scene-muted: #bedbd3;
-  --forge-scene-accent: #bedbd3;
+  --forge-on-scene: #eff6f4;
+  --forge-on-scene-muted: #b3c9c1;
+  --forge-scene-accent: #d2e6e0;
 }
 
 .theme[data-palette='pearl'] {
-  --forge-bg: #1c1716;
-  --forge-panel: #2a2321;
-  --forge-raised: #3a302d;
-  --forge-text: #f7f0ec;
-  --forge-muted: #dccbc0;
-  --forge-accent: #d4c4dc;
-  --forge-gold: #e8c6ab;
-  --forge-button: #e9d8c6;
-  --forge-button-text: #43332c;
-  --forge-effects: #d4c4dc;
-  --forge-highlight: #f0e6ec;
-  --forge-shadow: #0c0908;
-  --forge-scene-tint: #8c7466;
-  --forge-on-scene: #f7f0ec;
-  --forge-on-scene-muted: #e6dedd;
-  --forge-scene-accent: #ddbda5;
+  --forge-bg: #1a1616;
+  --forge-panel: #2f2a2d;
+  --forge-raised: #3a3439;
+  --forge-text: #f9f7f6;
+  --forge-muted: #d8cbc3;
+  --forge-accent: #c8b5a9;
+  --forge-gold: #c9ae9b;
+  --forge-button: #d6c8be;
+  --forge-button-text: #5d4d4d;
+  --forge-effects: #d0c0b6;
+  --forge-highlight: #f5f2f1;
+  --forge-shadow: #0c0a0a;
+  --forge-scene-tint: #b7937a;
+  --forge-on-scene: #f9f7f6;
+  --forge-on-scene-muted: #dbcfc7;
+  --forge-scene-accent: #cdb3a2;
 }
 
-.theme[data-palette='lagoon'] {
-  --forge-bg: #0c2125;
-  --forge-panel: #15343a;
-  --forge-raised: #1f474c;
-  --forge-text: #f5f6ec;
-  --forge-muted: #c9dcdc;
-  --forge-accent: #8fd0cb;
-  --forge-gold: #f2b2bc;
-  --forge-button: #8fd0cb;
-  --forge-button-text: #0c2a2c;
-  --forge-effects: #8fd0cb;
-  --forge-highlight: #edecdb;
-  --forge-shadow: #04100f;
-  --forge-scene-tint: #3d7f7b;
-  --forge-on-scene: #f5f6ec;
-  --forge-on-scene-muted: #cfe4e2;
-  --forge-scene-accent: #f0a9b4;
+.theme[data-palette='dream'] {
+  --forge-bg: #171a28;
+  --forge-panel: #2c3243;
+  --forge-raised: #373f51;
+  --forge-text: #fcf8fd;
+  --forge-muted: #f5ddf2;
+  --forge-accent: #f1cfed;
+  --forge-gold: #f4dbf2;
+  --forge-button: #f4dbf2;
+  --forge-button-text: #525e92;
+  --forge-effects: #f3d6f0;
+  --forge-highlight: #f9f5fb;
+  --forge-shadow: #0a0c12;
+  --forge-scene-tint: #ababdc;
+  --forge-on-scene: #fcf8fd;
+  --forge-on-scene-muted: #f6e0f3;
+  --forge-scene-accent: #f5ddf2;
 }
 
 .theme[data-appearance='light'] {
-  --forge-bg: #f4f3fa;
-  --forge-panel: #e9e8f4;
-  --forge-raised: #dedeea;
-  --forge-text: #2c2f5c;
-  --forge-muted: #4e5178;
-  --forge-accent: #6560a0;
-  --forge-gold: #7a6250;
+  --forge-bg: #f3f2f8;
+  --forge-panel: #eae9f3;
+  --forge-raised: #e6e5f1;
+  --forge-text: #383b67;
+  --forge-muted: #5d5c7f;
+  --forge-accent: #383b67;
+  --forge-gold: #686b86;
   --forge-button: #383b67;
-  --forge-button-text: #f4f3fa;
-  --forge-effects: #b1bef2;
-  --forge-highlight: #efe2fa;
-  --forge-shadow: #333451;
+  --forge-button-text: #f7f6fa;
+  --forge-effects: #8d91b5;
+  --forge-highlight: #e9e8f2;
+  --forge-shadow: #383b67;
   --forge-scene-tint: #8d91b5;
-  --forge-on-scene: #f1f0fa;
-  --forge-on-scene-muted: #c7c6df;
-  --forge-scene-accent: #c7c6df;
+  --forge-on-scene: #f1f1f7;
+  --forge-on-scene-muted: #dbdaea;
+  --forge-scene-accent: #afb2cb;
   --forge-board-opacity: 96%;
   --forge-line-opacity: 55%;
   --forge-text-shadow: none;
 }
 
 .theme[data-appearance='light'][data-palette='sakura'] {
-  --forge-bg: #fdf4f6;
-  --forge-panel: #f8e8ee;
-  --forge-raised: #fee3ec;
-  --forge-text: #5a2f40;
-  --forge-muted: #74485a;
-  --forge-accent: #a3505f;
-  --forge-gold: #8b6450;
-  --forge-button: #8e4a5c;
-  --forge-button-text: #fff4f7;
-  --forge-effects: #f4c9da;
-  --forge-highlight: #fee3ec;
-  --forge-shadow: #5a2f40;
-  --forge-scene-tint: #c87377;
-  --forge-on-scene: #fff0f4;
-  --forge-on-scene-muted: #f4c9da;
-  --forge-scene-accent: #fdd4d7;
+  --forge-bg: #fff9f9;
+  --forge-panel: #f9e0df;
+  --forge-raised: #fff2f3;
+  --forge-text: #785351;
+  --forge-muted: #864d50;
+  --forge-accent: #a4716e;
+  --forge-gold: #816c6e;
+  --forge-button: #8e625f;
+  --forge-button-text: #fffbfb;
+  --forge-effects: #d38f8f;
+  --forge-highlight: #fff4f5;
+  --forge-shadow: #785351;
+  --forge-scene-tint: #d38f8f;
+  --forge-on-scene: #fff8f8;
+  --forge-on-scene-muted: #f4cac8;
+  --forge-scene-accent: #fee1e3;
 }
 
 .theme[data-appearance='light'][data-palette='jade'] {
-  --forge-bg: #f1f7f4;
-  --forge-panel: #e3efe9;
-  --forge-raised: #d6ebe3;
-  --forge-text: #123326;
-  --forge-muted: #375446;
-  --forge-accent: #406250;
-  --forge-gold: #6f6142;
-  --forge-button: #2f5242;
-  --forge-button-text: #f1f7f4;
-  --forge-effects: #bedbd3;
-  --forge-highlight: #e4f2ec;
-  --forge-shadow: #123326;
-  --forge-scene-tint: #8aaca0;
-  --forge-on-scene: #eef7f2;
-  --forge-on-scene-muted: #bedbd3;
-  --forge-scene-accent: #bedbd3;
+  --forge-bg: #f1f7f5;
+  --forge-panel: #d3dfdb;
+  --forge-raised: #e2efeb;
+  --forge-text: #0d3021;
+  --forge-muted: #3d5e4d;
+  --forge-accent: #0d3021;
+  --forge-gold: #63726e;
+  --forge-button: #0d3021;
+  --forge-button-text: #f5faf8;
+  --forge-effects: #688777;
+  --forge-highlight: #e5f1ed;
+  --forge-shadow: #0d3021;
+  --forge-scene-tint: #688777;
+  --forge-on-scene: #eff6f4;
+  --forge-on-scene-muted: #b3c9c1;
+  --forge-scene-accent: #d2e6e0;
 }
 
 .theme[data-appearance='light'][data-palette='pearl'] {
-  --forge-bg: #f8f4f1;
-  --forge-panel: #f0e8e2;
-  --forge-raised: #e9ddd3;
-  --forge-text: #43332c;
-  --forge-muted: #65524a;
-  --forge-accent: #85606a;
-  --forge-gold: #7a5a49;
-  --forge-button: #6b5148;
-  --forge-button-text: #faf6f2;
-  --forge-effects: #d4c4dc;
-  --forge-highlight: #f0e6ec;
-  --forge-shadow: #43332c;
-  --forge-scene-tint: #af9292;
-  --forge-on-scene: #f7f0ec;
-  --forge-on-scene-muted: #e6dedd;
-  --forge-scene-accent: #ddbda5;
+  --forge-bg: #faf8f8;
+  --forge-panel: #eae3de;
+  --forge-raised: #f4f0f0;
+  --forge-text: #695858;
+  --forge-muted: #6c5748;
+  --forge-accent: #907878;
+  --forge-gold: #866b59;
+  --forge-button: #7c6868;
+  --forge-button-text: #fbfafa;
+  --forge-effects: #bcaec4;
+  --forge-highlight: #f5f2f1;
+  --forge-shadow: #695858;
+  --forge-scene-tint: #bcaec4;
+  --forge-on-scene: #f9f7f6;
+  --forge-on-scene-muted: #dbcfc7;
+  --forge-scene-accent: #cdb3a2;
 }
 
-.theme[data-appearance='light'][data-palette='lagoon'] {
-  --forge-bg: #f7f6ec;
-  --forge-panel: #ebefe6;
-  --forge-raised: #dbe9e5;
-  --forge-text: #1d4446;
-  --forge-muted: #3c5c5d;
-  --forge-accent: #2f7471;
-  --forge-gold: #a3405e;
-  --forge-button: #1f5c5a;
-  --forge-button-text: #f7f6ec;
-  --forge-effects: #6bb1ad;
-  --forge-highlight: #edecdb;
-  --forge-shadow: #1d4446;
-  --forge-scene-tint: #6bb1ad;
-  --forge-on-scene: #f5f6ec;
-  --forge-on-scene-muted: #cfe4e2;
-  --forge-scene-accent: #f0a9b4;
+.theme[data-appearance='light'][data-palette='dream'] {
+  --forge-bg: #fcf9fd;
+  --forge-panel: #faedf8;
+  --forge-raised: #f9f3fb;
+  --forge-text: #545f94;
+  --forge-muted: #61617d;
+  --forge-accent: #7181c8;
+  --forge-gold: #7d6c7b;
+  --forge-button: #5d6aa4;
+  --forge-button-text: #fdfbfe;
+  --forge-effects: #b7d3f4;
+  --forge-highlight: #f9f5fb;
+  --forge-shadow: #545f94;
+  --forge-scene-tint: #b7d3f4;
+  --forge-on-scene: #fcf8fd;
+  --forge-on-scene-muted: #f6e0f3;
+  --forge-scene-accent: #f5ddf2;
 }
 
 .theme {
