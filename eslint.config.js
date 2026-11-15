@@ -41,4 +41,10 @@ export default defineConfig([
     files: ['*.config.{js,ts}'],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Node build scripts (CORE-03 image pipeline and its test).
+    files: ['scripts/**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: globals.node },
+  },
 ]);
