@@ -226,6 +226,7 @@ Hub ↔ world transitions (Core): the selected card expands or dissolves, the ro
   - Output is WebP: a full size (long edge at most 1920 px) and a thumbnail (about 480 px).
   - **All metadata is stripped**, including EXIF, GPS and capture dates.
   - Output files get ASCII kebab-case names and are written to `src/worlds/<id>/assets/`.
+  - Run `npm run images -- --world <id> [--dir <sub>] [--name <base>] <files|folders>`. The thumbnail is `<name>-thumb.webp` (long edge at most 480 px). Every output is re-read and the run fails if any metadata remains. `npm run images -- --check <paths>` verifies existing images (for QA-04). Usage is documented in the script header.
 - Assets are imported through ESM (`import img from './assets/x.webp'`) so Vite fingerprints them. Audio, video and GLB files use `?url` imports and load lazily.
 - `public/` holds only files that need stable URLs.
 - Each world keeps `assets/CREDITS.md` listing the source and license of any third-party asset. Unlicensed assets are forbidden.
