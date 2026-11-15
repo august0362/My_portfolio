@@ -1,6 +1,6 @@
 # Architecture
 
-Status: the direction is **CONFIRMED** (P-01–P-15). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
+Status: the direction is **CONFIRMED** (P-01–P-16). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
 
 ## 1. Technology choices
 
@@ -181,6 +181,7 @@ export default function CharacterWorld() {
   - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
   - `palette: 'moonlit' | 'rosewater' | 'tidal'` defaults to `moonlit`.
 - Core renders the settings control (the Atmosphere panel). Only `appearance` and `palette` can be chosen there and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
+- Paired themes ([P-16](CONTEXT.md#4-architecture-decisions)): the Atmosphere panel is the only color control, and it stays visible in worlds. Each world reads `appearance` and `palette` from `useSettings()`, renders light or dark to match, and maps each of the three palettes to one paired world theme (for example Information's `PAIRED_THEMES` in `theme.config.ts`). Worlds do not add their own palette or light/dark controls.
 
 ## 8. Möbius Hub
 

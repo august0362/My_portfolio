@@ -1,15 +1,15 @@
+import type { Settings } from '@shared/settings';
 import type { ThemeDef } from './theme';
 
 /* ══════════════════════════════════════════════════════════════════════════
    CHRONICLE · COLOR CONFIG   (the only file you need to edit for colors)
 
-   1. ACTIVE_THEME       theme a first-time visitor sees.
-   2. SHOW_THEME_PICKER  visitor theme picker (bottom-left). Visitors choose a theme;
-                         their choice is remembered in their browser, and `?theme=3`
-                         in a link opens that theme directly.
-   3. DEFAULT_MODE       'light' or 'dark' for a first-time visitor. The site's own
-      SHOW_MODE_TOGGLE   sun/moon button switches it; the browser/OS dark setting is ignored.
-   4. THEMES             edit any hex value; save and the page updates.
+   1. PAIRED_THEMES      the Chronicle theme shown for each site palette. Visitors pick
+                         the palette and light/dark in the site's Atmosphere panel, so
+                         every page stays in one color story (P-16). Point a palette at
+                         any theme number below to re-pair it.
+   2. ACTIVE_THEME       fallback theme; it is the one paired with the default palette.
+   3. THEMES             edit any hex value; save and the page updates.
 
    Each section needs:  tone ('light' | 'dark'), bg, text, accent, particle, cloudA, cloudB.
    Optional overrides:  bgAlt, textMuted, accentInk, surface, border, glow.
@@ -23,10 +23,12 @@ import type { ThemeDef } from './theme';
    New theme: copy a block, give it the next `no`.
    ══════════════════════════════════════════════════════════════════════════ */
 
-export const ACTIVE_THEME = 1;
-export const SHOW_THEME_PICKER = true;
-export const DEFAULT_MODE: 'light' | 'dark' = 'light';
-export const SHOW_MODE_TOGGLE = true;
+export const PAIRED_THEMES: Record<Settings['palette'], number> = {
+  moonlit: 1, // Chronicle: moonlit navy and lavender
+  rosewater: 2, // Cotton Sky: pink cloud and orchid
+  tidal: 3, // Muted Summer: misty aqua and sage
+};
+export const ACTIVE_THEME = PAIRED_THEMES.moonlit;
 
 export const FONTS = {
   display: "'Cormorant Garamond', 'Cormorant', 'Times New Roman', serif",

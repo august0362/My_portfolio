@@ -42,10 +42,10 @@ export type SectionColors = Pick<Scheme, 'tone' | 'bg' | 'text' | 'accent' | 'pa
   Partial<Scheme>;
 
 export interface ThemeDef {
-  /** Number shown in the picker and used by ACTIVE_THEME. */
+  /** Number used by PAIRED_THEMES and ACTIVE_THEME. */
   no: number;
   name: string;
-  /** Source palette swatches, shown in the picker. */
+  /** Source palette swatches, for reference. */
   palette: readonly string[];
   sections: Record<SectionId, SectionColors>;
   /** Optional dark-mode overrides per section; anything omitted is derived from `sections`. */
@@ -175,8 +175,6 @@ const resolved: Record<Mode, Theme[]> = {
   light: themes.map((t) => build(t, 'light')),
   dark: themes.map((t) => build(t, 'dark')),
 };
-
-export const allThemes: readonly Theme[] = resolved.light;
 
 export function getTheme(no: number, mode: Mode = 'light'): Theme {
   const list = resolved[mode];

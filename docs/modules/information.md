@@ -40,7 +40,7 @@ Sub-routes per section, album filtering, captions in multiple languages, animate
 
 ## Shared dependencies
 
-`@shared/contract`, `@shared/settings` (motion), `@shared/tokens.css`, React Router, and the CORE-03 image script, which Core runs or the agent runs without modifying it.
+`@shared/contract`, `@shared/settings` (motion, appearance, palette), `@shared/tokens.css`, React Router, and the CORE-03 image script, which Core runs or the agent runs without modifying it.
 
 ## Missing assets/data
 
@@ -55,4 +55,4 @@ Sub-routes per section, album filtering, captions in multiple languages, animate
 
 ## Current verified state
 
-INFO-01, INFO-02 and INFO-03 integrated from the Chronicle prototype (2026-11-15, P-15). The world root is a `<div>` inside WorldFrame's `<main>`; reduced motion comes from `useSettings()`; `meta.ts` is static so the main chunk stays small. The world keeps its own theme picker (bottom-left, `?theme=N`) and light/dark toggle, separate from the hub's Atmosphere settings. Verification is in [STATUS.md](../STATUS.md).
+INFO-01, INFO-02 and INFO-03 integrated from the Chronicle prototype (2026-11-15, P-15). The world root is a `<div>` inside WorldFrame's `<main>`; reduced motion comes from `useSettings()`; `meta.ts` is static so the main chunk stays small. Colors follow the site's Atmosphere panel (P-16): `appearance` sets light or dark, and `PAIRED_THEMES` in `theme.config.ts` maps Moonlit → 01 Chronicle, Rosewater → 02 Cotton Sky, Tidal → 03 Muted Summer. The prototype's own theme picker and light/dark toggle were removed; themes 04–06 stay in the config for re-pairing. Verification is in [STATUS.md](../STATUS.md).

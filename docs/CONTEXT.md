@@ -32,7 +32,7 @@ Möbius Universe is the creator's interactive personal universe, made of interco
 
 ## 4. Architecture decisions
 
-Lead review on 2026-11-15: P-01–P-15 are CONFIRMED (P-09 was DEFERRED until the Information integration).
+Lead review on 2026-11-15: P-01–P-16 are CONFIRMED (P-09 was DEFERRED until the Information integration).
 
 | ID | Status | Decision | Rationale |
 |---|---|---|---|
@@ -51,6 +51,7 @@ Lead review on 2026-11-15: P-01–P-15 are CONFIRMED (P-09 was DEFERRED until th
 | P-13 | CONFIRMED | Hub settings follow HUB-REV: visitors choose only appearance (dark or light) and palette. Sound is on by default with no off switch. Motion follows the system setting. Quality starts at full ([ARCHITECTURE §7](ARCHITECTURE.md#7-shell-behavior-core), [§11](ARCHITECTURE.md#11-performance-and-accessibility)) | Lead decision, 2026-11-15. Replaces the earlier rule that sound stays off and motion can be toggled in the app |
 | P-14 | CONFIRMED | The hub stays the HUB-REV 2D Celestial Portal. HUB-02 (lazy WebGL HubScene with the Möbius ribbon) is dropped. The pixel reconstruction effect is dropped. HUB-03 is met by the existing water-style scene transitions | Lead decision, 2026-11-15. `three`/R3F (P-03) stay available for worlds only |
 | P-15 | CONFIRMED | The Information world ships the Chronicle prototype as built: hub title "Chronicle", the public identity JSON including the email contact, the supplied journey, the three P-09 albums, and the public CV as an HTML sheet without the phone number (no CV file). Fonts: Cormorant Garamond and Be Vietnam Pro (SIL OFL) from Google Fonts in `index.html`. World routes are full-bleed, with a floating Back to Hub link | Lead decision, 2026-11-15 (integrate the prototype as is) |
+| P-16 | CONFIRMED | Paired themes: the Atmosphere panel (`settings.appearance` and `settings.palette`) is the only color control on the site. Every world follows it: light/dark follows `appearance`, and each palette (Moonlit, Rosewater, Tidal) maps to one paired world theme in a matching color story. Worlds do not add their own palette or light/dark controls | Lead decision, 2026-11-15: pages must stay color-compatible with each other |
 
 ## 5. Not yet decided
 

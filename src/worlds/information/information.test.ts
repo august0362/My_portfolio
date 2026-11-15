@@ -11,7 +11,7 @@ import meta from './meta';
 import { milestones } from './data/journey';
 import { fields } from './data/skills';
 import { contrast, getTheme, resolveScheme, SECTION_ORDER, type Mode } from './theme';
-import { ACTIVE_THEME, themes } from './theme.config';
+import { ACTIVE_THEME, PAIRED_THEMES, themes } from './theme.config';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 
@@ -58,6 +58,15 @@ describe('theme', () => {
 
   it('every theme defines every section', () => {
     for (const t of themes) expect(Object.keys(t.sections).sort()).toEqual([...SECTION_ORDER].sort());
+  });
+
+  it('pairs every site palette with its own existing theme (P-16)', () => {
+    const palettes = ['moonlit', 'rosewater', 'tidal'] as const;
+    expect(Object.keys(PAIRED_THEMES).sort()).toEqual([...palettes].sort());
+    const paired = palettes.map((p) => PAIRED_THEMES[p]);
+    for (const no of paired) expect(themes.map((t) => t.no)).toContain(no);
+    expect(new Set(paired).size).toBe(palettes.length);
+    expect(ACTIVE_THEME).toBe(PAIRED_THEMES.moonlit); // the default site palette
   });
 });
 
