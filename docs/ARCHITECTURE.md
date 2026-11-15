@@ -1,6 +1,6 @@
 # Architecture
 
-Status: the direction is **CONFIRMED** (P-01–P-08, P-10, P-11). Nothing here is implemented yet; see [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
+Status: the direction is **CONFIRMED** (P-01–P-15). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
 
 ## 1. Technology choices
 
@@ -31,7 +31,7 @@ src/
   core/                    Core: shell, router, registry, hub, transitions, 404
     registry.ts
     shell/                 AppShell, WorldFrame (back-to-hub, Suspense, ErrorBoundary)
-    hub/                   HubNav (DOM cards), HubScene (lazy WebGL), pixel effect
+    hub/                   HubNav (DOM cards), 2D celestial canvas and orbit
     transitions/
   shared/                  Core-owned; the ONLY internal code worlds may import
     contract.ts            WorldId, WorldMeta, WorldDefinition
@@ -184,39 +184,16 @@ export default function CharacterWorld() {
 
 ## 8. Möbius Hub
 
-**Implemented state (HUB-REV, merged 2026-11-15):** the hub is the Celestial Portal. HubNav cards orbit a 2D canvas of celestial rings (`hub/celestialCanvas.ts`, `hub/useCelestialOrbit.ts`), with water-style scene transitions (`shell/useSceneTransition.ts`) and an ambient soundscape (`shell/useCelestialAudio.ts`). It uses no WebGL. The WebGL HubScene and the Möbius ribbon described below are not built; they remain the original HUB-02 plan.
+The hub is the Celestial Portal from HUB-REV (merged 2026-11-15, [P-14](CONTEXT.md#4-architecture-decisions)). HUB-02 (a lazy WebGL HubScene with a Möbius ribbon) and the pixel reconstruction effect were dropped by the Lead on 2026-11-15.
 
-Layers:
-1. **HubNav (DOM, always rendered):** `<nav aria-label="Worlds">` with five `<a>` cards. This layer is the accessible navigation and the static-tier layout.
-2. **HubScene (lazy WebGL, `aria-hidden`):** the Möbius ribbon, a starfield and lighting. It is never loaded in the static tier.
+- **HubNav (DOM, always rendered):** five `<a>` cards inside the hub `<main>`. This layer is the accessible navigation.
+- **Decoration:** a 2D canvas of celestial rings (`hub/celestialCanvas.ts`, `hub/useCelestialOrbit.ts`), hidden from assistive technology. It uses no WebGL. Cards orbit it, and the nearest card stays above the core.
+- **Motion:** the orbit and canvas animation stop under reduced motion (`settings.motion`, which follows the system setting, P-13).
+- **Sound:** an ambient soundscape (`shell/useCelestialAudio.ts`), on by default (P-13).
 
-Scene:
-- The ribbon is a custom `BufferGeometry` built from the parametric Möbius equation, with a modest segment count. It uses an emissive material with a fresnel-like rim. Bloom post-processing is off by default and is allowed only in the `full` tier if measurements justify it.
-- The starfield is a single `Points` draw call whose count scales with the quality tier.
+Hub ↔ world transitions (HUB-03, Core): water-style scene transitions in `shell/useSceneTransition.ts`. The selected card lifts and dissolves, the route changes, and the world fades in. With reduced motion the change is instant. Navigation never waits on a transition.
 
-Cards:
-- Cards follow an independent parametric orbit that loosely traces the ribbon centerline. One `requestAnimationFrame` loop projects each card position with the scene camera and writes `style.transform` directly, without a React re-render per frame.
-- Because cards are DOM elements, they always face the viewer. Depth is conveyed through scale, opacity and z-index.
-- While any card is hovered or focused, the orbit speed eases to 0 and that card is emphasized. Touch: the first tap focuses a card and the second tap enters the world.
-- The `static` tier lays the cards out in a fixed ring or grid with no motion.
-
-Quality tiers:
-- `static`: used when motion is reduced, WebGL2 is missing, or the user chooses it.
-- `lite`: the default for coarse pointers and small screens. DPR is capped at 1, with fewer particles.
-- `full`: DPR is capped at 1.5.
-- The tier also drops one level automatically if frame time stays high.
-
-Rendering:
-- Rendering pauses while `document.hidden` is true.
-- The canvas unmounts when a world opens, which frees GPU resources (dispose geometry, materials and textures). Only one WebGL canvas exists at a time.
-
-Pixel reconstruction (HUB-03), DOM-only with no extra GPU work:
-- **Trigger:** a card crossing a fixed orbital point (for example the ribbon twist), and the hub entry. At most one card at a time, with a cooldown of several seconds.
-- **Never** while a card is hovered or focused, and never in the `static` tier or with reduced motion.
-- **Effect:** create a temporary overlay of about 6–12 strips or tiles. Each piece uses the card face image with an offset `background-position`. Hide the real face, animate the pieces with the Web Animations API on `transform` and `opacity` only (staggered, roughly 500–700 ms in total), then remove the overlay. The text label fades instead of fragmenting so it stays crisp and readable.
-- If cards ever move into WebGL, the alternative is a per-card fragment shader with a `progress` uniform. This is not part of V1.
-
-Hub ↔ world transitions (Core): the selected card expands or dissolves, the route changes, and the world fades in. Use the View Transitions API where supported and a CSS fade otherwise. With reduced motion, use an instant change or a short crossfade.
+World routes are full-bleed (P-15): `AppShell` drops the content column and the brand header, and `BackToHub` floats top-left. Placeholder worlds (`[data-placeholder]`) keep a readable column.
 
 ## 9. Data organization
 
@@ -241,13 +218,13 @@ Hub ↔ world transitions (Core): the selected card expands or dissolves, the ro
 
 ## 11. Performance and accessibility
 
-- **Initial load:** the main bundle holds the shell and HubNav only. `three` and R3F load in the lazy HubScene chunk and in the 3D world chunks that need them, and each world is its own chunk.
+- **Initial load:** the main bundle holds the shell and HubNav only. `three` and R3F load only in the 3D world chunks that need them, and each world is its own chunk.
 - **Images:** use `loading="lazy"`, `decoding="async"` and explicit `width`/`height`. Use thumbnails in grids and full size on demand.
 - **GPU:** one active canvas at a time, capped DPR, paused while hidden or offscreen (use IntersectionObserver for canvases inside worlds), and resources disposed on unmount.
 - **Mobile:** use the `lite` tier by default and make touch targets at least 44 px.
 - **Reduced motion:** follows the system `prefers-reduced-motion` setting. The hub then stops its automatic animation, and worlds must not animate automatically either. There is no in-app toggle (Lead decision, 2026-11-15).
 - **Accessibility:** all navigation works with keyboard and touch and without WebGL. Focus styles are visible, text contrast is readable, and `<html lang>` follows the content language.
-- **Browsers:** the current evergreen desktop and mobile browsers, including iOS Safari. Without WebGL2 the site uses the static tier.
+- **Browsers:** the current evergreen desktop and mobile browsers, including iOS Safari. Without WebGL2, 3D worlds fall back to a static view.
 - **Audio:** no `AudioContext` or playback before a user gesture. Sound is on by default (Lead decision, 2026-11-15): the hub soundscape starts on the visitor's first pointer or key gesture, and the app has no switch to turn it off. The Lead accepted that this does not meet WCAG 1.4.2 (Audio Control). Worlds read the global `sound` setting.
 - **Measurement:** no performance numbers are promised. QA-03 measures with Lighthouse (mobile and desktop) and the `vite build` chunk report, then records results in STATUS.
 

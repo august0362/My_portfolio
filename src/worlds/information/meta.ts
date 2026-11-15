@@ -1,4 +1,12 @@
 import type { WorldMeta } from '@shared/contract';
 
-const meta: WorldMeta = { id: 'information', title: 'Information', tagline: 'Personal information and background.' };
+// Static on purpose: the registry loads every meta.ts into the main chunk, so this file must not import
+// the theme or data modules. information.test.ts checks these values still match them.
+const meta: WorldMeta = {
+  id: 'information',
+  title: 'Chronicle',
+  tagline: 'Building ideas into reality, and imagination into worlds.',
+  accent: '#ecb8a6',
+};
+
 export default meta;

@@ -1,5 +1,5 @@
 # Raw source material: never committed (P-08). Backed up separately by the Lead.
-data/
+/data/
 
 # Dependencies and build output
 node_modules/

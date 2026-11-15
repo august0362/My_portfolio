@@ -1,6 +1,6 @@
 # CLAUDE.md: Möbius Universe agent entry point
 
-Möbius Universe is a static, read-only personal portfolio. Its public name is **Celestial Portal** ([P-12](docs/CONTEXT.md#4-architecture-decisions)). It has a hub at `/` and five independent world modules. The confirmed stack is React + TypeScript + Vite with Three.js / React Three Fiber, and no code exists yet. Read only what your task needs.
+Möbius Universe is a static, read-only personal portfolio. Its public name is **Celestial Portal** ([P-12](docs/CONTEXT.md#4-architecture-decisions)). It has a hub at `/` and five independent world modules. The confirmed stack is React + TypeScript + Vite, with Three.js / React Three Fiber available for 3D worlds. Read only what your task needs.
 
 ## Communication
 
@@ -25,7 +25,7 @@ Do not read every module doc, scan the whole repository, or open `data/` files y
 |---|---|
 | Product facts, what is confirmed or proposed | [docs/CONTEXT.md](docs/CONTEXT.md) |
 | Folder layout, import rules, module contract | [ARCHITECTURE §2–§6](docs/ARCHITECTURE.md#2-repository-layout) |
-| Hub, transitions, pixel effect | [ARCHITECTURE §8](docs/ARCHITECTURE.md#8-möbius-hub) |
+| Hub and transitions | [ARCHITECTURE §8](docs/ARCHITECTURE.md#8-möbius-hub) |
 | Assets, images, privacy stripping | [ARCHITECTURE §10](docs/ARCHITECTURE.md#10-asset-organization) |
 | Performance, accessibility, audio | [ARCHITECTURE §11](docs/ARCHITECTURE.md#11-performance-and-accessibility) |
 | Task scope and acceptance criteria | [docs/PLAN.md](docs/PLAN.md) and your task assignment |

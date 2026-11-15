@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router';
+import { WORLDS } from '../registry';
 import { useSettings } from '@shared/settings';
 import SettingsControls from './SettingsControls';
 import useCelestialAudio from './useCelestialAudio';
@@ -9,14 +10,17 @@ import './appearance.css';
 
 export default function AppShell() {
   const { settings } = useSettings();
-  const isHub = useLocation().pathname === '/';
+  const { pathname } = useLocation();
+  const isHub = pathname === '/';
+  // Worlds are full-bleed: each one owns its layout below the floating Back to Hub link.
+  const isWorld = WORLDS.some(world => pathname === world.path || pathname.startsWith(`${world.path}/`));
   const audioStatus = useCelestialAudio();
   const { shellRef, sceneRef, waterRef } = useSceneTransition(settings.motion === 'reduced');
 
   return (
-    <div ref={shellRef} className={`${styles.app} ${isHub ? styles.portal : ''}`} data-motion={settings.motion} data-quality={settings.quality}>
+    <div ref={shellRef} className={`${styles.app} ${isHub ? styles.portal : ''} ${isWorld ? styles.world : ''}`} data-motion={settings.motion} data-quality={settings.quality}>
       <div ref={sceneRef} className={transitionStyles.scene}>
-        {!isHub && <header><p className={styles.brand}>Celestial Portal</p></header>}
+        {!isHub && !isWorld && <header><p className={styles.brand}>Celestial Portal</p></header>}
         <Outlet />
       </div>
       <SettingsControls audioStatus={audioStatus} />

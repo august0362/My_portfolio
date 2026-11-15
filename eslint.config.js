@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint';
 const worlds = ['information', 'production', 'character', 'wanderlight', 'ethereal'];
 
 export default defineConfig([
-  globalIgnores(['data/**', 'node_modules/**', 'dist/**', 'coverage/**', '.cache/**', '.vite/**', 'prototypes/information/**']),
+  globalIgnores(['data/**', 'node_modules/**', 'dist/**', 'coverage/**', '.cache/**', '.vite/**']),
   {
     files: ['**/*.{js,ts,tsx}'],
     extends: [js.configs.recommended, tseslint.configs.recommended],

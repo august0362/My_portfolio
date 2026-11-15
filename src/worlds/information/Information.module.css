@@ -1,0 +1,120 @@
+/* World root: typography base and the shared reveal system.
+   All automatic motion is gated by [data-motion='full'], so reduced motion is static by default. */
+.root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --gutter: clamp(1rem, 4.5vw, 4.5rem);
+  --max: 88rem;
+  /* Room kept clear for the fixed section index on wider screens. */
+  --nav-space: 0px;
+
+  position: relative;
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+/* Chromium auto-dark (Chrome, Cốc Cốc, Edge) skips elements whose used color-scheme is dark while the
+   browser prefers dark. Forcing `light` here would re-enable it, so light mode keeps `light dark`;
+   every color the page shows is explicit, so this only affects native widgets. */
+.root {
+  color-scheme: light dark;
+}
+
+.root[data-mode='dark'] {
+  color-scheme: dark;
+}
+
+@media (min-width: 761px) {
+  .root {
+    --nav-space: 7rem;
+  }
+}
+
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+:where(.root) :where(h1, h2, h3, p, ol, ul, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+:where(.root) :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+:where(.root) :where(a) {
+  color: inherit;
+}
+
+:where(.root) :where(button) {
+  font: inherit;
+  color: inherit;
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ---------- Reveal system (driven by useReveal) ---------- */
+.root[data-motion='full'] [data-reveal] {
+  transition:
+    opacity 1.1s var(--ease-out) var(--d, 0ms),
+    transform 1.3s var(--ease-out) var(--d, 0ms),
+    clip-path 1.5s var(--ease-out) var(--d, 0ms);
+}
+
+.root[data-motion='full'] [data-reveal='up']:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 2.5rem, 0);
+}
+
+.root[data-motion='full'] [data-reveal='fade']:not([data-revealed]) {
+  opacity: 0;
+}
+
+.root[data-motion='full'] [data-reveal='mask'] {
+  clip-path: inset(0 0 0 0);
+}
+
+.root[data-motion='full'] [data-reveal='mask']:not([data-revealed]) {
+  clip-path: inset(100% 0 0 0);
+}
+
+.root[data-motion='full'] [data-reveal='line'] {
+  transform-origin: left center;
+}
+
+.root[data-motion='full'] [data-reveal='line']:not([data-revealed]) {
+  transform: scaleX(0);
+}
+
+.root[data-motion='full'] [data-reveal='vline'] {
+  transform-origin: center top;
+}
+
+.root[data-motion='full'] [data-reveal='vline']:not([data-revealed]) {
+  transform: scaleY(0);
+}
+
+/* Stroked shapes must carry pathLength="1". Select by element name: Chrome does not
+   re-style descendants matched via the camel-case [pathLength] attribute selector. */
+.root[data-motion='full'] [data-reveal='draw'] :is(path, polyline) {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.6s var(--ease-soft) var(--d, 0ms);
+}
+
+.root[data-motion='full'] [data-reveal='draw'][data-revealed] :is(path, polyline) {
+  stroke-dashoffset: 0;
+}

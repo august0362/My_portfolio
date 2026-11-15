@@ -1,6 +1,6 @@
 # Möbius Universe
 
-The personal interactive universe of **August (Trần Anh Việt)**. A luminous Möbius ribbon floats in a celestial hub, and five world cards orbit along it. Each card opens an independent world.
+The personal interactive universe of **August (Trần Anh Việt)**. Its hub, the Celestial Portal, shows five world cards orbiting a celestial canvas. Each card opens an independent world.
 
 | World | Route | Working title | Purpose |
 |---|---|---|---|

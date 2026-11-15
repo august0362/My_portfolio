@@ -1,0 +1,45 @@
+.swap {
+  display: inline-grid;
+}
+
+.upright,
+.italic {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.55s var(--ease-soft),
+    transform 0.9s var(--ease-out);
+}
+
+.italic {
+  font-style: italic;
+  opacity: 0;
+  transform: translate3d(-0.12em, 0, 0);
+  user-select: none;
+}
+
+@media (hover: hover) {
+  [data-swap-host]:hover .upright {
+    opacity: 0;
+    transform: translate3d(0.22em, 0, 0);
+  }
+
+  [data-swap-host]:hover .italic {
+    opacity: 1;
+    transform: translate3d(0.22em, 0, 0);
+  }
+}
+
+[data-swap-host]:focus-visible .upright {
+  opacity: 0;
+  transform: translate3d(0.22em, 0, 0);
+}
+
+[data-swap-host]:focus-visible .italic {
+  opacity: 1;
+  transform: translate3d(0.22em, 0, 0);
+}
+
+[data-motion='reduced'] .upright,
+[data-motion='reduced'] .italic {
+  transition: none;
+}

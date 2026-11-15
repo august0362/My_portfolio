@@ -19,7 +19,7 @@ M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)        
 - **Goal:** a shared understanding and an approved architecture.
 - **Deliverables:** `README.md`, `CLAUDE.md` and `docs/**`.
 - **Dependencies:** none.
-- **Acceptance:** every decision in [CONTEXT §4](CONTEXT.md#4-architecture-decisions) is CONFIRMED, or DEFERRED with the tasks it blocks named. A deferred decision blocks only those tasks, not M1. For example, P-09 blocks INFO-03 only.
+- **Acceptance:** every decision in [CONTEXT §4](CONTEXT.md#4-architecture-decisions) is CONFIRMED, or DEFERRED with the tasks it blocks named. A deferred decision blocks only those tasks, not M1. For example, P-09 blocked INFO-03 only until the Lead confirmed it.
 - **Evidence:** the docs exist, and each decision's status is recorded in CONTEXT §4.
 
 | ID | Owner | Task |
@@ -50,8 +50,8 @@ M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)        
 | ID | Owner | Task | Acceptance |
 |---|---|---|---|
 | HUB-01 | Core | Accessible static hub: styled HubNav cards, static-tier layout, settings control | Keyboard, touch and screen-reader navigation to all 5 worlds. Works with WebGL unavailable |
-| HUB-02 | Core | Lazy HubScene: Möbius ribbon, starfield, orbiting DOM cards, hover/focus stabilization, quality tiers, pause when hidden, dispose on exit | three/R3F absent from the main chunk (build report). Reduced motion yields the static tier. No console errors |
-| HUB-03 | Core | Hub ↔ world transitions + pixel reconstruction effect ([ARCHITECTURE §8](ARCHITECTURE.md#8-möbius-hub)) | Effect never runs on a hovered/focused card or under reduced motion. Navigation never waits on the effect |
+| HUB-02 | Core | **Dropped** ([P-14](CONTEXT.md#4-architecture-decisions)): the lazy WebGL HubScene and Möbius ribbon are not built | — |
+| HUB-03 | Core | Hub ↔ world transitions ([ARCHITECTURE §8](ARCHITECTURE.md#8-möbius-hub)). The pixel reconstruction effect is dropped (P-14) | Met by the HUB-REV scene transitions. Navigation never waits on a transition; reduced motion gives an instant change |
 
 ## M3: Independent world development
 
@@ -63,9 +63,9 @@ M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)        
 
 | ID | Owner | Task | Blocked by |
 |---|---|---|---|
-| INFO-01 | Information | Identity, Knowledge & Skills, Resume & Connect | Skills list confirmation; public CV file |
-| INFO-02 | Information | My Journey timeline (component + schema, placeholders) | Milestones for real content only |
-| INFO-03 | Information | Fragments of Me gallery (albums, optimized images) | CORE-03; P-09 (DEFERRED) confirmed by the Lead |
+| INFO-01 | Information | Identity, Knowledge & Skills, Resume & Connect | none (P-15) |
+| INFO-02 | Information | My Journey timeline (component + schema) | none (milestones supplied) |
+| INFO-03 | Information | Fragments of Me gallery (albums, optimized images) | none (P-09 confirmed) |
 | PROD-01 | Production | Catalog + detail view + schema, placeholder entries | none |
 | PROD-02 | Production | Fill in verified project content | Lead-supplied project facts and links |
 | CHAR-01 | Character | Gallery + detail route with placeholder entries | none |

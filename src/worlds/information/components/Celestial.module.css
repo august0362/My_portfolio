@@ -1,0 +1,109 @@
+/* Celestial line art. Placement comes from the caller's className. */
+.ornament {
+  --star: var(--accent);
+
+  overflow: visible;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.spark,
+.dot {
+  fill: var(--star, var(--accent));
+  stroke: none;
+}
+
+.ringDot {
+  fill: none;
+  stroke: var(--star, var(--accent));
+  stroke-width: 0.9;
+}
+
+.spark,
+.dot,
+.ringDot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.spark {
+  filter: drop-shadow(0 0 3px var(--glow));
+}
+
+/* On light sections the pale accent fades into the paper: sparkles use the ink accent. */
+[data-tone='light'] .ornament,
+[data-tone='light'] .spark {
+  --star: var(--accent-ink);
+}
+
+/* Disc hides the back half of the ring. */
+.planet {
+  fill: color-mix(in oklab, var(--bg) 82%, var(--accent));
+}
+
+.moon {
+  fill: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.mark {
+  stroke-width: 1.1;
+  filter: drop-shadow(0 0 6px var(--glow));
+}
+
+/* ---------- Motion: strokes draw (global draw rule), then fills and sparkles appear ---------- */
+[data-motion='full'] [data-reveal='draw'] :is(.spark, .dot, .ringDot) {
+  transition:
+    opacity 0.9s var(--ease-out),
+    scale 1.2s var(--ease-out);
+  transition-delay: calc(var(--d, 0ms) + 1100ms + var(--i, 0) * 160ms);
+}
+
+[data-motion='full'] [data-reveal='draw']:not([data-revealed]) :is(.spark, .dot, .ringDot) {
+  opacity: 0;
+  scale: 0;
+}
+
+[data-motion='full'] [data-reveal='draw'] :is(.moon, .planet) {
+  transition: fill-opacity 1.6s var(--ease-out) calc(var(--d, 0ms) + 900ms);
+}
+
+[data-motion='full'] [data-reveal='draw']:not([data-revealed]) .moon {
+  fill-opacity: 0;
+}
+
+[data-motion='full'] [data-revealed] .spark {
+  animation: spark 5.5s ease-in-out calc(2.6s + var(--i, 0) * 0.9s) infinite;
+}
+
+@keyframes spark {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+
+  50% {
+    scale: 0.6;
+    opacity: 0.5;
+  }
+}
+
+/* ---------- Placement: top-right of a section header ---------- */
+.corner {
+  position: absolute;
+  top: clamp(-1rem, 1vw, 1rem);
+  right: 0;
+  width: clamp(10rem, 22vw, 18rem);
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .corner {
+    top: -2.5rem;
+    width: 8.5rem;
+    opacity: 0.55;
+  }
+}
