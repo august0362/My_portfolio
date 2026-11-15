@@ -11,10 +11,12 @@ interface Options {
   animated: boolean;
   paused: boolean;
   quality: 'full' | 'lite' | 'static';
+  appearance: 'dark' | 'light';
+  palette: 'moonlit' | 'rosewater' | 'tidal';
   onSelect: (index: number) => void;
 }
 
-export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, animated, paused, quality, onSelect }: Options) {
+export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, animated, paused, quality, appearance, palette, onSelect }: Options) {
   const state = useRef({ angle: 0, target: null as number | null, velocity: 0, speed: 0, hovered: null as number | null, focused: null as number | null, dragging: false, pointer: -1, start: 0, last: 0, lastTime: 0, moved: false, suppressUntil: 0, px: 0, py: 0, tx: 0, ty: 0, time: 0, selected: 0 });
   const pauseRef = useRef(paused);
   const wake = useRef<() => void>(() => {});
@@ -80,11 +82,13 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, anima
     }
     function resize() {
       const width = stage!.clientWidth, height = stage!.clientHeight;
-      const lite = quality !== 'full' || width < 760 || matchMedia('(pointer: coarse)').matches;
+      const lite = quality !== 'full';
       const dpr = Math.min(devicePixelRatio || 1, lite ? 1 : 1.5);
-      view = { width, height, cx: width * (width >= 1000 ? 0.58 : 0.5), cy: height * (width < 600 ? 0.56 : 0.53), radius: Math.min(width * (width < 600 ? 0.31 : 0.32), 470), vertical: Math.min(height * 0.16, width < 600 ? 83 : 145), lite };
+      const colors = getComputedStyle(stage!);
+      view = { width, height, cx: width * (width >= 1000 ? 0.58 : 0.5), cy: height * (width < 600 ? 0.56 : 0.53), radius: Math.min(width * (width < 600 ? 0.31 : 0.32), 470), vertical: Math.min(height * 0.16, width < 600 ? 83 : 145), lite, colors: { line: colors.getPropertyValue('--portal-line-rgb'), star: colors.getPropertyValue('--portal-star-rgb'), gold: colors.getPropertyValue('--portal-gold-rgb') } };
       canvas!.width = Math.round(width * dpr); canvas!.height = Math.round(height * dpr);
       ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (ctx) drawCelestial(ctx, view, s.time, s.angle, s.px, s.py);
       start();
     }
     function visibility() {
@@ -106,7 +110,7 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, anima
       document.removeEventListener('visibilitychange', visibility); wake.current = () => {};
       s.dragging = false; s.hovered = null; s.focused = null; s.velocity = 0; s.target = null; s.speed = 0;
     };
-  }, [animated, quality, canvasRef, cardsRef, stageRef, onSelect]);
+  }, [animated, quality, appearance, palette, canvasRef, cardsRef, stageRef, onSelect]);
 
   const focus = (index: number | null) => {
     const s = state.current; s.focused = index;

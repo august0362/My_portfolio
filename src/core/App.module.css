@@ -21,7 +21,7 @@
   outline-offset: 4px;
 }
 
-.app:not(.portal) :where(a, button, summary) {
+.app:not(.portal) main :where(a, button, summary) {
   min-height: 2.75rem;
   display: inline-flex;
   align-items: center;
@@ -39,47 +39,5 @@
   padding-block: var(--space-small);
 }
 
-.worlds { padding-left: 1.5rem; }
-.worlds li { margin-bottom: var(--space-medium); }
-.worlds p { margin: 0; color: var(--color-muted); }
-
-.settings {
-  margin-top: var(--space-large);
-  padding-top: var(--space-medium);
-  border-top: 1px solid var(--color-border);
-}
-
-.settings summary {
-  cursor: pointer;
-  display: list-item;
-  line-height: 2.75rem;
-}
-
-.settings fieldset {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-medium);
-  margin-top: var(--space-small);
-  padding: var(--space-medium);
-  border: 1px solid var(--color-border);
-  min-width: 0;
-}
-
-.setting,
-.settings label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-small);
-}
-
-.settings select { min-height: 2.75rem; max-width: 100%; }
-
 .portal { max-width: none; margin: 0; padding: 0; line-height: 1.5; overflow-wrap: normal; }
 .portal :where(a) { color: inherit; }
-.portal > .settings { position: fixed; z-index: 50; right: 24px; top: 76px; margin: 0; padding: 0; border: 0; color: #ded4e8; font: 11px/1.7 'Segoe UI', sans-serif; }
-.portal .settings summary { width: fit-content; margin-left: auto; padding: 0 15px; border: 1px solid #c5aed536; border-radius: 24px; background: #201c38bd; backdrop-filter: blur(15px); }
-.portal .settings fieldset { max-width: 265px; padding: 18px; border: 1px solid #c5aed540; border-radius: 15px; background: #201c38f5; box-shadow: 0 20px 45px #08091866; }
-.portal .settings select { color: #f1eaf6; background: #39304b; border: 1px solid #c5aed555; border-radius: 6px; padding: 0 8px; }
-.portal .settings :focus-visible { outline-color: #ead5aa; }
-@media (max-width: 599px) { .portal > .settings { top: 75px; right: 20px; } .portal .settings[open] fieldset { position: absolute; top: 42px; right: 0; width: 265px; } }

@@ -1,0 +1,111 @@
+:root {
+  /* Explicit site colors opt out of Chromium's automatic page darkening. */
+  color-scheme: only light;
+  --portal-bg: #101022;
+  --portal-mid: #1c1a35;
+  --portal-glow: #302846;
+  --portal-text: #f2edf8;
+  --portal-muted: #bdb6ce;
+  --portal-accent: #bab1e3;
+  --portal-gold: #dbc59a;
+  --portal-card: #39304b;
+  --portal-card-base: #19182e;
+  --portal-panel: #211d35;
+  --portal-shadow: #07091c;
+  --portal-line-rgb: 185, 172, 234;
+  --portal-star-rgb: 220, 215, 249;
+  --portal-gold-rgb: 223, 201, 155;
+}
+
+:root[data-palette='rosewater'] {
+  --portal-bg: #20131e;
+  --portal-mid: #322033;
+  --portal-glow: #4b3043;
+  --portal-text: #faeef2;
+  --portal-muted: #d2b5c4;
+  --portal-accent: #d9acc7;
+  --portal-gold: #e6bf9d;
+  --portal-card: #503345;
+  --portal-card-base: #291b2b;
+  --portal-panel: #30202f;
+  --portal-shadow: #170b16;
+  --portal-line-rgb: 218, 165, 194;
+  --portal-star-rgb: 247, 220, 233;
+  --portal-gold-rgb: 230, 191, 157;
+}
+
+:root[data-palette='tidal'] {
+  --portal-bg: #0e1c27;
+  --portal-mid: #182f3b;
+  --portal-glow: #29464f;
+  --portal-text: #eaf6f5;
+  --portal-muted: #aec7cc;
+  --portal-accent: #a4ced3;
+  --portal-gold: #deca9d;
+  --portal-card: #2b4852;
+  --portal-card-base: #162b37;
+  --portal-panel: #1b303c;
+  --portal-shadow: #08151e;
+  --portal-line-rgb: 152, 202, 214;
+  --portal-star-rgb: 212, 238, 242;
+  --portal-gold-rgb: 222, 202, 157;
+}
+
+:root[data-appearance='light'] {
+  --portal-bg: #f5f1f9;
+  --portal-mid: #ebe4f4;
+  --portal-glow: #ddd0ee;
+  --portal-text: #352e48;
+  --portal-muted: #6c607c;
+  --portal-accent: #7d659f;
+  --portal-gold: #967140;
+  --portal-card: #ffffff;
+  --portal-card-base: #ebe3f2;
+  --portal-panel: #fcf9ff;
+  --portal-shadow: #9f8ab5;
+  --portal-line-rgb: 117, 89, 153;
+  --portal-star-rgb: 115, 88, 143;
+  --portal-gold-rgb: 151, 111, 60;
+}
+
+:root[data-appearance='light'][data-palette='rosewater'] {
+  --portal-bg: #fff3f3;
+  --portal-mid: #f5e3e7;
+  --portal-glow: #ebcdd8;
+  --portal-text: #4c303e;
+  --portal-muted: #82616f;
+  --portal-accent: #ae708c;
+  --portal-gold: #a06c45;
+  --portal-card-base: #f5e2e8;
+  --portal-panel: #fffafb;
+  --portal-shadow: #bf8c9f;
+  --portal-line-rgb: 166, 99, 133;
+  --portal-star-rgb: 151, 90, 117;
+  --portal-gold-rgb: 160, 108, 69;
+}
+
+:root[data-appearance='light'][data-palette='tidal'] {
+  --portal-bg: #f0f8f7;
+  --portal-mid: #deeeee;
+  --portal-glow: #c8e1e0;
+  --portal-text: #29424b;
+  --portal-muted: #59767e;
+  --portal-accent: #4f858f;
+  --portal-gold: #9b7945;
+  --portal-card-base: #deeeed;
+  --portal-panel: #f8fffd;
+  --portal-shadow: #7eaaa9;
+  --portal-line-rgb: 70, 126, 143;
+  --portal-star-rgb: 64, 115, 131;
+  --portal-gold-rgb: 155, 121, 69;
+}
+
+:root[data-appearance] {
+  --color-background: var(--portal-bg);
+  --color-text: var(--portal-text);
+  --color-muted: var(--portal-muted);
+  --color-link: var(--portal-accent);
+  --color-focus: var(--portal-gold);
+  --color-border: color-mix(in srgb, var(--portal-accent) 30%, transparent);
+  background: var(--portal-bg);
+}

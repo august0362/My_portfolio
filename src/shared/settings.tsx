@@ -1,10 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 export interface Settings {
   motion: 'full' | 'reduced';
   quality: 'full' | 'lite' | 'static';
   sound: boolean;
+  appearance: 'dark' | 'light';
+  palette: 'moonlit' | 'rosewater' | 'tidal';
 }
 
 interface SettingsContextValue {
@@ -21,17 +23,17 @@ function initialSettings(): Settings {
       ? 'reduced'
       : 'full',
     quality: 'full',
-    sound: false,
+    sound: true,
+    appearance: 'dark',
+    palette: 'moonlit',
   };
 
   try {
     const saved: Partial<Settings> | null = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
     return {
-      motion: saved?.motion === 'full' || saved?.motion === 'reduced' ? saved.motion : defaults.motion,
-      quality: saved?.quality === 'full' || saved?.quality === 'lite' || saved?.quality === 'static'
-        ? saved.quality
-        : defaults.quality,
-      sound: typeof saved?.sound === 'boolean' ? saved.sound : defaults.sound,
+      ...defaults,
+      appearance: saved?.appearance === 'light' || saved?.appearance === 'dark' ? saved.appearance : defaults.appearance,
+      palette: saved?.palette === 'moonlit' || saved?.palette === 'rosewater' || saved?.palette === 'tidal' ? saved.palette : defaults.palette,
     };
   } catch {
     return defaults;
@@ -40,6 +42,13 @@ function initialSettings(): Settings {
 
 export function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, setSettings] = useState(initialSettings);
+
+  useLayoutEffect(() => {
+    document.documentElement.dataset.appearance = settings.appearance;
+    document.documentElement.dataset.palette = settings.palette;
+    const background = getComputedStyle(document.documentElement).getPropertyValue('--portal-bg').trim();
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', background || '#101022');
+  }, [settings.appearance, settings.palette]);
 
   useEffect(() => {
     try {

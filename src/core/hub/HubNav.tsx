@@ -19,7 +19,7 @@ export default function HubNav() {
   const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState(0);
   const animated = settings.motion === 'full' && settings.quality !== 'static';
-  const orbit = useCelestialOrbit({ stageRef, canvasRef, cardsRef, animated, paused, quality: settings.quality, onSelect: setSelected });
+  const orbit = useCelestialOrbit({ stageRef, canvasRef, cardsRef, animated, paused, quality: settings.quality, appearance: settings.appearance, palette: settings.palette, onSelect: setSelected });
 
   return (
     <main ref={mainRef} tabIndex={-1} className={styles.hub} aria-labelledby="hub-title" data-animated={animated} data-paused={paused}>
