@@ -67,10 +67,10 @@ export const projects: readonly Project[] = [{
     { src: study, width: 1920, height: 1080, alt: 'An alternative concept study of a silver chessboard in a celestial metallic hall.', title: 'Environment study', kind: 'concept', caption: 'An alternative clean-plate concept from the supplied artwork pack. Current gameplay screenshots have not been supplied.' },
   ],
   hotspotPosition: { x: 0.505, y: 0.49 },
-  links: { demo: 'https://admin-linux.tail451544.ts.net/', repository: 'https://github.com/august0362/BTL_AI' },
+  links: { demo: 'https://chess.tail451544.ts.net/', repository: 'https://github.com/august0362/BTL_AI' },
   demoNote: 'Play the web version, or explore the desktop application on GitHub.',
   // The game proxy answers this route with CORS JSON: { service: 'chess-ai', status: 'online' | 'offline' }.
-  statusEndpoint: { url: 'https://admin-linux.tail451544.ts.net/health', service: 'chess-ai', refreshMs: 60000 },
+  statusEndpoint: { url: 'https://chess.tail451544.ts.net/health', service: 'chess-ai', refreshMs: 60000 },
 }];
 
 export function findProject(slug: string | undefined) {

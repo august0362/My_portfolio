@@ -36,7 +36,7 @@ Canvas paints two aurora ribbons, 150 drifting motes (80 on lighter quality) wit
 
 ## Server availability
 
-Chess AI sets `statusEndpoint` to `https://admin-linux.tail451544.ts.net/health`. A static site can only read another origin's status through CORS, so the game proxy must answer that route itself (before forwarding to the game) with JSON `{ "service": "chess-ai", "status": "online" | "offline" }` and `Access-Control-Allow-Origin: *`. Until it does, the badge shows "Status unavailable" with a "Check again" button. Network failures, HTTP errors, malformed bodies and opaque responses never claim a state. Checks time out after four seconds, refresh every minute, and stop when the tab is hidden.
+Chess AI sets `statusEndpoint` to `https://chess.tail451544.ts.net/health`. A static site can only read another origin's status through CORS, so the game proxy must answer that route itself (before forwarding to the game) with JSON `{ "service": "chess-ai", "status": "online" | "offline" }` and `Access-Control-Allow-Origin: *`. Until it does, the badge shows "Status unavailable" with a "Check again" button. Network failures, HTTP errors, malformed bodies and opaque responses never claim a state. Checks time out after four seconds, refresh every minute, and stop when the tab is hidden.
 
 The hero offers only Play Game; the GitHub source link sits in the page footer.
 

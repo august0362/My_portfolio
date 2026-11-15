@@ -8,7 +8,7 @@ Shows engineering, AI, software, cloud and experimental projects as a data-drive
 
 ## Confirmed content
 
-Confirmed: **Chess AI Tournament** (owner brief, repository `github.com/august0362/BTL_AI`, game website `admin-linux.tail451544.ts.net` confirmed by the owner). The other candidates (Private Cloud, IT Studio, ExamBuilder, Facial Expression Recognition, Rosa Local AI Assistant) are **not verified**; their status, links and demos must come from the Lead.
+Confirmed: **Chess AI Tournament** (owner brief, repository `github.com/august0362/BTL_AI`, game website `chess.tail451544.ts.net` confirmed by the owner; renamed from `admin-linux` on 2026-11-15). The other candidates (Private Cloud, IT Studio, ExamBuilder, Facial Expression Recognition, Rosa Local AI Assistant) are **not verified**; their status, links and demos must come from the Lead.
 
 The CV (`data/CV/CV.pdf`) describes "Chess AI Tournament" and "AI Asset Studio" (the latter under development). How these names map to the candidate list is unconfirmed.
 
@@ -59,4 +59,4 @@ Schema in `types.ts`:
 
 ## Current verified state
 
-PROD-01 is done with one real project (2026-11-15, REDESIGN-01): full-screen explorable scene, project detail with the GitHub link in the footer (the hero shows only Play Game), English and Vietnamese copy, five palettes × light/dark. Live server status asks `https://admin-linux.tail451544.ts.net/health`; it shows "Status unavailable" until the game proxy answers that route with `{ "service": "chess-ai", "status": "online" | "offline" }` and `Access-Control-Allow-Origin`. Details and verification: `src/worlds/production/README.md` and [STATUS.md](../STATUS.md).
+PROD-01 is done with one real project (2026-11-15, REDESIGN-01): full-screen explorable scene, project detail with the GitHub link in the footer (the hero shows only Play Game), English and Vietnamese copy, five palettes × light/dark. Live server status asks `https://chess.tail451544.ts.net/health`; it shows "Status unavailable" until the game proxy answers that route with `{ "service": "chess-ai", "status": "online" | "offline" }` and `Access-Control-Allow-Origin`. Details and verification: `src/worlds/production/README.md` and [STATUS.md](../STATUS.md).
