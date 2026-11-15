@@ -1,6 +1,6 @@
 # Architecture
 
-Status: the direction is **CONFIRMED** (P-01–P-08, P-10, P-11). Nothing here is implemented yet; see [STATUS.md](STATUS.md). The module contract (§5) is not frozen until GATE-1. Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
+Status: the direction is **CONFIRMED** (P-01–P-08, P-10, P-11). Nothing here is implemented yet; see [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
 
 ## 1. Technology choices
 
@@ -81,7 +81,7 @@ shared/**      ──✕──► core/**, worlds/**
 
 ## 5. Module contract
 
-The contract is Core-owned. It becomes frozen at GATE-1, which requires CORE-02 to be implemented, verified and approved by the Lead ([PLAN](PLAN.md#m1-shared-foundation-and-integration-contract)). Until then it may change.
+The contract is Core-owned. **Contract v1 is frozen** since GATE-1, approved by the Lead on 2026-11-15 after CORE-02 was implemented and verified ([PLAN](PLAN.md#m1-shared-foundation-and-integration-contract)). Any change now needs a Core change request and an update to every affected world in the same integration step ([§13](#13-changing-shared-architecture)).
 
 ```ts
 // src/shared/contract.ts
