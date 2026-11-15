@@ -15,7 +15,7 @@ The human Engineering Lead makes all final decisions. Agents talk to the Lead in
 | Integration / QA | Merges to `main`; `docs/STATUS.md`; the "Current verified state" section of module docs; may fix integration-only issues after Lead approval |
 
 - The ownership areas above do not overlap.
-- Before GATE-1, Core creates the initial placeholder files in every world folder. After GATE-1, each world folder belongs to its world agent.
+- Since GATE-1, each world folder belongs to its world agent.
 - `data/` is read-only for every agent. Only the Lead adds or changes raw material there.
 
 ## 2. Documentation edit rights

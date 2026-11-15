@@ -65,15 +65,10 @@ Lead review on 2026-11-15: P-01–P-16 are CONFIRMED (P-09 was DEFERRED until th
 - **Custom domain**, and whether to add any analytics. The default is no analytics.
 - **Hosting account:** the Cloudflare account is still needed for M5. The Lead supplied `https://github.com/august0362/My_portfolio` as the Git remote. It was empty before the first push.
 
-## 6. Verified implementation state (2026-11-15)
+## 6. Raw material in `data/` (outside Git, P-08)
 
-- Git was initialized on `main` at the Lead's request. The remote is `origin` (see §5). `.gitignore` excludes the root `/data/` folder per P-08.
-- Application code and its state are tracked in [STATUS.md](STATUS.md).
-- Existing files:
-  - `data/Information/mobius_identity_public.json`
-  - `data/CV/CV.pdf`, `data/CV/CV_png.png`
-  - `data/Image/Tiên hiệp/` (8 JPG, about 1.4–1.8 MB each)
-  - `data/Image/Cosplay Festival/` (4 JPG, about 6–11 MB each)
-  - `data/Image/Birthday/` (5 JPG, about 0.1 MB each)
-- The image files were not checked for EXIF metadata. Assume it is present and strip it on export.
-- Documentation in `README.md`, `CLAUDE.md` and `docs/` was created in M0 and updated after the Lead's decision review.
+- `Information/mobius_identity_public.json`: approved public identity.
+- `CV/CV.pdf`, `CV/CV_png.png`: private source; the public CV is the HTML sheet in the Information world (P-15).
+- `Image/Tiên hiệp/` (8 JPG), `Image/Cosplay Festival/` (4 JPG), `Image/Birthday/` (5 JPG): raw photos with metadata. Publish only through `npm run images`.
+
+Implementation state lives in [STATUS.md](STATUS.md).

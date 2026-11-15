@@ -44,7 +44,7 @@ Schema in `types.ts`:
 
 ## Shared dependencies
 
-`@shared/contract`, `@shared/settings`, `@shared/tokens.css`, React Router.
+`@shared/contract`, `@shared/settings` (appearance + palette for colors, P-16), `@shared/tokens.css`, React Router.
 
 ## Missing assets/data
 

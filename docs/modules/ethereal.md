@@ -33,7 +33,7 @@ Multiple scenes, scene switching, day/night cycles, music playlists, video backg
 
 ## Shared dependencies
 
-- `@shared/contract`, `@shared/settings` (motion, quality, sound), `@shared/tokens.css`.
+- `@shared/contract`, `@shared/settings` (motion, quality, sound, and appearance + palette for colors, P-16), `@shared/tokens.css`.
 - `three`/R3F if chosen.
 
 ## Missing assets/data

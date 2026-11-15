@@ -10,29 +10,31 @@ The personal interactive universe of **August (Trần Anh Việt)**. Its hub, th
 | Wanderlight | `/wanderlight` | Wanderlight | A small, relaxing exploration game |
 | Ethereal | `/ethereal` | Ethereal | An ambient audiovisual scene |
 
-V1 is a **public, static, read-only** website. It has no backend, database, authentication or CMS, and content is updated through Git.
-
-## Status
-
-The repository has no application code yet. See [docs/STATUS.md](docs/STATUS.md) for the current state.
-
-## Repository structure
-
-Current contents, verified 2026-11-15:
-
-```text
-.gitignore   Excludes data/, node_modules/, dist/.
-data/        Raw source material (CV, photos, identity JSON). Outside Git, backed up separately (P-08). Never shipped as-is.
-docs/        Project documentation.
-README.md    This file.
-CLAUDE.md    Entry point for AI agents.
-```
-
-The planned layout (`src/core`, `src/shared`, `src/worlds/<id>`, `public/`) is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#2-repository-layout).
+V1 is a **public, static, read-only** website: React + TypeScript + Vite, no backend, database, authentication or CMS. Content is updated through Git. Current state: [docs/STATUS.md](docs/STATUS.md).
 
 ## Development
 
-Nothing is available yet. Task `CORE-01` will create the commands. The planned commands are `npm run dev`, `npm run build`, `npm run typecheck`, `npm run lint` and `npm run test`.
+Requires Node.js 22.13+ and npm. On Windows, `run.bat` installs dependencies if needed and starts the dev server.
+
+```text
+npm ci                 install pinned dependencies
+npm run dev            dev server
+npm run build          typecheck + production build to dist/
+npm run preview        serve dist/
+npm run typecheck | lint | test
+npm run images -- --world <id> <files>   raw photos -> metadata-free WebP
+```
+
+## Layout
+
+```text
+src/core/      shell, router, registry, hub (Core-owned)
+src/shared/    contract, settings, tokens: the only code worlds may import
+src/worlds/    one folder per world, owned by its world agent
+scripts/       image optimizer
+docs/          documentation
+data/          raw source material, outside Git (P-08), never shipped as-is
+```
 
 ## Documentation
 
@@ -46,4 +48,4 @@ Nothing is available yet. Task `CORE-01` will create the commands. The planned c
 
 ## Deployment
 
-The site deploys as static files. The host is Cloudflare Pages (P-06), which serves the `dist/` output of `npm run build`. See [ARCHITECTURE §12](docs/ARCHITECTURE.md#12-deployment).
+Static files on Cloudflare Pages (P-06), built with `npm run build` into `dist/`. See [ARCHITECTURE §12](docs/ARCHITECTURE.md#12-deployment).

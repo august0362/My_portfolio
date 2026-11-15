@@ -74,7 +74,7 @@ function rgb(hex: string): [number, number, number] {
 const toHex = (c: number[]) => `#${c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('')}`;
 
 /** Mixes `b` into `a` by `t` (0..1). Alpha is dropped. */
-export function mix(a: string, b: string, t: number) {
+function mix(a: string, b: string, t: number) {
   const [x, y] = [rgb(a), rgb(b)];
   return toHex(x.map((v, i) => v + (y[i] - v) * t));
 }
@@ -138,7 +138,7 @@ export function resolveScheme(s: SectionColors): Scheme {
  * Dark mode: sections that are already dark stay as written. Light sections move onto the
  * theme's deepest night color, tinted by their own cloud color, and their paper becomes the text.
  */
-export function darkColors(def: ThemeDef, id: SectionId): SectionColors {
+function darkColors(def: ThemeDef, id: SectionId): SectionColors {
   const s = def.sections[id];
   const override = def.dark?.[id] ?? {};
   if (s.tone === 'dark') return { ...s, ...override };

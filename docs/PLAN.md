@@ -7,65 +7,38 @@ Rules:
 
 Universal acceptance for every coding task: `npm run typecheck`, `npm run lint`, `npm run test` and `npm run build` all pass, and the handoff report is delivered ([AGENT_RULES §6–7](AGENT_RULES.md#6-verification)).
 
-Order of work:
-
 ```text
 M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)          ─┐
                                       └─► M3 (5 worlds, parallel) ─┴─► M4 ─► M5
 ```
 
-## M0: Documentation and architecture
+## M0–M2: Done
 
-- **Goal:** a shared understanding and an approved architecture.
-- **Deliverables:** `README.md`, `CLAUDE.md` and `docs/**`.
-- **Dependencies:** none.
-- **Acceptance:** every decision in [CONTEXT §4](CONTEXT.md#4-architecture-decisions) is CONFIRMED, or DEFERRED with the tasks it blocks named. A deferred decision blocks only those tasks, not M1. For example, P-09 blocked INFO-03 only until the Lead confirmed it.
-- **Evidence:** the docs exist, and each decision's status is recorded in CONTEXT §4.
-
-| ID | Owner | Task |
-|---|---|---|
-| DOC-01 | Architect | Create the documentation system |
-
-## M1: Shared foundation and integration contract
-
-- **Goal:** a buildable app shell with the frozen world contract and five placeholder worlds.
-- **Dependencies:** M0 acceptance. Deferred decisions (P-09) do not block M1. This milestone runs **serially, done by the Core agent only**.
-- **Scope:** everything in §2 of [ARCHITECTURE](ARCHITECTURE.md#2-repository-layout) except the hub visuals and world content.
-- **Evidence:** command output, plus a `vite preview` check of all routes, recorded in STATUS.
-
-| ID | Owner | Task | Acceptance |
+| ID | Owner | Task | Outcome |
 |---|---|---|---|
-| CORE-01 | Core | Bootstrap (Git already initialized on `main`; work on the task branch): extend `.gitignore` as needed while keeping `data/` excluded (P-08), Vite React-TS scaffold, pinned deps, scripts `dev/build/preview/typecheck/lint/test`, path aliases, ESLint import-boundary rule, Vitest | All scripts run. Temporary probe imports fail lint in both forms, alias (`@worlds/<b>`, `@core/*`) and relative (`../<b>/…`, `../../core/…`), for world → other world, world → core and shared → core/worlds. Lint output is in the handoff, and the probes are then removed |
-| CORE-02 | Core | `shared/contract.ts`, `settings.tsx`, `tokens.css`; router; `registry.ts`; `WorldFrame` (back-to-hub, Suspense, ErrorBoundary); 404; a placeholder `meta.ts` + `index.tsx` for all 5 worlds; plain HubNav list on `/` | All 5 routes and deep-link reloads work in `vite preview`. Unknown route shows 404. A throwing world shows the error fallback and the hub still works. Contract test passes |
-| CORE-03 | Core | `scripts/optimize-images.mjs` (sharp): WebP full + thumbnail, metadata stripped, kebab-case names | Output has no EXIF/GPS (verified by tool output). Documented in a script header |
-| GATE-1 | Lead | Freeze contract v1 | Only after CORE-02 is implemented, verified by Integration and approved by the Lead. Until then the contract may change. Approval noted in STATUS. Ownership of `src/worlds/<id>/` passes to the world agents |
-
-## M2: Core Möbius Hub and world placeholders
-
-- **Goal:** the full hub experience.
-- **Dependencies:** GATE-1. This milestone runs in parallel with M3.
-- **Scope:** `src/core/hub/` and `src/core/transitions/` only.
-- **Evidence:** a short screen recording or screenshots for each tier, plus a keyboard-only walkthrough noted in the handoff.
-
-| ID | Owner | Task | Acceptance |
-|---|---|---|---|
-| HUB-01 | Core | Accessible static hub: styled HubNav cards, static-tier layout, settings control | Keyboard, touch and screen-reader navigation to all 5 worlds. Works with WebGL unavailable |
-| HUB-02 | Core | **Dropped** ([P-14](CONTEXT.md#4-architecture-decisions)): the lazy WebGL HubScene and Möbius ribbon are not built | — |
-| HUB-03 | Core | Hub ↔ world transitions ([ARCHITECTURE §8](ARCHITECTURE.md#8-möbius-hub)). The pixel reconstruction effect is dropped (P-14) | Met by the HUB-REV scene transitions. Navigation never waits on a transition; reduced motion gives an instant change |
+| DOC-01 | Architect | Documentation system | Done (M0) |
+| CORE-01 | Core | Vite React-TS scaffold, pinned deps, scripts, aliases, ESLint boundary rule, Vitest | Merged |
+| CORE-02 | Core | Contract, settings, tokens, router, registry, WorldFrame, 404, placeholder worlds | Merged |
+| CORE-03 | Core | `scripts/optimize-images.mjs`: metadata-free WebP full + thumbnail | Merged |
+| GATE-1 | Lead | Freeze contract v1 | Approved |
+| HUB-01 | Core | Accessible hub with settings control | Accepted (Celestial Portal, HUB-REV) |
+| HUB-02 | Core | Lazy WebGL HubScene and Möbius ribbon | Dropped ([P-14](CONTEXT.md#4-architecture-decisions)) |
+| HUB-03 | Core | Hub ↔ world transitions | Met by the scene transitions; pixel effect dropped (P-14) |
+| THEME-01 | Core | Pair world colors with the Atmosphere palette | Done ([P-16](CONTEXT.md#4-architecture-decisions)) |
 
 ## M3: Independent world development
 
 - **Goal:** the V1 content of each world.
 - **Dependencies:** GATE-1. Different worlds run in parallel, and tasks within one world run one at a time.
-- **Scope:** `src/worlds/<id>/` only.
+- **Scope:** `src/worlds/<id>/` only. Colors follow the Atmosphere palette (P-16).
 - **Acceptance:** each module doc defines the acceptance for its tasks.
 - **Evidence:** a handoff report per task.
 
 | ID | Owner | Task | Blocked by |
 |---|---|---|---|
-| INFO-01 | Information | Identity, Knowledge & Skills, Resume & Connect | none (P-15) |
-| INFO-02 | Information | My Journey timeline (component + schema) | none (milestones supplied) |
-| INFO-03 | Information | Fragments of Me gallery (albums, optimized images) | none (P-09 confirmed) |
+| INFO-01 | Information | Identity, Knowledge & Skills, Resume & Connect | Done (P-15) |
+| INFO-02 | Information | My Journey timeline (component + schema) | Done (P-15) |
+| INFO-03 | Information | Fragments of Me gallery (albums, optimized images) | Done (P-15) |
 | PROD-01 | Production | Catalog + detail view + schema, placeholder entries | none |
 | PROD-02 | Production | Fill in verified project content | Lead-supplied project facts and links |
 | CHAR-01 | Character | Gallery + detail route with placeholder entries | none |
@@ -90,7 +63,7 @@ M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)        
 ## M5: Public deployment
 
 - **Goal:** the site is live on static hosting.
-- **Dependencies:** M4, a Git remote (supplied, see [CONTEXT §5](CONTEXT.md#5-not-yet-decided)) and a Cloudflare account (pending), both provided by the Lead.
+- **Dependencies:** M4, the Git remote ([CONTEXT §5](CONTEXT.md#5-not-yet-decided)) and a Cloudflare account (pending), both provided by the Lead.
 - **Evidence:** the public URL and smoke-test results in STATUS.
 
 | ID | Owner | Task | Acceptance |

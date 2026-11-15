@@ -25,7 +25,7 @@ Do not read every module doc, scan the whole repository, or open `data/` files y
 |---|---|
 | Product facts, what is confirmed or proposed | [docs/CONTEXT.md](docs/CONTEXT.md) |
 | Folder layout, import rules, module contract | [ARCHITECTURE §2–§6](docs/ARCHITECTURE.md#2-repository-layout) |
-| Hub and transitions | [ARCHITECTURE §8](docs/ARCHITECTURE.md#8-möbius-hub) |
+| Hub and transitions | [ARCHITECTURE §8](docs/ARCHITECTURE.md#8-hub-celestial-portal) |
 | Assets, images, privacy stripping | [ARCHITECTURE §10](docs/ARCHITECTURE.md#10-asset-organization) |
 | Performance, accessibility, audio | [ARCHITECTURE §11](docs/ARCHITECTURE.md#11-performance-and-accessibility) |
 | Task scope and acceptance criteria | [docs/PLAN.md](docs/PLAN.md) and your task assignment |
