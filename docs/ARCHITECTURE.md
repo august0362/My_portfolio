@@ -1,6 +1,6 @@
 # Architecture
 
-Status: the direction is **CONFIRMED** (P-01–P-16). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
+Status: the direction is **CONFIRMED** (P-01–P-17). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
 
 ## 1. Technology choices
 
@@ -166,17 +166,19 @@ export default function CharacterWorld() {
 
 ## 7. Shell behavior (Core)
 
-- `WorldFrame` wraps every world. It renders a back-to-hub control that is always visible and is the first keyboard stop. It also sets `document.title`, moves focus to the world's `<main>` after navigation, and shows a `Suspense` loading state.
-- An `ErrorBoundary` around each world shows a message with **Retry** and **Back to Hub**, so a crashing world never breaks the shell or the hub.
+- `WorldFrame` wraps every world. It renders a "Return to the Portal" control that is always visible and is the first keyboard stop. It also sets `document.title`, moves focus to the world's `<main>` after navigation, and shows a `Suspense` loading state.
+- An `ErrorBoundary` around each world shows a message with **Retry** and a way back to the Portal, so a crashing world never breaks the shell or the hub.
 - Lazy components are created once per world from `load()`. Hovering or focusing a hub card calls `load()` to prefetch the world.
 - Settings (`shared/settings.tsx`), per the Lead decision of 2026-11-15 ([P-13](CONTEXT.md#4-architecture-decisions)):
   - `motion: 'full' | 'reduced'` follows `prefers-reduced-motion` only.
   - `quality: 'full' | 'lite' | 'static'` starts at `full`.
   - `sound: boolean` defaults to `true`.
   - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
-  - `palette: 'moonlit' | 'rosewater' | 'tidal'` defaults to `moonlit`.
-- Core renders the settings control (the Atmosphere panel). Only `appearance` and `palette` can be chosen there and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
-- Paired themes ([P-16](CONTEXT.md#4-architecture-decisions)): the Atmosphere panel is the only color control, and it stays visible in worlds. Each world reads `appearance` and `palette` from `useSettings()`, renders light or dark to match, and maps each of the three palettes to one paired world theme (for example Information's `PAIRED_THEMES` in `theme.config.ts`). Worlds do not add their own palette or light/dark controls.
+  - `palette: 'iris' | 'sakura' | 'jade' | 'pearl' | 'lagoon'` defaults to `iris` (P-17). Saved pre-P-17 values migrate: moonlit → iris, rosewater → sakura, tidal → jade.
+  - `language: 'en' | 'vi'` defaults to the browser language and sets `<html lang>` (P-17).
+- Core renders the settings control (the Atmosphere panel). Only `appearance`, `palette` and `language` can be chosen there (language beside the Atmosphere button) and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
+- Paired themes ([P-16](CONTEXT.md#4-architecture-decisions)): the Atmosphere panel is the only color control, and it stays visible in worlds. Each world reads `appearance` and `palette` from `useSettings()`, renders light or dark to match, and maps each of the five palettes to one paired world theme (for example Information's `PAIRED_THEMES` in `theme.config.ts`). Worlds do not add their own palette or light/dark controls.
+- Languages ([P-17](CONTEXT.md#4-architecture-decisions)): `@shared/i18n` provides `Localized<T>` (`{ en, vi }`), `useLanguage()` and `useCopy(dictionary)`. Core keeps its copy and the hub names of the worlds in `core/copy.ts`; each world keeps its own copy and content translations (for example `data/locale.ts`). Approved originals are never edited to translate them. A language switch must not move focus or scroll.
 
 ## 8. Hub (Celestial Portal)
 
@@ -187,7 +189,7 @@ The hub is the 2D Celestial Portal from HUB-REV ([P-14](CONTEXT.md#4-architectur
 - **Motion:** the orbit and canvas animation stop under reduced motion (`settings.motion`, which follows the system setting, P-13).
 - **Sound:** an ambient soundscape (`shell/useCelestialAudio.ts`), on by default (P-13).
 
-Hub ↔ world transitions (HUB-03, Core): water-style scene transitions in `shell/useSceneTransition.ts`. The selected card lifts and dissolves, the route changes, and the world fades in. With reduced motion the change is instant. Navigation never waits on a transition.
+Page transitions (HUB-03, P-17, Core): `shell/useSceneTransition.ts`. A celestial veil closes from the pressed link, the route changes, and the new page opens through it; a hub card also lifts and dissolves first. With reduced motion the change is instant. Navigation never waits on a transition.
 
 World routes are full-bleed (P-15): `AppShell` drops the content column and the brand header, and `BackToHub` floats top-left. Placeholder worlds (`[data-placeholder]`) keep a readable column.
 

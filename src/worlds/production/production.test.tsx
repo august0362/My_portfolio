@@ -25,11 +25,31 @@ describe('project routes and content', () => {
   test('details label concept art and do not invent server availability', () => {
     const html = render('/chess-ai');
     expect(html).toContain('Server');
-    expect(html).toContain('Unknown');
+    expect(html).toContain('data-state="checking"');
     expect(html).not.toContain('data-state="online"');
     expect(html).toContain('not a gameplay screenshot');
     expect(html).toContain('target="_blank" rel="noopener noreferrer"');
     for (const url of Object.values(projects[0].links)) expect(html).toContain(`href="${url}"`);
+  });
+
+  test('the hero offers Play Game; the GitHub source link sits in the page footer', () => {
+    const html = render('/chess-ai');
+    const footer = html.indexOf('<footer');
+    expect(html.indexOf('data-project-action="play"')).toBeLessThan(footer);
+    expect(html.indexOf('data-project-action="source"')).toBeGreaterThan(footer);
+    expect(html.match(/data-project-action="source"/g)).toHaveLength(1);
+  });
+
+  test('Vietnamese visitors read the project in Vietnamese', () => {
+    vi.stubGlobal('localStorage', { getItem: () => JSON.stringify({ language: 'vi' }), setItem: () => {} });
+    try {
+      const html = render('/chess-ai');
+      expect(html).toContain('Bốn hướng tiếp cận. Một bàn cờ.');
+      expect(html).toContain('Chơi game');
+      expect(html).toContain('Xem mã nguồn trên GitHub');
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   test.each(['/missing', '/missing/deeper'])('unknown route %s provides a usable return', path => {

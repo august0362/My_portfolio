@@ -196,3 +196,5 @@
   .atlas *, .detailAtlas * { animation: none !important; transition-duration: 0s !important; }
   .destination { transform: none; }
 }
+/* Phones: keep the title clear of the site's language and Atmosphere controls. */
+@media (max-width: 599px) { .masthead { top: 138px; } }

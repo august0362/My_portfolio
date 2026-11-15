@@ -12,7 +12,7 @@ export default function AppShell() {
   const { settings } = useSettings();
   const { pathname } = useLocation();
   const isHub = pathname === '/';
-  // Worlds are full-bleed: each one owns its layout below the floating Back to Hub link.
+  // Worlds are full-bleed: each one owns its layout below the floating Return to the Portal link.
   const isWorld = WORLDS.some(world => pathname === world.path || pathname.startsWith(`${world.path}/`));
   const audioStatus = useCelestialAudio();
   const { shellRef, sceneRef, waterRef } = useSceneTransition(settings.motion === 'reduced');

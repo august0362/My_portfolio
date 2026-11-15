@@ -1,4 +1,6 @@
+import { useCopy } from '@shared/i18n';
 import { identity } from '../data/identity';
+import { COPY } from '../data/locale';
 import { delay } from '../motion';
 import styles from './Connect.module.css';
 import SwapText from './SwapText';
@@ -10,6 +12,7 @@ import shared from './Section.module.css';
 const strip = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
 
 export default function Connect({ reduced }: { reduced: boolean }) {
+  const t = useCopy(COPY);
   const { github, facebook, email } = identity.publicContacts;
   const links = [
     { label: 'GitHub', value: strip(github), href: github, external: true },
@@ -26,10 +29,10 @@ export default function Connect({ reduced }: { reduced: boolean }) {
     <Section
       id="connect"
       number="05"
-      kicker="Closing"
+      kicker={t.connectKicker}
       title={
         <>
-          Resume <em>&amp; Connect</em>
+          {t.connectTitle[0]}<em>{t.connectTitle[1]}</em>
         </>
       }
     >
@@ -52,7 +55,7 @@ export default function Connect({ reduced }: { reduced: boolean }) {
                 <span className={styles.arrow} aria-hidden="true">
                   ↗
                 </span>
-                {l.external && <span className={shared.srOnly}> (opens in a new tab)</span>}
+                {l.external && <span className={shared.srOnly}> {t.newTab}</span>}
               </a>
             </li>
           ))}
@@ -62,10 +65,10 @@ export default function Connect({ reduced }: { reduced: boolean }) {
       <footer className={styles.footer}>
         <CrescentMark className={styles.mark} />
         <p className={styles.sign}>
-          {identity.profile.displayName} <span aria-hidden="true">·</span> Chronicle
+          {identity.profile.displayName} <span aria-hidden="true">·</span> {t.sign}
         </p>
         <button type="button" className={styles.top} onClick={toTop}>
-          Back to top <span aria-hidden="true">↑</span>
+          {t.backToTop} <span aria-hidden="true">↑</span>
         </button>
       </footer>
     </Section>

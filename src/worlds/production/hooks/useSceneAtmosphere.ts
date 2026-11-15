@@ -13,7 +13,7 @@ export default function useSceneAtmosphere() {
     const canvas = canvasRef.current;
     let context: CanvasRenderingContext2D | null = null;
     try { context = canvas?.getContext('2d') ?? null; } catch { /* Static artwork remains available. */ }
-    const field = createAtmosphere(settings.quality === 'full' ? 96 : 54);
+    const field = createAtmosphere(settings.quality === 'full' ? 150 : 80);
     const style = getComputedStyle(scene);
     const colors = createAtmosphereColors(style.getPropertyValue('--forge-effects'), style.getPropertyValue('--forge-highlight'), style.getPropertyValue('--forge-scene-accent'));
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');

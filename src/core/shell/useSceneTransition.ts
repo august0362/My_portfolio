@@ -8,6 +8,8 @@ export default function useSceneTransition(reduced: boolean) {
   const waterRef = useRef<HTMLDivElement>(null);
   const location = useLocation(), navigate = useNavigate();
   const previousLocation = useRef(location.key);
+  /** True while a veil covers the old page, so the next page can open it. */
+  const veiled = useRef(false);
 
   useEffect(() => {
     const shell = shellRef.current, scene = sceneRef.current, water = waterRef.current;
@@ -25,6 +27,30 @@ export default function useSceneTransition(reduced: boolean) {
       ], { duration: 620, easing: 'cubic-bezier(.2,.65,.25,1)' });
     }
     previousLocation.current = location.key;
+    let opening: HTMLSpanElement | undefined;
+    if (veiled.current && !reduced) {
+      // The new page opens through the veil that closed over the old one.
+      opening = document.createElement('span');
+      opening.className = `${styles.veil} ${styles.veilOpen}`;
+      opening.setAttribute('aria-hidden', 'true');
+      water.append(opening);
+      const finished = window.setTimeout(() => { opening?.remove(); }, 900);
+      removals.add(finished);
+    }
+    veiled.current = false;
+
+    function veil(x: number, y: number, delayMs: number) {
+      const cover = document.createElement('span');
+      cover.className = styles.veil;
+      cover.setAttribute('aria-hidden', 'true');
+      cover.style.setProperty('--veil-x', `${x}px`); cover.style.setProperty('--veil-y', `${y}px`);
+      cover.style.animationDelay = `${delayMs}ms`;
+      const ring = document.createElement('i');
+      ring.style.animationDelay = `${delayMs}ms`;
+      cover.append(ring);
+      water!.append(cover);
+      veiled.current = true;
+    }
 
     function ripple(x: number, y: number) {
       if (reduced) return;
@@ -133,9 +159,11 @@ export default function useSceneTransition(reduced: boolean) {
         if (departingHub) departingHub.dataset.departing = 'true';
         scene.dataset.cardExit = 'true'; water.dataset.cardExit = 'true';
       } else if (event.detail === 0) ripple(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      const keyboard = event.detail === 0;
+      veil(keyboard ? rect.left + rect.width / 2 : event.clientX, keyboard ? rect.top + rect.height / 2 : event.clientY, cardExit ? 300 : 0);
       // Keep the raised water and lifted card readable before the background fades.
       scene.dataset.leaving = 'true'; water.dataset.leaving = 'true';
-      navigation = window.setTimeout(() => { void navigate(`${destination.pathname}${destination.search}${destination.hash}`); }, cardExit ? 780 : 420);
+      navigation = window.setTimeout(() => { void navigate(`${destination.pathname}${destination.search}${destination.hash}`); }, cardExit ? 820 : 520);
     };
     shell.addEventListener('pointerdown', press, { capture: true });
     shell.addEventListener('click', click);

@@ -1,15 +1,18 @@
-import BackToHub from './BackToHub';
+import { useCopy } from '@shared/i18n';
+import { SHELL_COPY } from '../copy';
+import BackToPortal from './BackToPortal';
 import usePageFocus from './usePageFocus';
 import styles from '../App.module.css';
 
 export default function NotFound() {
-  const mainRef = usePageFocus('Page not found');
+  const t = useCopy(SHELL_COPY);
+  const mainRef = usePageFocus(t.notFoundTitle);
 
   return (
     <main className={styles.main} ref={mainRef} tabIndex={-1} aria-labelledby="not-found-title">
-      <BackToHub />
-      <h1 id="not-found-title">404 — Page not found</h1>
-      <p>This page does not exist. Return to the Hub to choose a world.</p>
+      <BackToPortal />
+      <h1 id="not-found-title">404 — {t.notFoundTitle}</h1>
+      <p>{t.notFoundBody}</p>
     </main>
   );
 }

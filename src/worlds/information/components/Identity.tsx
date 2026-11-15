@@ -1,5 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
-import { identity } from '../data/identity';
+import { useCopy, useLanguage } from '@shared/i18n';
+import { COPY, localizedProfile } from '../data/locale';
 import { delay } from '../motion';
 import { useTiltVars } from '../sensor';
 import { MOOD, sectionStyle, useTheme } from '../theme';
@@ -27,8 +28,10 @@ export default function Identity({ reduced }: { reduced: boolean }) {
   const theme = useTheme();
   useTiltVars(heroRef, !reduced);
 
-  const { profile } = identity;
-  const [lead, ...rest] = profile.bio.paragraphs;
+  const language = useLanguage();
+  const t = useCopy(COPY);
+  const profile = localizedProfile(language);
+  const [lead, ...rest] = profile.bio;
 
   return (
     <section id="identity" className={styles.identity} style={sectionStyle(theme, 'identity')} data-tone={theme.schemes.identity.tone} aria-labelledby="identity-title">
@@ -37,9 +40,9 @@ export default function Identity({ reduced }: { reduced: boolean }) {
       {/* ---------- Opening hero ---------- */}
       <div ref={heroRef} className={styles.hero} data-scroll>
         <p className={styles.masthead} data-reveal="fade">
-          <span>Personal Chronicle</span>
+          <span>{t.masthead}</span>
           <span className={styles.mastRule} data-reveal="line" style={delay(300)} />
-          <span>01 · Identity</span>
+          <span>{t.mastIdentity}</span>
         </p>
 
         <div className={styles.portraitWrap}>
@@ -70,8 +73,8 @@ export default function Identity({ reduced }: { reduced: boolean }) {
                   <span className={styles.glare} aria-hidden="true" />
                   <figcaption className={styles.portraitCaption}>
                     <span className={styles.portraitMark} aria-hidden="true">✦</span>
-                    <span className={styles.portraitTitle}>Portrait</span>
-                    <span className={styles.portraitNote}>Placeholder · to be provided by the creator</span>
+                    <span className={styles.portraitTitle}>{t.portrait}</span>
+                    <span className={styles.portraitNote}>{t.portraitNote}</span>
                   </figcaption>
                 </figure>
               </div>
@@ -104,7 +107,7 @@ export default function Identity({ reduced }: { reduced: boolean }) {
         </div>
 
         <span className={styles.scrollCue} aria-hidden="true">
-          Scroll
+          {t.scroll}
         </span>
       </div>
 
@@ -112,23 +115,23 @@ export default function Identity({ reduced }: { reduced: boolean }) {
       <div className={styles.intro}>
         <aside className={styles.aside}>
           <p className={styles.eyebrow} data-reveal="fade">
-            <span className={styles.eyebrowNum}>01</span> About
+            <span className={styles.eyebrowNum}>01</span> {t.about}
           </p>
           <dl className={styles.facts}>
             <div data-reveal="up">
-              <dt>Education</dt>
-              <dd>{profile.education.institution}</dd>
+              <dt>{t.education}</dt>
+              <dd>{profile.institution}</dd>
             </div>
             <div data-reveal="up" style={delay(100)}>
-              <dt>Major</dt>
-              <dd>{profile.education.major}</dd>
+              <dt>{t.major}</dt>
+              <dd>{profile.major}</dd>
             </div>
             <div data-reveal="up" style={delay(200)}>
-              <dt>Role</dt>
+              <dt>{t.role}</dt>
               <dd>{profile.role}</dd>
             </div>
           </dl>
-          <ul className={styles.traits} lang="vi" aria-label="Personality">
+          <ul className={styles.traits} aria-label={t.personality}>
             {profile.personality.map((t, i) => (
               <li key={t} data-reveal="up" style={delay(300 + i * 90)}>
                 {t}
@@ -137,7 +140,7 @@ export default function Identity({ reduced }: { reduced: boolean }) {
           </ul>
         </aside>
 
-        <div className={styles.bio} lang="vi">
+        <div key={language} className={styles.bio} data-language-swap="">
           <p className={styles.lead} data-reveal="up">
             {emphasize(lead, profile.displayName)}
           </p>

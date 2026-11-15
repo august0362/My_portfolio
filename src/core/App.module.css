@@ -42,7 +42,7 @@
 .portal { max-width: none; margin: 0; padding: 0; line-height: 1.5; overflow-wrap: normal; }
 .portal :where(a) { color: inherit; }
 
-/* World routes: full-bleed, the world styles everything below the floating Back to Hub link. */
+/* World routes: full-bleed, the world styles everything below the floating Return to the Portal link. */
 .world { max-width: none; margin: 0; padding: 0; line-height: normal; overflow-wrap: normal; }
 .world :where(a) { color: inherit; }
 .world .back { position: fixed; top: 12px; left: 12px; z-index: 60; padding: 0; background: none; }
@@ -60,7 +60,10 @@
   text-decoration: none;
   backdrop-filter: blur(12px);
 }
-.world .back a::before { content: '←'; margin-right: 0.5em; }
+.world .back a { gap: 0.55em; transition: border-color .3s, background-color .3s, translate .3s; }
+.world .back a:hover { border-color: color-mix(in srgb, var(--portal-gold) 70%, transparent); translate: -2px 0; }
+.backStar { display: inline-block; color: var(--portal-gold); font-size: 1.15em; line-height: 1; transition: rotate .6s cubic-bezier(.3,1.4,.5,1); }
+.back a:hover .backStar { rotate: -180deg; }
 /* Placeholder worlds keep the readable column until they ship their own layout. */
 .world .main > :not(nav) :where([data-placeholder]),
 .world .main > [data-placeholder] {

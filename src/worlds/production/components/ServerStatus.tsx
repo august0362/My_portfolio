@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useCopy, useLanguage } from '@shared/i18n';
+import { COPY } from '../data/locale';
 import type { ServerAvailability, StatusEndpoint } from '../types';
 import { checkAvailability } from './status';
 import styles from '../Production.module.css';
 
+type State = ServerAvailability | 'checking';
+
 export default function ServerStatus({ endpoint }: { endpoint?: StatusEndpoint }) {
-  const [availability, setAvailability] = useState<ServerAvailability>('unknown');
+  const t = useCopy(COPY);
+  const language = useLanguage();
+  const [availability, setAvailability] = useState<State>(endpoint ? 'checking' : 'unknown');
   const [checkedAt, setCheckedAt] = useState<number>();
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (!endpoint) return;
     let disposed = false, refresh = 0, timeout = 0, generation = 0;
@@ -30,11 +37,14 @@ export default function ServerStatus({ endpoint }: { endpoint?: StatusEndpoint }
     };
     void check(); document.addEventListener('visibilitychange', visibility);
     return () => { disposed = true; generation++; window.clearTimeout(refresh); window.clearTimeout(timeout); controller?.abort(); document.removeEventListener('visibilitychange', visibility); };
-  }, [endpoint]);
+  }, [endpoint, attempt]);
 
-  const label = availability === 'online' ? 'Online' : availability === 'offline' ? 'Offline' : 'Unknown';
+  const label = availability === 'checking' ? t.checking : availability === 'online' ? t.online : availability === 'offline' ? t.offline : t.unknown;
+  const note = availability === 'checking' ? t.checkingNote : availability === 'online' ? t.onlineNote : availability === 'offline' ? t.offlineNote : t.unknownNote;
+  const time = checkedAt && availability !== 'checking' ? ` · ${t.checkedAt} ${new Date(checkedAt).toLocaleTimeString(language === 'vi' ? 'vi-VN' : 'en-GB', { hour: '2-digit', minute: '2-digit' })}` : '';
   return <div className={styles.serverStatus}>
-    <span className={styles.serverBadge} data-state={availability} role="status"><i aria-hidden="true" /> Server <span>·</span> {label}</span>
-    <span className={styles.serverExplanation}>{!endpoint ? 'Public availability is not monitored.' : availability === 'unknown' ? 'Availability could not be confirmed.' : `Health endpoint checked${checkedAt ? ` at ${new Date(checkedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}.`}</span>
+    <span className={styles.serverBadge} data-state={availability} role="status"><i aria-hidden="true" /> {t.server} <span aria-hidden="true">·</span> {label}</span>
+    <span className={styles.serverExplanation}>{note}{time}</span>
+    {endpoint && (availability === 'unknown' || availability === 'offline') && <button type="button" className={styles.serverRetry} onClick={() => { setAvailability('checking'); setAttempt(value => value + 1); }}>{t.recheck}</button>}
   </div>;
 }

@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { PALETTES } from '@shared/settings';
 import { BOARD_HALF, CENTER, project, RINGS, ringPoint } from './components/orbit';
 import { idealRowHeight, justifyRows } from './components/rows';
 import { cv } from './data/cv';
@@ -10,7 +11,7 @@ import { identity } from './data/identity';
 import meta from './meta';
 import { milestones } from './data/journey';
 import { fields } from './data/skills';
-import { contrast, getTheme, resolveScheme, SECTION_ORDER, type Mode } from './theme';
+import { contrast, getTheme, SECTION_ORDER, type Mode } from './theme';
 import { ACTIVE_THEME, PAIRED_THEMES, themes } from './theme.config';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
@@ -39,9 +40,14 @@ describe('theme', () => {
     expect(getTheme(ACTIVE_THEME).no).toBe(ACTIVE_THEME);
   });
 
-  it('keeps the hand-tuned theme 01 exactly as written', () => {
-    const t = themes.find((x) => x.no === 1)!;
-    for (const id of SECTION_ORDER) expect(resolveScheme(t.sections[id])).toEqual(t.sections[id]);
+  it('keeps every written background and accent exactly as written', () => {
+    for (const def of themes) {
+      const t = getTheme(def.no, 'light');
+      for (const id of SECTION_ORDER) {
+        expect(t.schemes[id].bg).toBe(def.sections[id].bg);
+        expect(t.schemes[id].accent).toBe(def.sections[id].accent);
+      }
+    }
   });
 
   it('dark mode turns every section dark and keeps written dark sections as they are', () => {
@@ -60,13 +66,13 @@ describe('theme', () => {
     for (const t of themes) expect(Object.keys(t.sections).sort()).toEqual([...SECTION_ORDER].sort());
   });
 
-  it('pairs every site palette with its own existing theme (P-16)', () => {
-    const palettes = ['moonlit', 'rosewater', 'tidal'] as const;
+  it('pairs every site palette with its own existing theme (P-16, P-17)', () => {
+    const palettes = PALETTES;
     expect(Object.keys(PAIRED_THEMES).sort()).toEqual([...palettes].sort());
     const paired = palettes.map((p) => PAIRED_THEMES[p]);
     for (const no of paired) expect(themes.map((t) => t.no)).toContain(no);
     expect(new Set(paired).size).toBe(palettes.length);
-    expect(ACTIVE_THEME).toBe(PAIRED_THEMES.moonlit); // the default site palette
+    expect(ACTIVE_THEME).toBe(PAIRED_THEMES.iris); // the default site palette
   });
 });
 

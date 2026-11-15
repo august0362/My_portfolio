@@ -27,7 +27,8 @@ Sub-routes per section, album filtering, captions in multiple languages, animate
 ## Module architecture
 
 - `data/identity.ts` (copied from the raw JSON), `data/journey.ts`, `data/albums.ts`, `data/skills.ts`, `data/cv.ts`.
-- `theme.config.ts` holds every color: the themes and `PAIRED_THEMES` (P-16). `theme.ts` derives dark mode and enforces WCAG AA contrast.
+- `theme.config.ts` holds every color: five themes from the owner's moodboards and `PAIRED_THEMES` (P-16, P-17). `theme.ts` derives dark mode and enforces WCAG AA contrast.
+- `data/locale.ts` holds the interface copy and the translations (P-17): English for the Vietnamese bio, journey and personal lists; Vietnamese for the English headline, role, CV and album text. The originals stay untouched.
 - `components/` holds one component per section.
 - `assets/photos/<album>/` holds the optimized images and `assets/CREDITS.md` records their provenance.
 - No WebGL. Celestial accents are CSS or SVG. The hero orbit rings are SVG paths projected each frame from two 3D circles (`components/orbit.ts`, `Orbit3D.tsx`).
@@ -54,4 +55,4 @@ Settled by the Lead (2026-11-15):
 
 ## Current verified state
 
-INFO-01..03 integrated from the Chronicle prototype (2026-11-15, P-15). Colors follow the Atmosphere panel (P-16): Moonlit → 01 Chronicle, Rosewater → 02 Cotton Sky, Tidal → 03 Muted Summer, light or dark per `appearance`. Themes 04–06 stay in the config for re-pairing. Verification is in [STATUS.md](../STATUS.md).
+INFO-01..03 integrated from the Chronicle prototype (2026-11-15, P-15). Colors follow the Atmosphere panel (P-16, P-17): Iris → 01 Iris Reverie, Sakura → 02 Sakura Haze, Jade → 03 Jade Silk, Pearl → 04 Pearl Dew, Lagoon → 05 Pink Lagoon, light or dark per `appearance`. Copy follows `settings.language`. The section index has a gliding marker and a light sweep on arrival; album tabs hand over their line and slide the new album in. Verification is in [STATUS.md](../STATUS.md).

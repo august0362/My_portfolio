@@ -1,5 +1,7 @@
 import { useRef } from 'react';
-import { cv, SHOW_GRADES } from '../data/cv';
+import { useCopy, useLanguage } from '@shared/i18n';
+import { SHOW_GRADES } from '../data/cv';
+import { COPY, localizedCv } from '../data/locale';
 import { delay } from '../motion';
 import { useTiltVars } from '../sensor';
 import styles from './CvSheet.module.css';
@@ -8,15 +10,18 @@ import styles from './CvSheet.module.css';
 export default function CvSheet({ reduced }: { reduced: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
   useTiltVars(stageRef, !reduced);
+  const language = useLanguage();
+  const t = useCopy(COPY);
+  const cv = localizedCv(language);
   const { education } = cv;
 
   return (
     <div ref={stageRef} className={styles.stage} data-reveal="up" style={delay(120)}>
-      <article className={styles.sheet} aria-labelledby="cv-name" lang="en">
+      <article className={styles.sheet} aria-labelledby="cv-name" lang={language}>
         <span className={styles.glare} aria-hidden="true" />
 
         <header className={styles.head}>
-          <p className={styles.kicker}>Curriculum Vitae</p>
+          <p className={styles.kicker}>{t.cvKicker}</p>
           <h3 id="cv-name" className={styles.name}>
             {cv.name}
           </h3>
@@ -30,12 +35,12 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
         <div className={styles.body}>
           <div className={styles.main}>
             <section className={styles.block}>
-              <h4 className={styles.heading}>Profile Summary</h4>
+              <h4 className={styles.heading}>{t.cvSummary}</h4>
               <p className={styles.summary}>{cv.summary}</p>
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Selected Projects</h4>
+              <h4 className={styles.heading}>{t.cvProjects}</h4>
               {cv.projects.map((p) => (
                 <div key={p.title} className={styles.project}>
                   <h5 className={styles.projectTitle}>{p.title}</h5>
@@ -51,7 +56,7 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Academic Recognition</h4>
+              <h4 className={styles.heading}>{t.cvRecognition}</h4>
               {cv.recognition.map((r) => (
                 <p key={r.title} className={styles.award}>
                   <strong>{r.title}</strong> <span>· {r.detail}</span>
@@ -62,7 +67,7 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
 
           <aside className={styles.side}>
             <section className={styles.block}>
-              <h4 className={styles.heading}>Contact</h4>
+              <h4 className={styles.heading}>{t.cvContact}</h4>
               <dl className={styles.pairs}>
                 {cv.contact.map((c) => (
                   <div key={c.label}>
@@ -82,7 +87,7 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Education</h4>
+              <h4 className={styles.heading}>{t.cvEducation}</h4>
               <p className={styles.school}>{education.institution}</p>
               <p className={styles.muted}>{education.university}</p>
               <p className={styles.muted}>
@@ -90,14 +95,14 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
               </p>
               {SHOW_GRADES && (
                 <p className={styles.gpa}>
-                  <span>Cumulative GPA</span>
+                  <span>{t.cvGpa}</span>
                   <strong>{education.gpa}</strong>
                 </p>
               )}
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Technical Skills</h4>
+              <h4 className={styles.heading}>{t.cvSkills}</h4>
               <dl className={styles.pairs}>
                 {cv.skills.map((s) => (
                   <div key={s.group}>
@@ -109,7 +114,7 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Selected Coursework</h4>
+              <h4 className={styles.heading}>{t.cvCoursework}</h4>
               <ul className={styles.courses}>
                 {cv.coursework.map((c) => (
                   <li key={c.course}>
@@ -121,7 +126,7 @@ export default function CvSheet({ reduced }: { reduced: boolean }) {
             </section>
 
             <section className={styles.block}>
-              <h4 className={styles.heading}>Languages</h4>
+              <h4 className={styles.heading}>{t.cvLanguages}</h4>
               {cv.languages.map((l) => (
                 <p key={l} className={styles.muted}>
                   {l}

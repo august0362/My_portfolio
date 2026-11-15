@@ -16,7 +16,7 @@ export default function InformationWorld() {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   // The site's Atmosphere panel owns palette and light/dark; this world shows the paired theme (P-16).
-  const { palette, appearance } = useSettings().settings;
+  const { palette, appearance, language } = useSettings().settings;
   const theme = getTheme(PAIRED_THEMES[palette], appearance);
   useReveal(ref);
   useScrollProgress(ref, !reduced);
@@ -29,7 +29,7 @@ export default function InformationWorld() {
         style={rootStyle(theme)}
         data-motion={reduced ? 'reduced' : 'full'}
         data-mode={appearance}
-        lang="en"
+        lang={language}
       >
         <SectionNav reduced={reduced} />
         <Identity reduced={reduced} />

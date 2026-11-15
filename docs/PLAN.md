@@ -25,12 +25,13 @@ M0 ─► M1 ─► GATE-1 (contract freeze) ─┬─► M2 (Core: hub)        
 | HUB-02 | Core | Lazy WebGL HubScene and Möbius ribbon | Dropped ([P-14](CONTEXT.md#4-architecture-decisions)) |
 | HUB-03 | Core | Hub ↔ world transitions | Met by the scene transitions; pixel effect dropped (P-14) |
 | THEME-01 | Core | Pair world colors with the Atmosphere palette | Done ([P-16](CONTEXT.md#4-architecture-decisions)) |
+| REDESIGN-01 | Core | Five moodboard palettes, English/Vietnamese, "Return to the Portal", page and section transitions, Production polish | Done ([P-17](CONTEXT.md#4-architecture-decisions)) |
 
 ## M3: Independent world development
 
 - **Goal:** the V1 content of each world.
 - **Dependencies:** GATE-1. Different worlds run in parallel, and tasks within one world run one at a time.
-- **Scope:** `src/worlds/<id>/` only. Colors follow the Atmosphere palette (P-16).
+- **Scope:** `src/worlds/<id>/` only. Colors follow the Atmosphere palette (P-16); copy follows `settings.language` (P-17).
 - **Acceptance:** each module doc defines the acceptance for its tasks.
 - **Evidence:** a handoff report per task.
 

@@ -44,6 +44,8 @@
   .masthead {
     flex-wrap: wrap;
     gap: 0.35rem 0.75rem;
+    /* Leaves room for the site's language and Atmosphere controls on phones. */
+    padding-right: 104px;
     font-size: 0.62rem;
     letter-spacing: 0.22em;
   }

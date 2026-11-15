@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
+import { PALETTES } from '@shared/settings';
 
 const css = readFileSync(new URL('./Theme.module.css', import.meta.url), 'utf8');
-const palettes = ['moonlit', 'rosewater', 'tidal'];
+const palettes = [...PALETTES];
 const appearances = ['dark', 'light'];
 
 function colorsFor(palette: string, appearance: string) {

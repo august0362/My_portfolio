@@ -1,114 +1,190 @@
+/* Site color stories (P-17). Every value is drawn from the owner's eleven moodboards in
+   data/Image/Theme (read-only, never shipped):
+   Iris   ← iris petals, jacaranda, lavender field      (#C7C6DF #8D91B5 #6F6D97 #383B67 #BACBFE #EFE2FA)
+   Sakura ← cherry blossom, dusty-rose sakura, dream haze (#F4C9DA #FEE3EC #C87377 #A77370 #B1BEF2)
+   Jade   ← jade silk                                    (#0D3021 #406250 #688777 #8AACA0 #BEDBD3)
+   Pearl  ← iridescent pearl, peach roses, ivory dew     (#AF9292 #BCAEC4 #DDBDA5 #A37E66 #8C7466 #E8E3DD)
+   Lagoon ← pink salt shore                              (#6BB1AD #A7BCBD #EDECDB #E5A9A9 #E6748E)
+   Each has a Midnight (dark) and a Daylight (light) appearance. `gold` is the warm highlight. */
 :root {
   /* Explicit site colors opt out of Chromium's automatic page darkening. */
   color-scheme: only light;
-  --portal-bg: #091321;
-  --portal-mid: #111f34;
-  --portal-glow: #2b4c70;
-  --portal-text: #f0f3fa;
-  --portal-muted: #afbed4;
-  --portal-accent: #b4c8ed;
-  --portal-gold: #e4cda1;
-  --portal-card: #273c58;
-  --portal-card-base: #122239;
-  --portal-panel: #16263c;
-  --portal-shadow: #030a14;
-  --portal-line-rgb: 153, 183, 225;
-  --portal-star-rgb: 220, 233, 255;
-  --portal-gold-rgb: 228, 205, 161;
-  --portal-sheen: #fffefa;
+  --portal-bg: #14152b;
+  --portal-mid: #1e2042;
+  --portal-glow: #3e4078;
+  --portal-text: #f1f0fa;
+  --portal-muted: #c7c6df;
+  --portal-accent: #bacbfe;
+  --portal-gold: #ecd9c6;
+  --portal-card: #2e3060;
+  --portal-card-base: #1a1c3a;
+  --portal-panel: #1d1f3e;
+  --portal-shadow: #07081a;
+  --portal-line-rgb: 186, 203, 254;
+  --portal-star-rgb: 239, 226, 250;
+  --portal-gold-rgb: 236, 217, 198;
+  --portal-sheen: #fffefc;
   --portal-vignette: 22%;
   --portal-card-shadow: 30%;
-  --portal-nebula: 18%;
-  --portal-halo: 12%;
+  --portal-nebula: 20%;
+  --portal-halo: 13%;
 }
 
-:root[data-palette='rosewater'] {
-  --portal-bg: #1c1422;
-  --portal-mid: #2c2033;
-  --portal-glow: #5a3b55;
-  --portal-text: #faf0f5;
-  --portal-muted: #ceb8c9;
-  --portal-accent: #e2b6cb;
-  --portal-gold: #edcfb1;
-  --portal-card: #493348;
-  --portal-card-base: #281d30;
-  --portal-panel: #302236;
-  --portal-shadow: #0e0814;
-  --portal-line-rgb: 210, 160, 193;
-  --portal-star-rgb: 253, 224, 241;
-  --portal-gold-rgb: 237, 207, 177;
+:root[data-palette='sakura'] {
+  --portal-bg: #22151e;
+  --portal-mid: #33202d;
+  --portal-glow: #6e4053;
+  --portal-text: #fff0f4;
+  --portal-muted: #ecc6d3;
+  --portal-accent: #f4c9da;
+  --portal-gold: #f6d3c4;
+  --portal-card: #4c2e3f;
+  --portal-card-base: #2b1b27;
+  --portal-panel: #321f2d;
+  --portal-shadow: #12090f;
+  --portal-line-rgb: 244, 201, 218;
+  --portal-star-rgb: 254, 227, 236;
+  --portal-gold-rgb: 246, 211, 196;
 }
 
-:root[data-palette='tidal'] {
-  --portal-bg: #081c23;
-  --portal-mid: #102d36;
-  --portal-glow: #285f68;
-  --portal-text: #eef8f6;
-  --portal-muted: #afc9cc;
-  --portal-accent: #a2d6d5;
-  --portal-gold: #e0d2b0;
-  --portal-card: #254b53;
-  --portal-card-base: #122e37;
-  --portal-panel: #15333c;
-  --portal-shadow: #020e14;
-  --portal-line-rgb: 135, 204, 205;
-  --portal-star-rgb: 214, 248, 244;
-  --portal-gold-rgb: 224, 210, 176;
+:root[data-palette='jade'] {
+  --portal-bg: #0a1f18;
+  --portal-mid: #123327;
+  --portal-glow: #406250;
+  --portal-text: #eef7f2;
+  --portal-muted: #bedbd3;
+  --portal-accent: #a9cfc3;
+  --portal-gold: #e3d6b4;
+  --portal-card: #24473a;
+  --portal-card-base: #10291f;
+  --portal-panel: #133025;
+  --portal-shadow: #030f0a;
+  --portal-line-rgb: 138, 172, 160;
+  --portal-star-rgb: 222, 240, 233;
+  --portal-gold-rgb: 227, 214, 180;
+}
+
+:root[data-palette='pearl'] {
+  --portal-bg: #1c1716;
+  --portal-mid: #2a2321;
+  --portal-glow: #5e4c47;
+  --portal-text: #f7f0ec;
+  --portal-muted: #dccbc0;
+  --portal-accent: #d4c4dc;
+  --portal-gold: #e8c6ab;
+  --portal-card: #403533;
+  --portal-card-base: #241e1d;
+  --portal-panel: #2a2321;
+  --portal-shadow: #0c0908;
+  --portal-line-rgb: 212, 196, 220;
+  --portal-star-rgb: 240, 230, 236;
+  --portal-gold-rgb: 232, 198, 171;
+}
+
+:root[data-palette='lagoon'] {
+  --portal-bg: #0c2125;
+  --portal-mid: #143238;
+  --portal-glow: #2f6764;
+  --portal-text: #f5f6ec;
+  --portal-muted: #bcd0d0;
+  --portal-accent: #8fd0cb;
+  --portal-gold: #f2b2bc;
+  --portal-card: #224a4c;
+  --portal-card-base: #112b30;
+  --portal-panel: #15343a;
+  --portal-shadow: #04100f;
+  --portal-line-rgb: 107, 177, 173;
+  --portal-star-rgb: 237, 236, 219;
+  --portal-gold-rgb: 242, 178, 188;
 }
 
 :root[data-appearance='light'] {
-  --portal-bg: #f6f5f2;
-  --portal-mid: #eeedf4;
-  --portal-glow: #e0e2ef;
-  --portal-text: #31374b;
-  --portal-muted: #5b6277;
-  --portal-accent: #737d9f;
-  --portal-gold: #856947;
-  --portal-card: #fcfbf8;
-  --portal-card-base: #eaeaf2;
-  --portal-panel: #fdfcfa;
-  --portal-shadow: #9b9eb1;
-  --portal-line-rgb: 102, 112, 144;
-  --portal-star-rgb: 100, 111, 140;
-  --portal-gold-rgb: 133, 105, 71;
+  --portal-bg: #f4f3fa;
+  --portal-mid: #eae9f5;
+  --portal-glow: #dcdcef;
+  --portal-text: #383b67;
+  --portal-muted: #575a82;
+  --portal-accent: #6560a0;
+  --portal-gold: #7a6250;
+  --portal-card: #fdfcff;
+  --portal-card-base: #e6e5f3;
+  --portal-panel: #fdfcff;
+  --portal-shadow: #a3a5c6;
+  --portal-line-rgb: 111, 109, 151;
+  --portal-star-rgb: 113, 100, 180;
+  --portal-gold-rgb: 122, 98, 80;
   --portal-vignette: 8%;
   --portal-card-shadow: 14%;
-  --portal-nebula: 8%;
-  --portal-halo: 9%;
+  --portal-nebula: 10%;
+  --portal-halo: 10%;
 }
 
-:root[data-appearance='light'][data-palette='rosewater'] {
-  --portal-bg: #faf4f4;
-  --portal-mid: #f3e9ee;
-  --portal-glow: #eadde6;
-  --portal-text: #543c4a;
-  --portal-muted: #765566;
-  --portal-accent: #9c6b86;
-  --portal-gold: #8b6a49;
-  --portal-card: #fffaf8;
-  --portal-card-base: #f1e6ec;
-  --portal-panel: #fffaf8;
-  --portal-shadow: #ae94a1;
-  --portal-line-rgb: 148, 103, 128;
-  --portal-star-rgb: 147, 108, 130;
-  --portal-gold-rgb: 139, 106, 73;
+:root[data-appearance='light'][data-palette='sakura'] {
+  --portal-bg: #fdf4f6;
+  --portal-mid: #f8e8ee;
+  --portal-glow: #f4d6e1;
+  --portal-text: #5e3346;
+  --portal-muted: #80536a;
+  --portal-accent: #a3505f;
+  --portal-gold: #8b6450;
+  --portal-card: #fffafb;
+  --portal-card-base: #f6e3ea;
+  --portal-panel: #fffafb;
+  --portal-shadow: #c9a3b0;
+  --portal-line-rgb: 200, 115, 119;
+  --portal-star-rgb: 177, 190, 242;
+  --portal-gold-rgb: 139, 100, 80;
 }
 
-:root[data-appearance='light'][data-palette='tidal'] {
-  --portal-bg: #f3f7f3;
-  --portal-mid: #e7f0ed;
-  --portal-glow: #d9e8e6;
-  --portal-text: #304a50;
-  --portal-muted: #526e74;
-  --portal-accent: #5d8588;
-  --portal-gold: #8a714e;
-  --portal-card: #fbfcf9;
-  --portal-card-base: #e3eeea;
-  --portal-panel: #fbfdf9;
-  --portal-shadow: #8ea6a3;
-  --portal-line-rgb: 76, 120, 126;
-  --portal-star-rgb: 76, 111, 117;
-  --portal-gold-rgb: 138, 113, 78;
+:root[data-appearance='light'][data-palette='jade'] {
+  --portal-bg: #f1f7f4;
+  --portal-mid: #e4efea;
+  --portal-glow: #d3e6de;
+  --portal-text: #183d2f;
+  --portal-muted: #3f5f51;
+  --portal-accent: #406250;
+  --portal-gold: #7a6a48;
+  --portal-card: #fbfdfc;
+  --portal-card-base: #e0ece6;
+  --portal-panel: #fbfdfc;
+  --portal-shadow: #93ada3;
+  --portal-line-rgb: 64, 98, 80;
+  --portal-star-rgb: 104, 135, 119;
+  --portal-gold-rgb: 122, 106, 72;
+}
+
+:root[data-appearance='light'][data-palette='pearl'] {
+  --portal-bg: #f8f4f1;
+  --portal-mid: #f1eae5;
+  --portal-glow: #e9dfe0;
+  --portal-text: #4a3a33;
+  --portal-muted: #6d5a51;
+  --portal-accent: #85606a;
+  --portal-gold: #8a6450;
+  --portal-card: #fffdfb;
+  --portal-card-base: #ede5df;
+  --portal-panel: #fffdfb;
+  --portal-shadow: #bba89a;
+  --portal-line-rgb: 163, 126, 102;
+  --portal-star-rgb: 175, 146, 146;
+  --portal-gold-rgb: 138, 100, 80;
+}
+
+:root[data-appearance='light'][data-palette='lagoon'] {
+  --portal-bg: #f7f6ec;
+  --portal-mid: #eef0e6;
+  --portal-glow: #dde8e4;
+  --portal-text: #1f4a4a;
+  --portal-muted: #436262;
+  --portal-accent: #2f7471;
+  --portal-gold: #ac4466;
+  --portal-card: #fffffa;
+  --portal-card-base: #e5ece6;
+  --portal-panel: #fffffa;
+  --portal-shadow: #9fb8b6;
+  --portal-line-rgb: 47, 116, 113;
+  --portal-star-rgb: 230, 116, 142;
+  --portal-gold-rgb: 172, 68, 102;
 }
 
 :root[data-appearance] {
@@ -120,3 +196,7 @@
   --color-border: color-mix(in srgb, var(--portal-accent) 30%, transparent);
   background: var(--portal-bg);
 }
+
+/* Changing palette or appearance glides instead of snapping. */
+:root[data-appearance] body { transition: background-color .6s ease, color .6s ease; }
+@media (prefers-reduced-motion: reduce) { :root[data-appearance] body { transition: none; } }

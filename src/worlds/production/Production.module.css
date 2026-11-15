@@ -30,33 +30,50 @@
 .sprite picture, .sprite img { width: 100%; height: 100%; }
 .sceneFrame { position: absolute; inset: 0; }
 .spriteDepth, .floatingPiece { width: 100%; height: 100%; }
-.artwork[data-motion='true'] .sceneFrame { animation: cameraDrift 22s ease-in-out infinite alternate; }
+.artwork[data-motion='true'] .sceneFrame { animation: cameraDrift 15s ease-in-out infinite alternate; }
 .artwork[data-motion='true'] .base { transform: translate(calc(var(--sensor-x, 0) * .065%), calc(var(--sensor-y, 0) * .09%)); }
 .artwork[data-motion='true'] .spriteDepth { transform: translate(calc(var(--sensor-x, 0) * var(--depth-x)), calc(var(--sensor-y, 0) * var(--depth-y))); }
 .artwork[data-motion='true'] .floatingPiece { animation: pieceFloat var(--float-duration) ease-in-out var(--float-delay) infinite; }
 .dust { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; opacity: .25; pointer-events: none; }
 .sceneTint { position: absolute; inset: 0; pointer-events: none; background: var(--forge-scene-tint); mix-blend-mode: color; opacity: .22; }
 .sceneGlow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 76% 8%, color-mix(in srgb, var(--forge-effects) 35%, transparent), transparent 42%), radial-gradient(ellipse at 22% 63%, color-mix(in srgb, var(--forge-gold) 18%, transparent), transparent 43%); opacity: .25; }
-.artwork[data-motion='true'] .dust { animation: dustDrift 38s ease-in-out infinite alternate; }
-.artwork[data-motion='true'] .sceneGlow { animation: ambientLight 17s ease-in-out -5s infinite alternate; }
+.artwork[data-motion='true'] .dust { animation: dustDrift 21s ease-in-out infinite alternate; }
+.artwork[data-motion='true'] .sceneGlow { animation: ambientLight 9s ease-in-out -3s infinite alternate; }
+/* Slow light shafts fan down from the upper sky; a soft sheen rolls across the hall. */
+.sceneGlow::before { content: ''; position: absolute; inset: -30% -10% 20%; background: repeating-conic-gradient(from 160deg at 62% 0%, transparent 0deg 7deg, color-mix(in srgb, var(--forge-effects) 22%, transparent) 9deg 11deg, transparent 13deg 21deg); mask-image: radial-gradient(ellipse at 62% 0%, #000 0%, transparent 70%); opacity: .55; transform-origin: 62% 0%; }
+.sceneGlow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--forge-highlight) 18%, transparent) 48%, transparent 60%); background-size: 300% 100%; opacity: 0; }
+.artwork[data-motion='true'] .sceneGlow::before { animation: lightShafts 26s ease-in-out infinite alternate; }
+.artwork[data-motion='true'] .sceneGlow::after { animation: hallSheen 11s ease-in-out 2s infinite; }
 .artwork[data-active='false'] :is(.sceneFrame, .floatingPiece, .dust, .sceneGlow) { animation-play-state: paused; }
+.artwork[data-active='false'] .sceneGlow::before, .artwork[data-active='false'] .sceneGlow::after { animation-play-state: paused; }
 .artwork[data-active='true'] :is(.sceneFrame, .floatingPiece, .base, .spriteDepth) { will-change: transform; }
 .atmosphereCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 @keyframes cameraDrift {
-  from { transform: scale(1.018) translate(-.13%, .08%); }
-  to { transform: scale(1.028) translate(.13%, -.08%); }
+  0% { transform: scale(1.022) translate(-.45%, .22%) rotate(-.12deg); }
+  50% { transform: scale(1.04) translate(.1%, -.18%) rotate(.05deg); }
+  100% { transform: scale(1.03) translate(.45%, -.3%) rotate(.12deg); }
 }
 @keyframes pieceFloat {
   0%, 100% { transform: translate(0, 0) rotate(0); }
-  50% { transform: translate(var(--float-x), var(--float-y)) rotate(var(--float-rotate)); }
+  35% { transform: translate(calc(var(--float-x) * .7), calc(var(--float-y) * 1.7)) rotate(calc(var(--float-rotate) * 1.4)); }
+  70% { transform: translate(calc(var(--float-x) * 1.6), calc(var(--float-y) * .9)) rotate(calc(var(--float-rotate) * -.6)); }
 }
 @keyframes dustDrift {
-  from { transform: scale(1.015) translate(-.18%, .15%); opacity: .2; }
-  to { transform: scale(1.015) translate(.18%, -.22%); opacity: .34; }
+  from { transform: scale(1.03) translate(-.7%, .5%); opacity: .22; }
+  to { transform: scale(1.05) translate(.7%, -.8%); opacity: .45; }
 }
 @keyframes ambientLight {
-  from { opacity: .15; transform: translate(-.3%, .2%); }
-  to { opacity: .4; transform: translate(.3%, -.2%); }
+  from { opacity: .2; transform: translate(-.6%, .3%); }
+  to { opacity: .6; transform: translate(.6%, -.3%); }
+}
+@keyframes lightShafts {
+  from { transform: rotate(-7deg); opacity: .35; }
+  to { transform: rotate(7deg); opacity: .7; }
+}
+@keyframes hallSheen {
+  0% { background-position: 100% 0; opacity: 0; }
+  20% { opacity: 1; }
+  60%, 100% { background-position: -50% 0; opacity: 0; }
 }
 .worldRipple { position: absolute; z-index: 12; pointer-events: none; width: 48px; height: 48px; margin: -24px; color: var(--forge-highlight); filter: drop-shadow(0 0 5px var(--forge-glow)); }
 .worldRipple::before { content: ''; position: absolute; inset: -60px; border-radius: 50%; background: radial-gradient(ellipse, var(--forge-glow), color-mix(in srgb, var(--forge-effects) 12%, transparent) 30%, transparent 65%); animation: pulseLight .65s ease-out both; }
@@ -94,8 +111,14 @@
 .serverStatus { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-height: 30px; }
 .serverBadge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: var(--forge-muted); }
 .serverBadge i { width: 6px; height: 6px; border-radius: 50%; background: var(--forge-accent); box-shadow: 0 0 7px var(--forge-glow); }
-.serverBadge[data-state='online'] i { background: #a5e2cd; }
-.serverBadge[data-state='offline'] i { background: #e2b1af; }
+.serverBadge[data-state='online'] i { background: #7fd8b4; box-shadow: 0 0 0 0 #7fd8b480; animation: serverAlive 2.2s ease-out infinite; }
+.serverBadge[data-state='offline'] i { background: #e8a0a6; }
+.serverBadge[data-state='checking'] i { background: var(--forge-gold); animation: serverChecking 1s ease-in-out infinite alternate; }
+.serverBadge[data-state='unknown'] i { background: var(--forge-muted); box-shadow: none; }
+.serverRetry { min-height: 30px; padding: 0 12px; border: 1px solid var(--forge-line); border-radius: 30px; background: transparent; color: var(--forge-text); font-size: 10px; cursor: pointer; transition: border-color .25s, background .25s; }
+.serverRetry:hover { border-color: var(--forge-accent); background: color-mix(in srgb, var(--forge-accent) 10%, transparent); }
+@keyframes serverAlive { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, #7fd8b4 60%, transparent); } 100% { box-shadow: 0 0 0 9px transparent; } }
+@keyframes serverChecking { from { opacity: .35; } to { opacity: 1; } }
 .serverExplanation { font-size: 10px; color: var(--forge-muted); }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .demoNote { max-width: 63ch; color: var(--forge-muted); font-size: 11px; margin-top: 18px !important; }
@@ -160,6 +183,7 @@
 .detailFooter h2 { margin: 20px 0 15px; }
 .detailFooter p { margin-inline: auto; font-size: 13px; }
 .detailFooter .actions { justify-content: center; margin-top: 30px; }
+.footerNote { max-width: 52ch; margin: 18px auto 0 !important; color: var(--forge-muted); font-size: 12px !important; }
 .footerBack { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 40px; min-height: 44px; color: var(--forge-muted); font-size: 12px; }
 .footerBack svg { width: 15px; }
 .notFound { display: flex; min-height: 100svh; padding: 120px 24px; align-items: center; justify-content: center; flex-direction: column; text-align: center; gap: 24px; background: radial-gradient(ellipse at 50% 45%, var(--forge-raised), transparent 65%); }
@@ -221,6 +245,7 @@
 @media (prefers-reduced-motion: reduce) {
   .world *, .world *::before, .world *::after { transition-duration: 0s !important; scroll-behavior: auto !important; }
   .world :is(.sceneFrame, .floatingPiece, .dust, .sceneGlow, .worldRipple circle, .waterLens) { animation: none !important; }
+  .world .sceneGlow::before, .world .sceneGlow::after { animation: none !important; }
   .world :is(.base, .sceneFrame, .spriteDepth) { transform: none !important; }
   .worldRipple { display: none; }
 }

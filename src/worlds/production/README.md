@@ -16,23 +16,29 @@ Project-entry links handle the capture phase before the shell's native bubbling 
 
 The overview follows the presentation structure of the owner's Genshin map reference: a full-screen environment, centered crest/title/description, an entry control below, and a right-side destination rail. These are original CSS/SVG components using the supplied Chess AI artwork. No source code or proprietary assets from the reference are shipped. Dragging the environment blurs and recedes the central board; pointer and keyboard focus restore clarity. Compact mobile layouts omit the redundant single-destination rail while retaining scene reset and the project link.
 
-## Reference color palettes
+## Color stories and languages
 
-`Theme.module.css` is the color source for this world. The eleven owner-provided images in `data/Image/Theme/` inform three palette families, each with separate light and dark surfaces:
+`Theme.module.css` is the color source for this world. It follows the site's five color stories (P-17), each with Midnight and Daylight surfaces, all drawn from the owner's moodboards in `data/Image/Theme/`:
 
-| Existing selector | Production direction | Reference colors |
-| --- | --- | --- |
-| Moonlit | Iris mist, lavender, periwinkle, pearl | `#C7C6DF`, `#383B67`, `#BACBFE`, `#DEDEEA` |
-| Rosewater | Sakura pink, rosewood, champagne | `#F4C9DA`, `#FEE3EC`, `#C87377`, `#A77370` |
-| Tidal | Jade mist, forest green, silver mint | `#0D3021`, `#406250`, `#8AACA0`, `#BEDBD3` |
+| Palette | Reference colors |
+| --- | --- |
+| Iris | `#C7C6DF`, `#6F6D97`, `#383B67`, `#BACBFE`, `#EFE2FA` |
+| Sakura | `#F4C9DA`, `#FEE3EC`, `#C87377`, `#A77370`, `#B1BEF2` |
+| Jade | `#0D3021`, `#406250`, `#8AACA0`, `#BEDBD3` |
+| Pearl | `#E9D8C6`, `#DDBDA5`, `#A37E66`, `#8C7466`, `#BCAEC4` |
+| Lagoon | `#6BB1AD`, `#A7BCBD`, `#EDECDB`, `#E5A9A9`, `#E6748E` |
 
-The existing Atmosphere controls select the palette and Daylight/Midnight appearance. World-local data attributes select the theme; browser color preferences do not select it. Surfaces, controls, decorative lines, scene tint, light, particles, and water share these tokens. Canvas reads the theme once when palette or appearance changes. Theme reference photographs stay read-only and are not imported or distributed.
+Surfaces, controls, lines, scene tint, light, particles and water share these tokens; Canvas reads them when palette or appearance changes. Reference photographs stay read-only and are never imported. Copy follows `settings.language`: `data/locale.ts` holds the interface strings and the Vietnamese project text, while `data/projects.ts` stays the English source.
+
+## Scene motion
+
+Canvas paints two aurora ribbons, 150 drifting motes (80 on lighter quality) with twinkling sparkles, rising embers, swaying floor caustics, a shooting star every couple of seconds and a quiet floor ripple every few seconds, plus pointer ripples. CSS adds a stronger camera drift, livelier piece floats, faster dust, swinging light shafts and a passing sheen. Everything pauses offscreen or in a hidden tab, and reduced motion or static quality keeps the still artwork.
 
 ## Server availability
 
-No endpoint is configured for Chess AI, so its runtime state is Unknown and no request is sent to the demo server. Development status is separate. To enable monitoring, set `statusEndpoint: { url, service, refreshMs? }` on a project. An HTTPS CORS endpoint must return successful JSON such as `{ "service": "chess-ai", "status": "online" }` or an explicit `offline` result for the matching service. Network failures, blocked private networks, HTTP errors, malformed bodies, and opaque responses remain Unknown. Checks time out after four seconds, refresh at intervals of at least thirty seconds, and stop when the document is hidden.
+Chess AI sets `statusEndpoint` to `https://admin-linux.tail451544.ts.net/health`. A static site can only read another origin's status through CORS, so the game proxy must answer that route itself (before forwarding to the game) with JSON `{ "service": "chess-ai", "status": "online" | "offline" }` and `Access-Control-Allow-Origin: *`. Until it does, the badge shows "Status unavailable" with a "Check again" button. Network failures, HTTP errors, malformed bodies and opaque responses never claim a state. Checks time out after four seconds, refresh every minute, and stop when the tab is hidden.
 
-The owner confirmed `https://admin-linux.tail451544.ts.net/` as the game website. Both Play Game actions open that URL in a new tab. Project feature descriptions follow the desktop repository; the website's feature set is not assumed identical. Owner confirmation of the destination does not replace runtime health monitoring.
+The hero offers only Play Game; the GitHub source link sits in the page footer.
 
 ## Verification
 
@@ -45,3 +51,5 @@ Phase B: typecheck, 124 tests, build, and the lint invocation below passed. Prev
 PROD-REV-01 replaces the earlier overview and hero layout. Typecheck, 130 tests, build, and lint excluding the generated prototype pass. New tests cover bounded water input, normalized particles, one active animation loop, hidden/offscreen pause and resume, resource cleanup, reduced/static motion, and missing Canvas. The earlier Phase A/B browser checks describe the earlier layout. Visual browser verification of this revision remains pending: Computer Use stopped because URL policy enforcement is unsupported for the current Windows Cốc Cốc browser. The reference structure was inspected through its public HTML and stylesheet response instead.
 
 PROD-REV-02: typecheck, 136 tests, build, and lint excluding the generated prototype pass. Six color contrast tests cover text, secondary text, buttons, focus accents, and glass composited over extreme light/dark backgrounds. The minimum secondary-text ratio is 4.60:1 and the minimum button ratio is 4.79:1. A separate palette sheet was rendered from the CSS values for visual color review; this does not replace live browser layout verification.
+
+REDESIGN-01: typecheck, lint, 148 tests and build pass. Headless Chrome screenshots of the overview and detail at 1440 and 375 px, in both languages and several palettes, showed no console errors and no horizontal overflow.
