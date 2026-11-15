@@ -43,6 +43,7 @@ export interface Project {
   objective: string;
   introductionHeading: string;
   featuresHeading: string;
+  platformNote: string;
   category: string;
   developmentStatus: { label: string; detail: string };
   features: readonly string[];

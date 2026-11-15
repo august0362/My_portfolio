@@ -15,15 +15,31 @@ export default function useMapNavigation(aspect: number) {
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
+    let disposed = false;
     const resize = () => {
+      if (disposed) return;
       const next = fitScene(viewport.clientWidth, viewport.clientHeight, aspect);
       setSize(next); setView(current => boundView(current, next));
     };
     resize();
     const observer = new ResizeObserver(resize);
     observer.observe(viewport);
-    return () => observer.disconnect();
+    return () => { disposed = true; observer.disconnect(); };
   }, [aspect]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    function release(update = true) {
+      const id = drag.current?.id;
+      drag.current = null;
+      if (id !== undefined && viewport?.hasPointerCapture(id)) viewport.releasePointerCapture(id);
+      if (update) setDragging(false);
+    }
+    const visibility = () => { if (document.hidden) release(); };
+    const blur = () => release();
+    document.addEventListener('visibilitychange', visibility); window.addEventListener('blur', blur);
+    return () => { release(false); document.removeEventListener('visibilitychange', visibility); window.removeEventListener('blur', blur); };
+  }, []);
 
   useEffect(() => {
     const viewport = viewportRef.current;

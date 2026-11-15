@@ -26,6 +26,7 @@ export const projects: readonly Project[] = [{
   objective: 'Bring different approaches to chess AI into one playable environment, with shared matches, tournaments, and tools for reviewing play.',
   introductionHeading: 'A meeting of minds, across sixty-four squares.',
   featuresHeading: 'Built to play. Built to compare.',
+  platformNote: 'The game runs as a desktop application. This world presents the project; it does not run chess inference.',
   category: 'Artificial intelligence · Desktop application',
   developmentStatus: {
     label: 'Playable desktop project',

@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { projects } from '../data/projects';
 import useMapNavigation from '../hooks/useMapNavigation';
 import useWorldPage from '../hooks/useWorldPage';
+import useProjectTransition from '../hooks/useProjectTransition';
 import SceneArtwork from './SceneArtwork';
 import Icon from './Icon';
 import styles from '../Production.module.css';
@@ -10,11 +11,12 @@ export default function Overview() {
   const project = projects[0];
   const map = useMapNavigation(project.scene.background.width / project.scene.background.height);
   const headingRef = useWorldPage('Explore');
-  return <section className={styles.overview} aria-labelledby="forge-title">
-    <div className={styles.map} ref={map.viewportRef} tabIndex={0} role="region" aria-label="Explore the project world" aria-describedby="map-help" data-dragging={map.dragging} {...map.handlers}>
+  const transition = useProjectTransition();
+  return <section className={styles.overview} ref={transition.rootRef} aria-labelledby="forge-title">
+    <div className={styles.map} ref={map.viewportRef} tabIndex={0} role="region" aria-label="Explore the project world" aria-describedby="map-help" data-dragging={map.dragging} data-scene-interaction="" {...map.handlers}>
       <div className={styles.mapPlane} data-map-plane="" style={{ width: map.size.planeWidth, height: map.size.planeHeight, transform: `translate(calc(-50% + ${map.view.x}px), calc(-50% + ${map.view.y}px)) scale(${map.view.zoom})` }}>
         <SceneArtwork scene={project.scene} />
-        {projects.map(item => <Link key={item.slug} className={styles.hotspot} to={`/production/${item.slug}`} style={{ left: `${item.hotspotPosition.x * 100}%`, top: `${item.hotspotPosition.y * 100}%` }} aria-label={`Explore ${item.title}`} aria-describedby={`marker-${item.slug}`} onFocus={event => { if (event.currentTarget.matches(':focus-visible')) map.focusPoint(item.hotspotPosition); }}>
+        {projects.map(item => <Link key={item.slug} className={styles.hotspot} to={`/production/${item.slug}`} onClickCapture={transition.enterProject} data-project-entry="" style={{ left: `${item.hotspotPosition.x * 100}%`, top: `${item.hotspotPosition.y * 100}%` }} aria-label={`Explore ${item.title}`} aria-describedby={`marker-${item.slug}`} onFocus={event => { if (event.currentTarget.matches(':focus-visible')) map.focusPoint(item.hotspotPosition); }}>
           <span className={styles.marker}><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 4 20 20-20 20L4 24Z" /><path d="m24 13 11 11-11 11-11-11Z" /><circle cx="24" cy="24" r="3" /></svg></span>
           <span className={styles.markerLabel} id={`marker-${item.slug}`}><strong>{item.title}</strong><span>Enter the arena <Icon name="arrow" /></span></span>
         </Link>)}
@@ -30,7 +32,7 @@ export default function Overview() {
       <span className={styles.previewCategory}>{project.category.split(' · ')[0]}</span>
       <h2>{project.title}</h2>
       <p>{project.description}</p>
-      <Link className={styles.primaryButton} to={`/production/${project.slug}`}>View project <Icon name="arrow" /></Link>
+      <Link className={styles.primaryButton} to={`/production/${project.slug}`} onClickCapture={transition.enterProject} data-project-entry="">View project <Icon name="arrow" /></Link>
     </aside>
     <div className={styles.exploreDock}>
       <p id="map-help">Drag to explore <span>·</span> Scroll to zoom<span className={styles.keyboardHelp}> · Arrow keys to pan</span></p>

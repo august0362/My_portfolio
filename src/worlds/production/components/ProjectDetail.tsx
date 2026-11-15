@@ -13,7 +13,7 @@ import styles from '../Production.module.css';
 function Detail({ project }: { project: Project }) {
   const headingRef = useWorldPage(project.title);
   return <article className={styles.detail}>
-    <header className={styles.detailHero}>
+    <header className={styles.detailHero} data-scene-interaction="">
       <div className={styles.heroArtwork}><SceneArtwork scene={project.scene} /></div>
       <div className={styles.heroShade} aria-hidden="true" />
       <Link className={styles.backToProduction} to="/production"><Icon name="left" /> Back to Production</Link>
@@ -33,16 +33,16 @@ function Detail({ project }: { project: Project }) {
         <div><p className={styles.lead}>{project.description}</p><p>{project.objective}</p><p className={styles.factNote}>{project.developmentStatus.detail}</p></div>
       </section>
       <section className={styles.approachesSection} aria-labelledby="approaches-title">
-        <div className={styles.sectionHeading}><h2 id="approaches-title">Inside the arena</h2><p>Different paths to the next move.</p></div>
+        <div className={styles.sectionHeading}><h2 id="approaches-title">The approaches</h2><p>The ideas behind the experience.</p></div>
         <div className={styles.approaches}>{project.approaches.map(approach => <div key={approach.name}><span className={styles.smallStar} aria-hidden="true">✧</span><h3>{approach.name}</h3><p>{approach.description}</p></div>)}</div>
       </section>
       <section className={styles.featuresSection} aria-labelledby="experience-title">
         <div><h2 id="experience-title">{project.featuresHeading}</h2><ul className={styles.featureList}>{project.features.map(feature => <li key={feature}><span aria-hidden="true">◇</span>{feature}</li>)}</ul></div>
-        <div className={styles.technologyPanel}><Icon name="source" /><h3>The toolkit</h3><ul>{project.technologies.map(technology => <li key={technology}>{technology}</li>)}</ul><p>The game runs as a desktop application. This world presents the project; it does not run chess inference.</p></div>
+        <div className={styles.technologyPanel}><Icon name="source" /><h3>The toolkit</h3><ul>{project.technologies.map(technology => <li key={technology}>{technology}</li>)}</ul><p>{project.platformNote}</p></div>
       </section>
-      <section className={styles.visualsSection} aria-labelledby="visuals-title"><div className={styles.sectionHeading}><h2 id="visuals-title">A world imagined</h2><p>Concept art for the portfolio experience.</p></div><Gallery images={project.gallery} /></section>
+      <section className={styles.visualsSection} aria-labelledby="visuals-title"><div className={styles.sectionHeading}><h2 id="visuals-title">A closer look</h2><p>{project.gallery.every(image => image.kind === 'concept') ? 'Concept art for the portfolio experience.' : 'A visual journal of the project.'}</p></div><Gallery images={project.gallery} /></section>
       <section className={styles.contributionSection} aria-labelledby="contribution-title"><div><h2 id="contribution-title">My part in the project</h2><p>{project.teamContext}</p></div><dl>{project.contributions.map(contribution => <div key={contribution.role}><dt>{contribution.role}</dt><dd>{contribution.description}</dd></div>)}</dl></section>
-      <footer className={styles.detailFooter}><div><span className={styles.smallStar} aria-hidden="true">✧</span><h2>Explore the work.</h2><p>Read the source, or visit the owner’s demo.</p></div><ProjectActions project={project} sourceLabel="View Source" /><Link className={styles.footerBack} to="/production"><Icon name="left" /> Return to The Forge</Link></footer>
+      <footer className={styles.detailFooter}><div><span className={styles.smallStar} aria-hidden="true">✧</span><h2>Explore the work.</h2><p>Continue with the project resources.</p></div><ProjectActions project={project} sourceLabel="View Source" /><Link className={styles.footerBack} to="/production"><Icon name="left" /> Return to The Forge</Link></footer>
     </div>
   </article>;
 }
