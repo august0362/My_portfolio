@@ -17,6 +17,7 @@ export default function useSceneTransition(reduced: boolean) {
     const surfaces = new Set<HTMLElement>();
     let selected: HTMLAnchorElement | null = null, departingHub: HTMLElement | null = null;
     let arrival: Animation | undefined;
+    let coreFlash: Animation | undefined;
     if (previousLocation.current !== location.key && !reduced && typeof scene.animate === 'function') {
       arrival = scene.animate([
         { opacity: 0, filter: 'blur(6px)', transform: 'translateY(5px) scale(1.008)' },
@@ -66,14 +67,53 @@ export default function useSceneTransition(reduced: boolean) {
       const removal = window.setTimeout(() => { surface.remove(); surfaces.delete(surface); removals.delete(removal); }, 1300);
       removals.add(removal);
     }
+    function radiate(x: number, y: number, origin: 'core' | 'card') {
+      if (reduced) return;
+      const wave = document.createElement('span');
+      wave.className = styles.emission; wave.dataset.pulse = origin;
+      wave.style.left = `${x}px`; wave.style.top = `${y}px`;
+      const reach = Math.min(1100, Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) * 0.95);
+      wave.style.setProperty('--pulse-scale', String(reach / 18));
+      wave.style.setProperty('--spark-reach', `${Math.min(reach * 0.7, 350)}px`);
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 36 36');
+      for (let ring = 0; ring < 3; ring++) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '18'); circle.setAttribute('cy', '18'); circle.setAttribute('r', '18');
+        circle.setAttribute('vector-effect', 'non-scaling-stroke');
+        circle.style.animationDelay = `${ring * 115}ms`; svg.append(circle);
+      }
+      wave.append(svg);
+      for (let index = 0; index < 16; index++) {
+        const spark = document.createElement('i');
+        spark.style.setProperty('--spark-angle', `${index * 22.5 + (origin === 'core' ? 0 : 11)}deg`);
+        spark.style.setProperty('--spark-factor', String(0.55 + index % 4 * 0.15));
+        spark.style.animationDelay = `${index % 3 * 30}ms`; wave.append(spark);
+      }
+      water!.append(wave);
+      const pulses = water!.querySelectorAll('[data-pulse]');
+      if (pulses.length > 3) pulses[0].remove();
+      const removal = window.setTimeout(() => { wave.remove(); removals.delete(removal); }, 1850);
+      removals.add(removal);
+    }
     const press = (event: PointerEvent) => {
       if (!event.isPrimary || event.button !== 0 || !(event.target instanceof Element)) return;
+      if (event.target.closest('[data-portal-pulse]')) return;
       const card = event.target.closest<HTMLAnchorElement>('[data-portal-card]');
       if (card) surfaceRipple(card, event.clientX, event.clientY);
       else if (event.target.closest('a, button')) ripple(event.clientX, event.clientY);
     };
     const click = (event: MouseEvent) => {
-      if (reduced || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !(event.target instanceof Element)) return;
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !(event.target instanceof Element)) return;
+      const core = event.target.closest<HTMLButtonElement>('[data-portal-pulse]');
+      if (core) {
+        const rect = core.getBoundingClientRect();
+        radiate(rect.left + rect.width / 2, rect.top + rect.height / 2, 'core');
+        coreFlash?.cancel();
+        coreFlash = core.animate?.([{ filter: 'brightness(1)' }, { filter: 'brightness(1.65)' }, { filter: 'brightness(1)' }], { duration: reduced ? 160 : 650, easing: 'ease-out' });
+        return;
+      }
+      if (reduced) return;
       const link = event.target.closest<HTMLAnchorElement>('a[href]');
       if (!link || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
       const destination = new URL(link.href, window.location.href);
@@ -86,6 +126,7 @@ export default function useSceneTransition(reduced: boolean) {
       const rect = link.getBoundingClientRect();
       if (cardExit) {
         selected = link; departingHub = link.closest('main');
+        radiate(event.detail === 0 ? rect.left + rect.width / 2 : event.clientX, event.detail === 0 ? rect.top + rect.height * 0.65 : event.clientY, 'card');
         if (event.detail === 0 || !link.querySelector(`.${styles.surface}`)) surfaceRipple(link, rect.left + rect.width / 2, rect.top + rect.height * 0.65);
         link.classList.add(styles.selected);
         link.dataset.departing = 'true';
@@ -104,7 +145,7 @@ export default function useSceneTransition(reduced: boolean) {
       surfaces.forEach(surface => surface.remove());
       if (selected) { selected.classList.remove(styles.selected); delete selected.dataset.departing; }
       if (departingHub) delete departingHub.dataset.departing;
-      arrival?.cancel(); water.replaceChildren(); delete scene.dataset.leaving; delete water.dataset.leaving;
+      arrival?.cancel(); coreFlash?.cancel(); water.replaceChildren(); delete scene.dataset.leaving; delete water.dataset.leaving;
       delete scene.dataset.cardExit; delete water.dataset.cardExit;
     };
   }, [location.key, location.pathname, location.search, navigate, reduced]);

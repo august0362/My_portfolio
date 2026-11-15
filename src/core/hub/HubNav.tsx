@@ -48,7 +48,7 @@ export default function HubNav() {
       >
         <canvas ref={canvasRef} className={styles.cosmos} aria-hidden="true" />
         <div className={styles.nebula} aria-hidden="true" />
-        <div className={styles.centerpiece} aria-hidden="true"><span>✧</span><i /><i /></div>
+        <button type="button" className={styles.centerpiece} data-portal-pulse="true" aria-label="Pulse the universe" title="Send a wave of light"><span aria-hidden="true">✧</span><i aria-hidden="true" /><i aria-hidden="true" /></button>
         {animated && <div className={styles.rays} role="group" aria-label="Interactive light rays">
           <span id="ray-help" className={styles.srOnly}>Drag a light, or use arrow keys to move it. It drifts back to its orbit after release. Home returns it sooner.</span>
           {Array.from({ length: RAY_COUNT }, (_, index) => <button
