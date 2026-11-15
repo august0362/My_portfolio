@@ -56,9 +56,9 @@ export const projects: readonly Project[] = [{
   scene: {
     background: { src: base, liteSrc: baseLite, width: 3840, height: 2160, alt: cover.alt },
     layers: [
-      { id: 'silver-pawn', image: { src: pawn, liteSrc: pawnLite, width: 327, height: 374, alt: '' }, x: 1118, y: 115, width: 327, height: 374, depth: 0.9, motion: { x: -8, y: -14, rotate: -1.3, duration: 8.5, delay: -2 } },
-      { id: 'silver-mini', image: { src: mini, liteSrc: miniLite, width: 92, height: 101, alt: '' }, x: 1580, y: 223, width: 92, height: 101, depth: 0.5, motion: { x: 4, y: -8, rotate: 1.8, duration: 7, delay: -4 } },
-      { id: 'chrome-rook', image: { src: rook, liteSrc: rookLite, width: 425, height: 517, alt: '' }, x: 3027, y: 257, width: 425, height: 517, depth: 1, motion: { x: 10, y: -16, rotate: 1.5, duration: 10, delay: -6 } },
+      { id: 'silver-pawn', image: { src: pawn, liteSrc: pawnLite, width: 327, height: 374, alt: '' }, x: 1118, y: 115, width: 327, height: 374, depth: 0.9, motion: { x: -12, y: -20, rotate: -2, duration: 8.5, delay: -2 } },
+      { id: 'silver-mini', image: { src: mini, liteSrc: miniLite, width: 92, height: 101, alt: '' }, x: 1580, y: 223, width: 92, height: 101, depth: 0.5, motion: { x: 6, y: -12, rotate: 3, duration: 7, delay: -4 } },
+      { id: 'chrome-rook', image: { src: rook, liteSrc: rookLite, width: 425, height: 517, alt: '' }, x: 3027, y: 257, width: 425, height: 517, depth: 1, motion: { x: 15, y: -23, rotate: 2.3, duration: 10, delay: -6 } },
     ],
     particles: dust,
   },

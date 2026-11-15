@@ -58,6 +58,8 @@ export default function useProjectTransition() {
     ripple.className = styles.worldRipple; ripple.dataset.productionRipple = '';
     ripple.setAttribute('aria-hidden', 'true');
     ripple.style.left = `${x}px`; ripple.style.top = `${y}px`; ripple.style.setProperty('--ripple-scale', String(reach / 22));
+    const lens = document.createElement('span');
+    lens.className = styles.waterLens; ripple.append(lens);
     for (let index = 0; index < 3; index++) {
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('viewBox', '0 0 48 48'); svg.style.setProperty('--ring-delay', `${index * 70}ms`);
@@ -67,7 +69,7 @@ export default function useProjectTransition() {
     }
     root.append(ripple); root.dataset.leaving = 'true';
     // Navigation has a fixed deadline and never depends on an animation event.
-    timeout.current = window.setTimeout(() => { void navigate(destination.current); }, 520);
+    timeout.current = window.setTimeout(() => { void navigate(destination.current); }, 680);
   }
   return { rootRef, enterProject };
 }

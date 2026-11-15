@@ -17,6 +17,9 @@ describe('project routes and content', () => {
     expect(html).toContain('The Forge');
     expect(html).toContain('href="/production/chess-ai"');
     expect(html).not.toContain('data-placeholder');
+    expect(html).toContain('aria-label="Project destinations"');
+    expect(html).toContain('data-project-board');
+    expect(html).toContain('aria-label="Explore Chess AI Tournament"');
   });
 
   test('details label concept art and do not invent server availability', () => {

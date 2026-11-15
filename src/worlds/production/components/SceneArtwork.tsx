@@ -14,7 +14,7 @@ export function ResponsiveArtwork({ art, critical = false, className }: { art: A
 }
 
 export default function SceneArtwork({ scene, children }: { scene: ProjectScene; children?: ReactNode }) {
-  const sceneRef = useSceneAtmosphere();
+  const { sceneRef, canvasRef } = useSceneAtmosphere();
   return <div className={styles.artwork} ref={sceneRef} data-chess-scene="" data-motion="false" data-active="false">
     <div className={styles.sceneFrame} data-scene-frame="">
       <ResponsiveArtwork art={scene.background} critical className={styles.base} />
@@ -29,6 +29,7 @@ export default function SceneArtwork({ scene, children }: { scene: ProjectScene;
       </div>
       {scene.particles && <img className={styles.dust} src={scene.particles} width={1920} height={1080} alt="" aria-hidden="true" loading="lazy" decoding="async" draggable={false} />}
       <div className={styles.sceneGlow} aria-hidden="true" />
+      <canvas ref={canvasRef} className={styles.atmosphereCanvas} aria-hidden="true" />
     </div>
     {children}
   </div>;

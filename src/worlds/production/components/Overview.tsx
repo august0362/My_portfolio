@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { projects } from '../data/projects';
 import useMapNavigation from '../hooks/useMapNavigation';
@@ -5,37 +6,49 @@ import useWorldPage from '../hooks/useWorldPage';
 import useProjectTransition from '../hooks/useProjectTransition';
 import SceneArtwork from './SceneArtwork';
 import Icon from './Icon';
-import styles from '../Production.module.css';
+import ForgeCrest from './ForgeCrest';
+import styles from '../Atlas.module.css';
 
 export default function Overview() {
-  const project = projects[0];
+  const [selectedSlug, setSelectedSlug] = useState(projects[0].slug);
+  const project = projects.find(item => item.slug === selectedSlug) ?? projects[0];
   const map = useMapNavigation(project.scene.background.width / project.scene.background.height);
   const headingRef = useWorldPage('Explore');
   const transition = useProjectTransition();
-  return <section className={styles.overview} ref={transition.rootRef} aria-labelledby="forge-title">
-    <div className={styles.map} ref={map.viewportRef} tabIndex={0} role="region" aria-label="Explore the project world" aria-describedby="map-help" data-dragging={map.dragging} data-scene-interaction="" {...map.handlers}>
-      <div className={styles.mapPlane} data-map-plane="" style={{ width: map.size.planeWidth, height: map.size.planeHeight, transform: `translate(calc(-50% + ${map.view.x}px), calc(-50% + ${map.view.y}px)) scale(${map.view.zoom})` }}>
+  return <section className={styles.atlas} ref={transition.rootRef} aria-labelledby="forge-title" data-atlas-scene="" data-scene-interaction="" data-scene-motion="false" data-scene-active="false" data-exploring={map.dragging}>
+    <div className={styles.viewport} ref={map.viewportRef} tabIndex={0} role="region" aria-label="Explore the project world" aria-describedby="map-help" data-dragging={map.dragging} {...map.handlers}>
+      <div className={styles.plane} data-map-plane="" style={{ width: map.size.planeWidth, height: map.size.planeHeight, transform: `translate(calc(-50% + ${map.view.x}px), calc(-50% + ${map.view.y}px)) scale(${map.view.zoom})` }}>
         <SceneArtwork scene={project.scene} />
-        {projects.map(item => <Link key={item.slug} className={styles.hotspot} to={`/production/${item.slug}`} onClickCapture={transition.enterProject} data-project-entry="" style={{ left: `${item.hotspotPosition.x * 100}%`, top: `${item.hotspotPosition.y * 100}%` }} aria-label={`Explore ${item.title}`} aria-describedby={`marker-${item.slug}`} onFocus={event => { if (event.currentTarget.matches(':focus-visible')) map.focusPoint(item.hotspotPosition); }}>
-          <span className={styles.marker}><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 4 20 20-20 20L4 24Z" /><path d="m24 13 11 11-11 11-11-11Z" /><circle cx="24" cy="24" r="3" /></svg></span>
-          <span className={styles.markerLabel} id={`marker-${item.slug}`}><strong>{item.title}</strong><span>Enter the arena <Icon name="arrow" /></span></span>
-        </Link>)}
       </div>
     </div>
-    <div className={styles.shade} aria-hidden="true" />
-    <header className={styles.overviewHeader}>
-      <span className={styles.worldName}><Icon name="compass" /> Production world</span>
+    <div className={styles.vignette} aria-hidden="true" />
+    <div className={styles.frame} aria-hidden="true"><span /><span /><span /><span /></div>
+    <header className={styles.masthead} data-atlas-ui="">
+      <Icon name="compass" />
       <h1 id="forge-title" ref={headingRef} tabIndex={-1}>The Forge</h1>
-      <p>A world of ideas, made tangible.</p>
+      <span>Production world</span>
     </header>
-    <aside className={styles.preview} aria-label="Featured project">
-      <span className={styles.previewCategory}>{project.category.split(' · ')[0]}</span>
-      <h2>{project.title}</h2>
-      <p>{project.description}</p>
-      <Link className={styles.primaryButton} to={`/production/${project.slug}`} onClickCapture={transition.enterProject} data-project-entry="">View project <Icon name="arrow" /></Link>
-    </aside>
-    <div className={styles.exploreDock}>
-      <p id="map-help">Drag to explore <span>·</span> Scroll to zoom<span className={styles.keyboardHelp}> · Arrow keys to pan</span></p>
+    <div className={styles.destinationAnchor} data-atlas-ui="">
+      <div className={styles.destinationFloat}>
+        <section className={styles.destination} aria-labelledby="destination-title" data-project-board="">
+          <div className={styles.crest}><ForgeCrest /></div>
+          <span className={styles.category}>{project.category.split(' · ')[0]}</span>
+          <div className={styles.titleRule}><i aria-hidden="true" /><h2 id="destination-title">{project.title}</h2><i aria-hidden="true" /></div>
+          <p className={styles.subtitle}>{project.subtitle}</p>
+          <p className={styles.description}>{project.description}</p>
+          <Link className={styles.enter} to={`/production/${project.slug}`} aria-label={`Explore ${project.title}`} onClickCapture={transition.enterProject} data-project-entry="">
+            <span className={styles.enterWater} aria-hidden="true"><span /><span /><span /><Icon name="arrow" /></span>
+            <span>View project</span>
+          </Link>
+        </section>
+      </div>
+    </div>
+    <nav className={styles.destinations} aria-label="Project destinations" data-atlas-ui="">
+      <span className={styles.railHeading}>Destinations</span>
+      {projects.map(item => <button type="button" key={item.slug} aria-label={`Focus ${item.title}`} aria-pressed={item.slug === project.slug} onClick={() => { setSelectedSlug(item.slug); map.reset(); map.focusPoint(item.hotspotPosition); }}><span>{item.title}</span><i aria-hidden="true" /></button>)}
+    </nav>
+    <div className={styles.exploreDock} data-atlas-ui="">
+      <div className={styles.explorationHint}><Icon name="compass" /><p id="map-help">Drag to explore <span>Scroll to zoom · Arrow keys to pan</span></p></div>
       <div className={styles.mapControls} role="group" aria-label="Scene view">
         <button type="button" aria-label="Zoom out" disabled={map.view.zoom <= 1.001} onClick={() => map.zoomBy(-0.15)}><Icon name="minus" /></button>
         <output aria-label="Zoom level">{Math.round(map.view.zoom * 100)}%</output>
@@ -44,6 +57,6 @@ export default function Overview() {
         <button type="button" aria-label="Reset view" onClick={map.reset}><Icon name="reset" /></button>
       </div>
     </div>
-    <span className={styles.artCaption}>Concept artwork · Not gameplay</span>
+    <span className={styles.artCaption} data-atlas-ui="">Concept artwork · Not gameplay</span>
   </section>;
 }
