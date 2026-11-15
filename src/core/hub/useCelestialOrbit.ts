@@ -85,7 +85,7 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, anima
       const lite = quality !== 'full';
       const dpr = Math.min(devicePixelRatio || 1, lite ? 1 : 1.5);
       const colors = getComputedStyle(stage!);
-      view = { width, height, cx: width * (width >= 1000 ? 0.58 : 0.5), cy: height * (width < 600 ? 0.56 : 0.53), radius: Math.min(width * (width < 600 ? 0.31 : 0.32), 470), vertical: Math.min(height * 0.16, width < 600 ? 83 : 145), lite, colors: { line: colors.getPropertyValue('--portal-line-rgb'), star: colors.getPropertyValue('--portal-star-rgb'), gold: colors.getPropertyValue('--portal-gold-rgb') } };
+      view = { width, height, cx: width * (width >= 1000 ? 0.58 : 0.5), cy: height * (width < 600 ? 0.56 : 0.53), radius: Math.min(width * (width < 600 ? 0.31 : 0.32), 470), vertical: Math.min(height * 0.16, width < 600 ? 83 : 145), lite, light: appearance === 'light', colors: { line: colors.getPropertyValue('--portal-line-rgb'), star: colors.getPropertyValue('--portal-star-rgb'), gold: colors.getPropertyValue('--portal-gold-rgb') } };
       canvas!.width = Math.round(width * dpr); canvas!.height = Math.round(height * dpr);
       ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (ctx) drawCelestial(ctx, view, s.time, s.angle, s.px, s.py);
