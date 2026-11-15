@@ -62,7 +62,7 @@ export default function HubNav() {
             {WORLDS.map((world, index) => {
             const prefetch = () => { void world.load().catch(() => { /* Navigation can retry loading. */ }); };
             return (
-              <li key={world.id} ref={(node) => { cardsRef.current[index] = node; }} className={styles.world} data-world={world.id}>
+              <li key={world.id} ref={(node) => { cardsRef.current[index] = node; }} className={styles.world} data-world={world.id} data-primary={animated && selected === index}>
                 <Link
                   to={world.path}
                   data-portal-card="true"

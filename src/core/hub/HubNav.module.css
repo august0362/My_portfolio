@@ -57,6 +57,8 @@
 .centerpiece i:last-child { inset: -28px; border-style: dotted; opacity: .5; }
 .worlds ul { margin: 0; padding: 0; list-style: none; }
 .world { position: absolute; left: 58%; top: 53%; width: clamp(150px, 13vw, 190px); will-change: transform; }
+/* The nearest card occludes the core; side and rear cards keep their orbit depth. */
+.world[data-primary='true'] { z-index: 32 !important; }
 .card {
   position: relative;
   isolation: isolate;
