@@ -16,6 +16,18 @@ Project-entry links handle the capture phase before the shell's native bubbling 
 
 The overview follows the presentation structure of the owner's Genshin map reference: a full-screen environment, centered crest/title/description, an entry control below, and a right-side destination rail. These are original CSS/SVG components using the supplied Chess AI artwork. No source code or proprietary assets from the reference are shipped. Dragging the environment blurs and recedes the central board; pointer and keyboard focus restore clarity. Compact mobile layouts omit the redundant single-destination rail while retaining scene reset and the project link.
 
+## Reference color palettes
+
+`Theme.module.css` is the color source for this world. The eleven owner-provided images in `data/Image/Theme/` inform three palette families, each with separate light and dark surfaces:
+
+| Existing selector | Production direction | Reference colors |
+| --- | --- | --- |
+| Moonlit | Iris mist, lavender, periwinkle, pearl | `#C7C6DF`, `#383B67`, `#BACBFE`, `#DEDEEA` |
+| Rosewater | Sakura pink, rosewood, champagne | `#F4C9DA`, `#FEE3EC`, `#C87377`, `#A77370` |
+| Tidal | Jade mist, forest green, silver mint | `#0D3021`, `#406250`, `#8AACA0`, `#BEDBD3` |
+
+The existing Atmosphere controls select the palette and Daylight/Midnight appearance. World-local data attributes select the theme; browser color preferences do not select it. Surfaces, controls, decorative lines, scene tint, light, particles, and water share these tokens. Canvas reads the theme once when palette or appearance changes. Theme reference photographs stay read-only and are not imported or distributed.
+
 ## Server availability
 
 No endpoint is configured for Chess AI, so its runtime state is Unknown and no request is sent to the demo server. Development status is separate. To enable monitoring, set `statusEndpoint: { url, service, refreshMs? }` on a project. An HTTPS CORS endpoint must return successful JSON such as `{ "service": "chess-ai", "status": "online" }` or an explicit `offline` result for the matching service. Network failures, blocked private networks, HTTP errors, malformed bodies, and opaque responses remain Unknown. Checks time out after four seconds, refresh at intervals of at least thirty seconds, and stop when the document is hidden.
@@ -31,3 +43,5 @@ Phase B: typecheck, 124 tests, build, and the lint invocation below passed. Prev
 `npm run lint` fails on 1,010 pre-existing errors in the untracked generated `prototypes/information/dist/` output. `npm run lint -- --ignore-pattern 'prototypes/information/dist/**'` passes. Core must decide whether to exclude that generated directory; this world does not change root lint configuration or remove another owner's files.
 
 PROD-REV-01 replaces the earlier overview and hero layout. Typecheck, 130 tests, build, and lint excluding the generated prototype pass. New tests cover bounded water input, normalized particles, one active animation loop, hidden/offscreen pause and resume, resource cleanup, reduced/static motion, and missing Canvas. The earlier Phase A/B browser checks describe the earlier layout. Visual browser verification of this revision remains pending: Computer Use stopped because URL policy enforcement is unsupported for the current Windows Cốc Cốc browser. The reference structure was inspected through its public HTML and stylesheet response instead.
+
+PROD-REV-02: typecheck, 136 tests, build, and lint excluding the generated prototype pass. Six color contrast tests cover text, secondary text, buttons, focus accents, and glass composited over extreme light/dark backgrounds. The minimum secondary-text ratio is 4.60:1 and the minimum button ratio is 4.79:1. A separate palette sheet was rendered from the CSS values for visual color review; this does not replace live browser layout verification.

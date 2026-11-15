@@ -27,6 +27,7 @@ export default function SceneArtwork({ scene, children }: { scene: ProjectScene;
           '--depth-x': `${8 * layer.depth / layer.width * 100}%`, '--depth-y': `${6 * layer.depth / layer.height * 100}%`,
         } as CSSProperties}><div className={styles.spriteDepth}><div className={styles.floatingPiece}><ResponsiveArtwork art={layer.image} critical /></div></div></div>)}
       </div>
+      <div className={styles.sceneTint} aria-hidden="true" />
       {scene.particles && <img className={styles.dust} src={scene.particles} width={1920} height={1080} alt="" aria-hidden="true" loading="lazy" decoding="async" draggable={false} />}
       <div className={styles.sceneGlow} aria-hidden="true" />
       <canvas ref={canvasRef} className={styles.atmosphereCanvas} aria-hidden="true" />

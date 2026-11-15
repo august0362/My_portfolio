@@ -35,6 +35,7 @@ function setup(options: { reduced?: boolean; quality?: string; canvas?: boolean 
   const disconnect = vi.fn();
   const observers: ((entries: { isIntersecting: boolean }[]) => void)[] = [];
   vi.stubGlobal('document', document); vi.stubGlobal('window', window); vi.stubGlobal('innerHeight', 900);
+  vi.stubGlobal('getComputedStyle', () => ({ getPropertyValue: () => '' }));
   vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames.set(++id, callback); return id; });
   vi.stubGlobal('cancelAnimationFrame', (frame: number) => { frames.delete(frame); });
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect = disconnect; });

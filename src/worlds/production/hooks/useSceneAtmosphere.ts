@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useSettings } from '@shared/settings';
-import { addWaterPulse, createAtmosphere, drawAtmosphere } from '../effects/atmosphereCanvas';
+import { addWaterPulse, createAtmosphere, createAtmosphereColors, drawAtmosphere } from '../effects/atmosphereCanvas';
 
 export default function useSceneAtmosphere() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -14,6 +14,8 @@ export default function useSceneAtmosphere() {
     let context: CanvasRenderingContext2D | null = null;
     try { context = canvas?.getContext('2d') ?? null; } catch { /* Static artwork remains available. */ }
     const field = createAtmosphere(settings.quality === 'full' ? 96 : 54);
+    const style = getComputedStyle(scene);
+    const colors = createAtmosphereColors(style.getPropertyValue('--forge-effects'), style.getPropertyValue('--forge-highlight'), style.getPropertyValue('--forge-scene-accent'));
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     let visible = true, active = false, frame = 0, previousTime = 0, disposed = false, elapsed = 0, width = 1, height = 1;
     let x = 0, y = 0, targetX = 0, targetY = 0, lastX = '', lastY = '';
@@ -40,7 +42,7 @@ export default function useSceneAtmosphere() {
       const smoothing = 1 - Math.exp(-7 * delta);
       x += (targetX - x) * smoothing; y += (targetY - y) * smoothing;
       write();
-      if (context) drawAtmosphere(context, field, width, height, elapsed, x, y);
+      if (context) drawAtmosphere(context, field, width, height, elapsed, x, y, colors);
       if (context || Math.abs(targetX - x) + Math.abs(targetY - y) > 0.002) frame = requestAnimationFrame(tick);
       else frame = 0;
     };
@@ -51,7 +53,7 @@ export default function useSceneAtmosphere() {
       const ratio = Math.min(window.devicePixelRatio || 1, 1.5, 2200 / Math.max(1, width));
       canvas.width = Math.max(1, Math.round(width * ratio)); canvas.height = Math.max(1, Math.round(height * ratio));
       context?.setTransform(ratio, 0, 0, ratio, 0, 0);
-      if (context) drawAtmosphere(context, field, width, height, elapsed, x, y);
+      if (context) drawAtmosphere(context, field, width, height, elapsed, x, y, colors);
     };
     const move = (event: PointerEvent) => {
       if (!active || event.pointerType !== 'mouse') return;
@@ -89,6 +91,6 @@ export default function useSceneAtmosphere() {
       delete surface.dataset.sceneMotion; delete surface.dataset.sceneActive;
       surface.style.removeProperty('--look-x'); surface.style.removeProperty('--look-y');
     };
-  }, [settings.motion, settings.quality]);
+  }, [settings.motion, settings.quality, settings.palette, settings.appearance]);
   return { sceneRef, canvasRef };
 }
