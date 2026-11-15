@@ -6,7 +6,7 @@ export default function usePageFocus(title: string) {
   const location = useLocation();
 
   useEffect(() => {
-    document.title = `${title} | Möbius Universe`;
+    document.title = `${title} | Celestial`;
     mainRef.current?.focus();
   }, [title, location.key]);
 

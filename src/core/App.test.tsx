@@ -15,7 +15,8 @@ function renderRoute(path: string) {
 
 test('the Hub links to all five worlds', () => {
   const markup = renderRoute('/');
-  expect(markup).toContain('Möbius Hub');
+  expect(markup).toContain('id="hub-title"');
+  expect(markup).not.toMatch(/m[oö]bius/i);
   for (const world of WORLDS) expect(markup).toContain(`href="${world.path}"`);
   expect(markup).not.toContain('Back to Hub');
 });

@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Mobius Universe
+title Celestial Portal
 
 pushd "%~dp0"
 if errorlevel 1 (
@@ -20,7 +20,7 @@ if not exist "node_modules\.bin\vite.cmd" (
     if errorlevel 1 goto failed
 )
 
-echo Starting Mobius Universe...
+echo Starting Celestial Portal...
 echo Press Ctrl+C to stop the server.
 call npm run dev -- --host 127.0.0.1 --open
 if errorlevel 1 goto failed

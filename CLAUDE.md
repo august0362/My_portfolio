@@ -1,6 +1,6 @@
 # CLAUDE.md: Möbius Universe agent entry point
 
-Möbius Universe is a static, read-only personal portfolio. It has a Möbius Hub at `/` and five independent world modules. The confirmed stack is React + TypeScript + Vite with Three.js / React Three Fiber, and no code exists yet. Read only what your task needs.
+Möbius Universe is a static, read-only personal portfolio. Its public name is **Celestial Portal** ([P-12](docs/CONTEXT.md#4-architecture-decisions)). It has a hub at `/` and five independent world modules. The confirmed stack is React + TypeScript + Vite with Three.js / React Three Fiber, and no code exists yet. Read only what your task needs.
 
 ## Communication
 

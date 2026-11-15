@@ -1,10 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-appearance="dark" data-palette="moonlit">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
-    <title>Möbius Universe</title>
+    <meta name="theme-color" content="#091321" />
+    <meta name="color-scheme" content="only light" />
+    <script>
+      try {
+        const saved = JSON.parse(localStorage.getItem('mobius-settings') || 'null');
+        document.documentElement.dataset.appearance = saved?.appearance === 'light' ? 'light' : 'dark';
+        if (['moonlit', 'rosewater', 'tidal'].includes(saved?.palette)) document.documentElement.dataset.palette = saved.palette;
+      } catch { /* Keep the default atmosphere when storage is unavailable. */ }
+    </script>
+    <title>Celestial Portal</title>
   </head>
   <body>
     <div id="root"></div>
