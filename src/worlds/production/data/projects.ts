@@ -22,15 +22,15 @@ export const projects: readonly Project[] = [{
   slug: 'chess-ai',
   title: 'Chess AI Tournament',
   subtitle: 'Four approaches. One board.',
-  description: 'A desktop chess arena where people and independently developed AI agents meet, compete, and revisit their games.',
+  description: 'A chess arena where people and independently developed AI agents meet, compete, and revisit their games.',
   objective: 'Bring different approaches to chess AI into one playable environment, with shared matches, tournaments, and tools for reviewing play.',
   introductionHeading: 'A meeting of minds, across sixty-four squares.',
   featuresHeading: 'Built to play. Built to compare.',
-  platformNote: 'The game runs as a desktop application. This world presents the project; it does not run chess inference.',
-  category: 'Artificial intelligence · Desktop application',
+  platformNote: 'Play Game opens the game website. The GitHub repository documents the Windows / Pygame application. This portfolio does not run chess inference.',
+  category: 'Artificial intelligence · Chess application',
   developmentStatus: {
-    label: 'Playable desktop project',
-    detail: 'The repository documents a Windows / Pygame application. Web-demo features and public access have not been verified.',
+    label: 'Playable chess project',
+    detail: 'The features described here follow the Windows / Pygame repository. The owner-provided game website is linked through Play Game; its feature set has not been independently verified.',
   },
   features: [
     'Human vs Bot and Bot vs Bot matches',
@@ -68,7 +68,7 @@ export const projects: readonly Project[] = [{
   ],
   hotspotPosition: { x: 0.505, y: 0.49 },
   links: { demo: 'https://admin-linux.tail451544.ts.net/', repository: 'https://github.com/august0362/BTL_AI' },
-  demoNote: 'The owner’s demo may require access to their network. Its web features and public availability are unverified; the repository describes the desktop application.',
+  demoNote: 'Play the web version, or explore the desktop application on GitHub.',
 }];
 
 export function findProject(slug: string | undefined) {

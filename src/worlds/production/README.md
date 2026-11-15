@@ -18,6 +18,8 @@ Project-entry links handle the capture phase before the shell's native bubbling 
 
 No endpoint is configured for Chess AI, so its runtime state is Unknown and no request is sent to the demo server. Development status is separate. To enable monitoring, set `statusEndpoint: { url, service, refreshMs? }` on a project. An HTTPS CORS endpoint must return successful JSON such as `{ "service": "chess-ai", "status": "online" }` or an explicit `offline` result for the matching service. Network failures, blocked private networks, HTTP errors, malformed bodies, and opaque responses remain Unknown. Checks time out after four seconds, refresh at intervals of at least thirty seconds, and stop when the document is hidden.
 
+The owner confirmed `https://admin-linux.tail451544.ts.net/` as the game website. Both Play Game actions open that URL in a new tab. Project feature descriptions follow the desktop repository; the website's feature set is not assumed identical. Owner confirmation of the destination does not replace runtime health monitoring.
+
 ## Verification
 
 Phase A: typecheck, 124 tests, and build passed. Browser preview checks covered desktop, 375px touch, keyboard, bounded pan/zoom, direct detail reload, unknown routes, gallery/lightbox controls and focus return, reduced motion, external-link attributes, and the Unknown server badge. No console errors or horizontal overflow were observed.
