@@ -6,6 +6,18 @@ node_modules/
 dist/
 *.local
 
+# Environment files
+.env
+.env.*
+
+# Temporary files and build caches
+*.tmp
+*.temp
+*.tsbuildinfo
+.cache/
+.vite/
+coverage/
+
 # Logs
 *.log
 
