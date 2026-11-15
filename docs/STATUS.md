@@ -22,7 +22,7 @@ Only the Integration/QA owner updates this file, and only after verification. La
 
 | Module | State | Done | Next task | Blockers | Last verified evidence |
 |---|---|---|---|---|---|
-| Core (shell, hub) | In progress | CORE-01 (verified, merged `ef5293e`) | CORE-02 | None | 2026-11-15 on `main`: `typecheck`, `lint`, `test` (1/1), `build` all exit 0. Probe imports: 8/8 violations rejected (world→world, world→core, shared→core/worlds; alias and relative); valid imports accepted; probes removed. `data/` untracked, no DOB/phone in tracked files or history |
+| Core (shell, hub) | In progress | CORE-01 (verified, merged `ef5293e`; `run.bat` launcher approved by Lead and merged) | CORE-02 | None | 2026-11-15 on `main`: `typecheck`, `lint`, `test` (1/1), `build` all exit 0. Probe imports: 8/8 violations rejected (world→world, world→core, shared→core/worlds; alias and relative); valid imports accepted; probes removed. `data/` untracked, no DOB/phone in tracked files or history |
 | Information | Not started | Raw data only: identity JSON, CV, 17 photos in `data/` | INFO-01 (after GATE-1) | GATE-1; skills list; public CV; P-09 (INFO-03) | 2026-11-15: file inventory |
 | Production | Not started | — | PROD-01 (after GATE-1) | GATE-1; verified project facts (for PROD-02) | 2026-11-15: no code or data |
 | Character | Not started | — | CHAR-01 (after GATE-1) | GATE-1; character data | 2026-11-15: no code or data |
@@ -31,5 +31,4 @@ Only the Integration/QA owner updates this file, and only after verification. La
 
 ## Open change requests
 
-- **Lead decision: `run.bat`** (commit `b7ed875`, branch `core/CORE-01-bootstrap`). A Windows dev launcher outside the CORE-01 task list. Reviewed and harmless, but **not merged** until the Lead approves it.
 - **Lead decision: untracked `prototypes/information/`** (appeared 2026-11-15, not part of any commit). `npm run lint` fails on it (`import-x/no-unresolved`). It sits outside `src/worlds/information/`, so it is out of Information ownership. Lead to either move it into scope, ignore it via a Core-approved config change, or remove it.
