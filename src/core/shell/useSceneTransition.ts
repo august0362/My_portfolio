@@ -8,8 +8,6 @@ export default function useSceneTransition(reduced: boolean) {
   const waterRef = useRef<HTMLDivElement>(null);
   const location = useLocation(), navigate = useNavigate();
   const previousLocation = useRef(location.key);
-  /** True while a veil covers the old page, so the next page can open it. */
-  const veiled = useRef(false);
 
   useEffect(() => {
     const shell = shellRef.current, scene = sceneRef.current, water = waterRef.current;
@@ -17,7 +15,7 @@ export default function useSceneTransition(reduced: boolean) {
     let navigation = 0, leaving = false;
     const removals = new Set<number>();
     const surfaces = new Set<HTMLElement>();
-    let selected: HTMLAnchorElement | null = null, departingHub: HTMLElement | null = null;
+    let departingHub: HTMLElement | null = null;
     let arrival: Animation | undefined;
     let coreFlash: Animation | undefined;
     if (previousLocation.current !== location.key && !reduced && typeof scene.animate === 'function') {
@@ -27,30 +25,6 @@ export default function useSceneTransition(reduced: boolean) {
       ], { duration: 620, easing: 'cubic-bezier(.2,.65,.25,1)' });
     }
     previousLocation.current = location.key;
-    let opening: HTMLSpanElement | undefined;
-    if (veiled.current && !reduced) {
-      // The new page opens through the veil that closed over the old one.
-      opening = document.createElement('span');
-      opening.className = `${styles.veil} ${styles.veilOpen}`;
-      opening.setAttribute('aria-hidden', 'true');
-      water.append(opening);
-      const finished = window.setTimeout(() => { opening?.remove(); }, 900);
-      removals.add(finished);
-    }
-    veiled.current = false;
-
-    function veil(x: number, y: number, delayMs: number) {
-      const cover = document.createElement('span');
-      cover.className = styles.veil;
-      cover.setAttribute('aria-hidden', 'true');
-      cover.style.setProperty('--veil-x', `${x}px`); cover.style.setProperty('--veil-y', `${y}px`);
-      cover.style.animationDelay = `${delayMs}ms`;
-      const ring = document.createElement('i');
-      ring.style.animationDelay = `${delayMs}ms`;
-      cover.append(ring);
-      water!.append(cover);
-      veiled.current = true;
-    }
 
     function ripple(x: number, y: number) {
       if (reduced) return;
@@ -88,15 +62,14 @@ export default function useSceneTransition(reduced: boolean) {
         circle.style.transformOrigin = `${x}px ${y}px`; circle.style.animationDelay = `${ring * 85}ms`;
         svg.append(circle);
       }
-      const crest = document.createElement('span'); crest.className = styles.crest;
-      surface.append(svg, crest); card.append(surface); surfaces.add(surface);
+      surface.append(svg); card.append(surface); surfaces.add(surface);
       const removal = window.setTimeout(() => { surface.remove(); surfaces.delete(surface); removals.delete(removal); }, 1300);
       removals.add(removal);
     }
-    function radiate(x: number, y: number, origin: 'core' | 'card') {
+    function radiate(x: number, y: number) {
       if (reduced) return;
       const wave = document.createElement('span');
-      wave.className = styles.emission; wave.dataset.pulse = origin;
+      wave.className = styles.emission; wave.dataset.pulse = 'core';
       wave.style.left = `${x}px`; wave.style.top = `${y}px`;
       const reach = Math.min(1100, Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) * 0.95);
       wave.style.setProperty('--pulse-scale', String(reach / 18));
@@ -112,7 +85,7 @@ export default function useSceneTransition(reduced: boolean) {
       wave.append(svg);
       for (let index = 0; index < 16; index++) {
         const spark = document.createElement('i');
-        spark.style.setProperty('--spark-angle', `${index * 22.5 + (origin === 'core' ? 0 : 11)}deg`);
+        spark.style.setProperty('--spark-angle', `${index * 22.5}deg`);
         spark.style.setProperty('--spark-factor', String(0.55 + index % 4 * 0.15));
         spark.style.animationDelay = `${index % 3 * 30}ms`; wave.append(spark);
       }
@@ -134,7 +107,7 @@ export default function useSceneTransition(reduced: boolean) {
       const core = event.target.closest<HTMLButtonElement>('[data-portal-pulse]');
       if (core) {
         const rect = core.getBoundingClientRect();
-        radiate(rect.left + rect.width / 2, rect.top + rect.height / 2, 'core');
+        radiate(rect.left + rect.width / 2, rect.top + rect.height / 2);
         coreFlash?.cancel();
         coreFlash = core.animate?.([{ filter: 'brightness(1)' }, { filter: 'brightness(1.65)' }, { filter: 'brightness(1)' }], { duration: reduced ? 160 : 650, easing: 'ease-out' });
         return;
@@ -151,17 +124,13 @@ export default function useSceneTransition(reduced: boolean) {
       const cardExit = link.hasAttribute('data-portal-card');
       const rect = link.getBoundingClientRect();
       if (cardExit) {
-        selected = link; departingHub = link.closest('main');
-        radiate(event.detail === 0 ? rect.left + rect.width / 2 : event.clientX, event.detail === 0 ? rect.top + rect.height * 0.65 : event.clientY, 'card');
+        departingHub = link.closest('main');
         if (event.detail === 0 || !link.querySelector(`.${styles.surface}`)) surfaceRipple(link, rect.left + rect.width / 2, rect.top + rect.height * 0.65);
-        link.classList.add(styles.selected);
         link.dataset.departing = 'true';
         if (departingHub) departingHub.dataset.departing = 'true';
         scene.dataset.cardExit = 'true'; water.dataset.cardExit = 'true';
       } else if (event.detail === 0) ripple(rect.left + rect.width / 2, rect.top + rect.height / 2);
-      const keyboard = event.detail === 0;
-      veil(keyboard ? rect.left + rect.width / 2 : event.clientX, keyboard ? rect.top + rect.height / 2 : event.clientY, cardExit ? 300 : 0);
-      // Keep the raised water and lifted card readable before the background fades.
+      // Press ripple first, then the page blurs and fades before navigating.
       scene.dataset.leaving = 'true'; water.dataset.leaving = 'true';
       navigation = window.setTimeout(() => { void navigate(`${destination.pathname}${destination.search}${destination.hash}`); }, cardExit ? 820 : 520);
     };
@@ -171,7 +140,7 @@ export default function useSceneTransition(reduced: boolean) {
       shell.removeEventListener('pointerdown', press, { capture: true }); shell.removeEventListener('click', click);
       window.clearTimeout(navigation); removals.forEach(id => window.clearTimeout(id));
       surfaces.forEach(surface => surface.remove());
-      if (selected) { selected.classList.remove(styles.selected); delete selected.dataset.departing; }
+      departingHub?.querySelector<HTMLElement>('[data-departing]')?.removeAttribute('data-departing');
       if (departingHub) delete departingHub.dataset.departing;
       arrival?.cancel(); coreFlash?.cancel(); water.replaceChildren(); delete scene.dataset.leaving; delete water.dataset.leaving;
       delete scene.dataset.cardExit; delete water.dataset.cardExit;

@@ -189,7 +189,7 @@ The hub is the 2D Celestial Portal from HUB-REV ([P-14](CONTEXT.md#4-architectur
 - **Motion:** the orbit and canvas animation always run (`settings.motion` is always `full`, P-13); they still pause when the tab is hidden or the scene is offscreen.
 - **Sound:** an ambient soundscape (`shell/useCelestialAudio.ts`), on by default (P-13).
 
-Page transitions (HUB-03, P-17, Core): `shell/useSceneTransition.ts`. A celestial veil closes from the pressed link, the route changes, and the new page opens through it; a hub card also lifts and dissolves first. With reduced motion the change is instant. Navigation never waits on a transition.
+Page transitions (HUB-03, P-17, Core): `shell/useSceneTransition.ts`. Pressing a link or hub card draws a ripple at the press point; the page then blurs and fades, the route changes, and the new page fades in. There is no veil, water bubble or card lift (Lead decision, 2026-11-15). The Production world's project entry follows the same pattern (rings only). Navigation never waits on a transition.
 
 World routes are full-bleed (P-15): `AppShell` drops the content column and the brand header, and `BackToHub` floats top-left. Placeholder worlds (`[data-placeholder]`) keep a readable column.
 
