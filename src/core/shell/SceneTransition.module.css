@@ -1,8 +1,18 @@
 .scene { transform-origin: 50% 45%; }
 .scene[data-leaving='true'] { pointer-events: none; animation: dissolve .42s cubic-bezier(.4,0,.65,1) both; }
+.scene[data-leaving='true'][data-card-exit='true'] { animation: cardDissolve .78s cubic-bezier(.3,0,.55,1) both; }
 .water { position: fixed; inset: 0; z-index: 100; pointer-events: none; overflow: hidden; }
 .water::after { content: ''; position: absolute; inset: 0; background: var(--portal-bg); opacity: 0; transition: opacity .36s .06s; }
 .water[data-leaving='true']::after { opacity: .25; }
+.water[data-leaving='true'][data-card-exit='true']::after { transition-delay: .24s; transition-duration: .5s; opacity: .14; }
+.selected { z-index: 2; animation: liftCard .78s cubic-bezier(.2,.7,.25,1) both; animation-play-state: running !important; }
+.surface { position: absolute; inset: 0; z-index: 3; overflow: hidden; border-radius: inherit; pointer-events: none; background: radial-gradient(ellipse at var(--press-x) var(--press-y), color-mix(in srgb, var(--portal-accent) 14%, transparent), transparent 58%); animation: surfaceFade 1.15s ease-out both; }
+.surface, .surface * { animation-play-state: running !important; }
+.surface > svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: color-mix(in srgb, var(--portal-gold) 75%, var(--portal-sheen)); stroke-width: 1.35; filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--portal-shadow) 35%, transparent)); }
+.surface circle { animation: surfaceRing 1.05s cubic-bezier(.15,.6,.25,1) both; }
+.surface circle:nth-child(2) { stroke: var(--portal-sheen); stroke-width: .9; }
+.surface circle:nth-child(3) { stroke: var(--portal-accent); stroke-width: .8; }
+.crest { position: absolute; left: var(--press-x); top: var(--press-y); width: 54px; height: 34px; border-radius: 50%; background: radial-gradient(ellipse at 34% 22%, color-mix(in srgb, var(--portal-sheen) 85%, transparent), transparent 40%), radial-gradient(ellipse, color-mix(in srgb, var(--portal-accent) 24%, transparent), color-mix(in srgb, var(--portal-gold) 8%, transparent) 65%); border: 1px solid color-mix(in srgb, var(--portal-sheen) 65%, transparent); box-shadow: inset 0 3px 6px color-mix(in srgb, var(--portal-sheen) 28%, transparent), inset 0 -4px 7px color-mix(in srgb, var(--portal-accent) 20%, transparent), 0 9px 12px color-mix(in srgb, var(--portal-shadow) 28%, transparent); animation: waterCrest .85s cubic-bezier(.18,.65,.3,1) both; }
 .ripple { position: absolute; width: 44px; height: 44px; margin: -22px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--portal-gold) 18%, transparent), transparent 70%); animation: bloom .85s ease-out both; }
 .ripple svg { position: absolute; inset: 0; width: 44px; height: 44px; overflow: visible; fill: none; stroke: color-mix(in srgb, var(--portal-gold) 70%, transparent); stroke-width: 1.2; }
 .ripple circle { transform-origin: 22px 22px; animation: waterRing .9s cubic-bezier(.15,.6,.25,1) both; }
@@ -11,4 +21,9 @@
 @keyframes waterRing { from { transform: scale(.1); opacity: 0; } 12% { opacity: .8; } to { transform: scale(8); opacity: 0; } }
 @keyframes bloom { from { opacity: .85; } to { opacity: 0; } }
 @keyframes dissolve { 0%, 14% { opacity: 1; filter: blur(0); transform: scale(1); } 100% { opacity: .06; filter: blur(7px); transform: scale(1.014); } }
-@media (prefers-reduced-motion: reduce) { .scene[data-leaving='true'], .ripple, .ripple circle { animation: none; } .water { display: none; } }
+@keyframes cardDissolve { 0%, 30% { opacity: 1; filter: blur(0); transform: scale(1); } 65% { opacity: .72; filter: blur(3px); } 100% { opacity: .02; filter: blur(10px); transform: scale(1.018); } }
+@keyframes liftCard { 0% { transform: translateY(0) scale(1); filter: blur(0); } 18% { transform: translateY(2px) scale(.987); } 40%, 60% { transform: translateY(-11px) scale(1.035); filter: blur(0); } 100% { transform: translateY(-19px) scale(1.055); filter: blur(3px); } }
+@keyframes surfaceFade { 0%, 55% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes surfaceRing { 0% { transform: scale(.1); opacity: 0; } 14% { opacity: .95; } 75% { opacity: .4; } 100% { transform: scale(24); opacity: 0; } }
+@keyframes waterCrest { 0% { transform: translate(-50%,-50%) scale(.12); opacity: 0; } 22% { transform: translate(-50%,-70%) scale(1); opacity: .95; } 55% { transform: translate(-50%,-52%) scale(1.65,.85); opacity: .5; } 100% { transform: translate(-50%,-50%) scale(2.8,.65); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .scene[data-leaving='true'], .scene[data-leaving='true'][data-card-exit='true'], .selected, .surface, .surface *, .ripple, .ripple circle { animation: none; } .water, .surface { display: none; } }

@@ -5,9 +5,9 @@ import type { AudioStatus } from './useCelestialAudio';
 import styles from './SettingsControls.module.css';
 
 const palettes = [
-  { id: 'moonlit', name: 'Moonlit', note: 'Moonstone & gold', dark: ['#111f34', '#3e5b80', '#e4cda1'], light: ['#f4f6fc', '#c9d8f0', '#8e683d'] },
-  { id: 'rosewater', name: 'Rosewater', note: 'Rose & champagne', dark: ['#2c2033', '#78516e', '#edcfb1'], light: ['#fff5f7', '#eccddd', '#8f643e'] },
-  { id: 'tidal', name: 'Tidal', note: 'Sea glass & pearl', dark: ['#102d36', '#377681', '#e0d2b0'], light: ['#f0f8f7', '#c2dfde', '#9b7945'] },
+  { id: 'moonlit', name: 'Moonlit', note: 'Moonstone & gold', dark: ['#111f34', '#3e5b80', '#e4cda1'], light: ['#f6f5f2', '#dcdfea', '#856947'] },
+  { id: 'rosewater', name: 'Rosewater', note: 'Rose & champagne', dark: ['#2c2033', '#78516e', '#edcfb1'], light: ['#faf4f4', '#eadde6', '#8b6a49'] },
+  { id: 'tidal', name: 'Tidal', note: 'Sea glass & pearl', dark: ['#102d36', '#377681', '#e0d2b0'], light: ['#f3f7f3', '#d9e8e6', '#8a714e'] },
 ] as const;
 
 function Sun({ moon = false }: { moon?: boolean }) {

@@ -15,12 +15,18 @@ export function drawCelestial(ctx: CanvasRenderingContext2D, view: CelestialView
   const { line, star, gold } = view.colors;
   const tone = (rgb: string, alpha: number) => `rgba(${rgb},${alpha})`;
   // Daylight needs ink-like strokes, rather than night-time glow at low opacity.
-  const stroke = (rgb: string, alpha: number) => tone(rgb, Math.min(1, alpha * (light ? 1.85 : 1.15)));
+  const stroke = (rgb: string, alpha: number) => tone(rgb, Math.min(1, alpha * (light ? 1.65 : 1.4)));
   const fineWidth = light ? 1 : 0.8;
   ctx.clearRect(0, 0, w, h);
   const point = (x: number, y: number, r: number, color: string) => {
     ctx.fillStyle = color;
     ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+  };
+  const bloom = (x: number, y: number, radius: number, color: string, alpha: number) => {
+    if (light || lite) return;
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, tone(color, alpha)); gradient.addColorStop(0.2, tone(color, alpha * 0.35)); gradient.addColorStop(1, tone(color, 0));
+    ctx.fillStyle = gradient; ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
   };
   const spark = (x: number, y: number, size: number, alpha: number) => {
     ctx.strokeStyle = tone(gold, alpha);
@@ -36,9 +42,9 @@ export function drawCelestial(ctx: CanvasRenderingContext2D, view: CelestialView
       const force = Math.max(0, 1 - distance / 155) * field.pointer.strength * 20;
       x += dx / Math.max(1, distance) * force; y += dy / Math.max(1, distance) * force;
     }
-    const alpha = (light ? 0.32 : 0.2) + (Math.sin(time * 0.5 + index * 1.8) + 1) * 0.18;
+    const alpha = (light ? 0.22 : 0.26) + (Math.sin(time * 0.5 + index * 1.8) + 1) * (light ? 0.13 : 0.22);
     point(x, y, star.size, tone(view.colors.star, alpha));
-    if (index % 23 === 0) spark(x, y, 3.5, alpha + 0.1);
+    if (index % 23 === 0) { bloom(x, y, 16, gold, alpha * 0.55); spark(x, y, 3.5, alpha + 0.1); }
   });
 
   // Long celestial meridians carry little lights across the background.
@@ -57,7 +63,9 @@ export function drawCelestial(ctx: CanvasRenderingContext2D, view: CelestialView
     ctx.setLineDash([]);
     for (let dot = 0; dot < 3; dot++) {
       const a = time * (0.025 + line * 0.007) + line * 1.7 + dot * TAU / 3;
-      spark(Math.cos(a) * rx, Math.sin(a) * ry, dot === 0 ? 5 : 2, 0.45);
+      const x = Math.cos(a) * rx, y = Math.sin(a) * ry;
+      if (dot === 0) bloom(x, y, 23, gold, 0.45);
+      spark(x, y, dot === 0 ? 5 : 2, light ? 0.45 : 0.65);
     }
     ctx.restore();
   }
@@ -103,7 +111,7 @@ export function drawCelestial(ctx: CanvasRenderingContext2D, view: CelestialView
       if (segment % 8 === 0) point(p.x, p.y, 0.8, tone(gold, 0.3 + near * 0.4));
     }
     const highlight = project(time * 0.27 + ring * 2);
-    ctx.shadowBlur = lite || light ? 0 : 16; ctx.shadowColor = tone(gold, 0.8);
+    ctx.shadowBlur = lite || light ? 0 : 24; ctx.shadowColor = tone(gold, 0.9);
     spark(highlight.x, highlight.y, 5, 0.85); ctx.shadowBlur = 0;
   }
   ctx.restore();
@@ -128,9 +136,10 @@ export function drawLivingLight(ctx: CanvasRenderingContext2D, view: CelestialVi
     ctx.fillStyle = rgba(color, alpha); ctx.beginPath(); ctx.arc(x, y, size, 0, TAU); ctx.fill();
   };
   const glow = (x: number, y: number, radius: number, alpha: number, color = colors.gold) => {
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-    gradient.addColorStop(0, rgba(color, alpha)); gradient.addColorStop(0.18, rgba(color, alpha * 0.35)); gradient.addColorStop(1, rgba(color, 0));
-    ctx.fillStyle = gradient; ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+    const spread = radius * (light ? 0.9 : 1.25), intensity = alpha * (light ? 0.7 : 1.4);
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, spread);
+    gradient.addColorStop(0, rgba(color, intensity)); gradient.addColorStop(0.18, rgba(color, intensity * 0.35)); gradient.addColorStop(1, rgba(color, 0));
+    ctx.fillStyle = gradient; ctx.fillRect(x - spread, y - spread, spread * 2, spread * 2);
   };
   ctx.save();
   const pointer = field.pointer;

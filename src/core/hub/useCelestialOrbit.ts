@@ -32,15 +32,21 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, raysR
     if (!stage || !canvas) return;
     const ctx = canvas.getContext('2d');
     let view: CelestialView;
-    let frame = 0, previous = 0, lastPaint = 0, visible = true;
+    let frame = 0, previous = 0, lastPaint = 0, visible = true, disposed = false;
     const s = state.current;
     const field = light.current, input = interaction.current;
 
     function paint(now: number) {
       frame = 0;
-      if (!view || document.hidden || !visible) return;
+      if (disposed || !stage!.isConnected || !view || document.hidden || !visible) return;
       const dt = Math.min((now - (previous || now)) / 1000, 0.05);
       previous = now;
+      // Hold the composition while the chosen card lifts into its water transition.
+      if (stage!.parentElement!.dataset.departing === 'true') {
+        stage!.parentElement!.dataset.running = 'false';
+        frame = requestAnimationFrame(paint);
+        return;
+      }
       const active = animated && !pauseRef.current;
       input.clock += dt;
       const settling = s.target !== null || Math.abs(s.velocity) > 0.002;
@@ -102,13 +108,14 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, raysR
       if (animated && (active || s.dragging || s.target !== null || Math.abs(s.velocity) > 0.002 || Math.abs(s.speed) > 0.001 || easing || returning || parallax || field.ripples.length > 0 || Math.abs(field.pointer.strength - (field.pointer.active ? 1 : 0)) > 0.001)) frame = requestAnimationFrame(paint);
     }
     function start() {
-      if (!frame && !document.hidden && visible) { previous = 0; frame = requestAnimationFrame(paint); }
+      if (!disposed && !frame && !document.hidden && visible) { previous = 0; frame = requestAnimationFrame(paint); }
     }
     function resize() {
+      if (disposed || !stage!.isConnected) return;
       const width = stage!.clientWidth, height = stage!.clientHeight;
       const lite = quality !== 'full';
       const dpr = Math.min(devicePixelRatio || 1, lite ? 1 : 1.5);
-      const colors = getComputedStyle(stage!);
+      const colors = getComputedStyle(document.documentElement);
       view = { width, height, cx: width * (width >= 1000 ? 0.58 : 0.5), cy: height * (width < 600 ? 0.56 : 0.53), radius: Math.min(width * (width < 600 ? 0.31 : 0.32), 470), vertical: Math.min(height * 0.16, width < 600 ? 83 : 145), lite, light: appearance === 'light', colors: { line: colors.getPropertyValue('--portal-line-rgb'), star: colors.getPropertyValue('--portal-star-rgb'), gold: colors.getPropertyValue('--portal-gold-rgb') } };
       canvas!.width = Math.round(width * dpr); canvas!.height = Math.round(height * dpr);
       ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -129,6 +136,7 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, raysR
     }
     const resizeObserver = new ResizeObserver(resize);
     const intersection = new IntersectionObserver(([entry]) => {
+      if (disposed) return;
       visible = entry.isIntersecting;
       if (visible) start(); else { cancelAnimationFrame(frame); frame = 0; stage.parentElement!.dataset.running = 'false'; cancelInput(); }
     });
@@ -138,6 +146,7 @@ export default function useCelestialOrbit({ stageRef, canvasRef, cardsRef, raysR
     if (!animated) cardsRef.current.forEach((card) => card?.removeAttribute('style'));
     resize();
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame); resizeObserver.disconnect(); intersection.disconnect();
       document.removeEventListener('visibilitychange', visibility); wake.current = () => {};
       cancelInput();

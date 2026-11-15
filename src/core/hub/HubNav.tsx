@@ -65,6 +65,7 @@ export default function HubNav() {
               <li key={world.id} ref={(node) => { cardsRef.current[index] = node; }} className={styles.world} data-world={world.id}>
                 <Link
                   to={world.path}
+                  data-portal-card="true"
                   draggable={false}
                   className={styles.card}
                   aria-label={`Enter ${world.title}`}
