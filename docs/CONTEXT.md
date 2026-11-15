@@ -48,6 +48,8 @@ Lead review on 2026-11-15: P-01–P-08, P-10 and P-11 are CONFIRMED. P-09 is DEF
 | P-09 | DEFERRED | Candidate photo album mapping: `Tiên hiệp` → Studio Photography, `Cosplay Festival` → Cosplay Collection, `Birthday` → Life Moments. Waiting for the Lead to confirm the mapping. Blocks INFO-03 only | Matches the existing folders to the brief's album categories |
 | P-10 | CONFIRMED | Hub cards are HTML links positioned over a WebGL Möbius ribbon | Readable, accessible, focusable, and keeps a no-3D fallback |
 | P-11 | CONFIRMED | npm as the package manager | Default, no extra tooling |
+| P-12 | CONFIRMED | The public name is **Celestial Portal**, used in the page title and the launcher. "Möbius Universe" stays the internal project name (repository, package, docs) | Lead decision, 2026-11-15 (HUB-REV) |
+| P-13 | CONFIRMED | Hub settings follow HUB-REV: visitors choose only appearance (dark or light) and palette. Sound is on by default with no off switch. Motion follows the system setting. Quality starts at full ([ARCHITECTURE §7](ARCHITECTURE.md#7-shell-behavior-core), [§11](ARCHITECTURE.md#11-performance-and-accessibility)) | Lead decision, 2026-11-15. Replaces the earlier rule that sound stays off and motion can be toggled in the app |
 
 ## 5. Not yet decided
 

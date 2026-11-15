@@ -35,7 +35,7 @@ src/
     transitions/
   shared/                  Core-owned; the ONLY internal code worlds may import
     contract.ts            WorldId, WorldMeta, WorldDefinition
-    settings.tsx           SettingsProvider + useSettings (motion, quality, sound)
+    settings.tsx           SettingsProvider + useSettings (motion, quality, sound, appearance, palette)
     tokens.css             Design tokens
     ui/                    Genuinely reusable primitives (added only when 2+ worlds need them)
   worlds/
@@ -174,9 +174,17 @@ export default function CharacterWorld() {
 - `WorldFrame` wraps every world. It renders a back-to-hub control that is always visible and is the first keyboard stop. It also sets `document.title`, moves focus to the world's `<main>` after navigation, and shows a `Suspense` loading state.
 - An `ErrorBoundary` around each world shows a message with **Retry** and **Back to Hub**, so a crashing world never breaks the shell or the hub.
 - Lazy components are created once per world from `load()`. Hovering or focusing a hub card calls `load()` to prefetch the world.
-- Settings (`shared/settings.tsx`): `motion: 'full' | 'reduced'` (initialized from `prefers-reduced-motion`), `quality: 'full' | 'lite' | 'static'`, and `sound: boolean` (default `false`). Core renders the settings control. Values are saved in `localStorage` with try/catch and the app works without it.
+- Settings (`shared/settings.tsx`), per the Lead decision of 2026-11-15 ([P-13](CONTEXT.md#4-architecture-decisions)):
+  - `motion: 'full' | 'reduced'` follows `prefers-reduced-motion` only.
+  - `quality: 'full' | 'lite' | 'static'` starts at `full`.
+  - `sound: boolean` defaults to `true`.
+  - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
+  - `palette: 'moonlit' | 'rosewater' | 'tidal'` defaults to `moonlit`.
+- Core renders the settings control (the Atmosphere panel). Only `appearance` and `palette` can be chosen there and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
 
 ## 8. Möbius Hub
+
+**Implemented state (HUB-REV, merged 2026-11-15):** the hub is the Celestial Portal. HubNav cards orbit a 2D canvas of celestial rings (`hub/celestialCanvas.ts`, `hub/useCelestialOrbit.ts`), with water-style scene transitions (`shell/useSceneTransition.ts`) and an ambient soundscape (`shell/useCelestialAudio.ts`). It uses no WebGL. The WebGL HubScene and the Möbius ribbon described below are not built; they remain the original HUB-02 plan.
 
 Layers:
 1. **HubNav (DOM, always rendered):** `<nav aria-label="Worlds">` with five `<a>` cards. This layer is the accessible navigation and the static-tier layout.
@@ -237,10 +245,10 @@ Hub ↔ world transitions (Core): the selected card expands or dissolves, the ro
 - **Images:** use `loading="lazy"`, `decoding="async"` and explicit `width`/`height`. Use thumbnails in grids and full size on demand.
 - **GPU:** one active canvas at a time, capped DPR, paused while hidden or offscreen (use IntersectionObserver for canvases inside worlds), and resources disposed on unmount.
 - **Mobile:** use the `lite` tier by default and make touch targets at least 44 px.
-- **Reduced motion:** use the `static` tier for the hub and no automatic animation in worlds. The user can toggle this in Core settings.
+- **Reduced motion:** follows the system `prefers-reduced-motion` setting. The hub then stops its automatic animation, and worlds must not animate automatically either. There is no in-app toggle (Lead decision, 2026-11-15).
 - **Accessibility:** all navigation works with keyboard and touch and without WebGL. Focus styles are visible, text contrast is readable, and `<html lang>` follows the content language.
 - **Browsers:** the current evergreen desktop and mobile browsers, including iOS Safari. Without WebGL2 the site uses the static tier.
-- **Audio:** no `AudioContext` or playback before a user gesture. Sound stays off until the user enables it, using the global `sound` setting plus a per-world volume control.
+- **Audio:** no `AudioContext` or playback before a user gesture. Sound is on by default (Lead decision, 2026-11-15): the hub soundscape starts on the visitor's first pointer or key gesture, and the app has no switch to turn it off. The Lead accepted that this does not meet WCAG 1.4.2 (Audio Control). Worlds read the global `sound` setting.
 - **Measurement:** no performance numbers are promised. QA-03 measures with Lighthouse (mobile and desktop) and the `vite build` chunk report, then records results in STATUS.
 
 ## 12. Deployment
