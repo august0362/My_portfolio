@@ -13,17 +13,17 @@ function renderRoute(path: string) {
   );
 }
 
-test('the Hub links to all five worlds', () => {
+test('the Portal links to all five worlds', () => {
   const markup = renderRoute('/');
   expect(markup).toContain('id="hub-title"');
   expect(markup).not.toMatch(/m[oö]bius/i);
   for (const world of WORLDS) expect(markup).toContain(`href="${world.path}"`);
-  expect(markup).not.toContain('Back to Hub');
+  expect(markup).not.toContain('Return to the Portal');
 });
 
-test('unknown routes provide a 404 and a way back to the Hub', () => {
+test('unknown routes provide a 404 and a way back to the Portal', () => {
   const markup = renderRoute('/unknown/page');
   expect(markup).toContain('404 — Page not found');
   expect(markup).toContain('href="/"');
-  expect(markup).toContain('Back to Hub');
+  expect(markup).toContain('Return to the Portal');
 });

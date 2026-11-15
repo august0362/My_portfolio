@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type RefObject } from 'react';
-import { albums } from '../data/albums';
+import { useCopy, useLanguage } from '@shared/i18n';
+import { COPY, localizedAlbums } from '../data/locale';
 import { delay, useReveal } from '../motion';
 import styles from './Gallery.module.css';
 import { CORNER, RingedPlanet } from './celestial';
@@ -28,7 +29,16 @@ function useWidth(ref: RefObject<HTMLElement | null>, key: string, fallback: num
 }
 
 export default function Gallery({ reduced }: { reduced: boolean }) {
-  const [albumIndex, setAlbumIndex] = useState(0);
+  const t = useCopy(COPY);
+  const language = useLanguage();
+  const albums = useMemo(() => localizedAlbums(language), [language]);
+  const [albumIndex, setAlbumIndexState] = useState(0);
+  const [direction, setDirection] = useState<'next' | 'previous'>('next');
+  const setAlbumIndex = (next: number) => {
+    if (next === albumIndex) return;
+    setDirection(next > albumIndex ? 'next' : 'previous');
+    setAlbumIndexState(next);
+  };
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -62,17 +72,17 @@ export default function Gallery({ reduced }: { reduced: boolean }) {
     <Section
       id="gallery"
       number="03"
-      kicker="Photographs"
+      kicker={t.galleryKicker}
       waves
       title={
         <>
-          Fragments <em>of Me</em>
+          {t.galleryTitle[0]}<em>{t.galleryTitle[1]}</em>
         </>
       }
     >
       <RingedPlanet className={CORNER} />
 
-      <div className={styles.tabs} role="tablist" aria-label="Albums">
+      <div className={styles.tabs} role="tablist" aria-label={t.albums} data-direction={direction}>
         {albums.map((a, i) => (
           <button
             key={a.id}
@@ -110,12 +120,14 @@ export default function Gallery({ reduced }: { reduced: boolean }) {
         role="tabpanel"
         aria-labelledby={`tab-${album.id}`}
         className={styles.panel}
+        data-direction={direction}
       >
+        <span className={styles.panelSweep} aria-hidden="true" />
         {album.placeholder && (
           <p className={styles.pending} data-reveal="fade">
-            <span className={shared.badge}>Photos pending</span>
+            <span className={shared.badge}>{t.photosPending}</span>
             <span>
-              Photos appear once the image pipeline strips their metadata. Plates show the planned proportions.
+              {t.photosPendingNote}
             </span>
           </p>
         )}
@@ -136,7 +148,7 @@ export default function Gallery({ reduced }: { reduced: boolean }) {
                       type="button"
                       className={styles.tileButton}
                       onClick={() => setOpenIndex(i)}
-                      aria-label={`Open in viewer: ${photo.alt}`}
+                      aria-label={`${t.openViewer}: ${photo.alt}`}
                       aria-haspopup="dialog"
                     >
                       <span className={styles.tileMedia} data-reveal="mask" style={delay(k * 120)}>

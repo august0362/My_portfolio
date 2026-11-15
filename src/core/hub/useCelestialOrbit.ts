@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { KeyboardEvent, MouseEvent, PointerEvent, RefObject } from 'react';
+import type { Palette } from '@shared/settings';
 import { cardPosition, clamp, nearestAngle, WORLD_STEP } from './orbitMath';
 import { drawCelestial, drawLivingLight } from './celestialCanvas';
 import type { CelestialView } from './celestialCanvas';
@@ -14,7 +15,7 @@ interface Options {
   paused: boolean;
   quality: 'full' | 'lite' | 'static';
   appearance: 'dark' | 'light';
-  palette: 'moonlit' | 'rosewater' | 'tidal';
+  palette: Palette;
   onSelect: (index: number) => void;
 }
 

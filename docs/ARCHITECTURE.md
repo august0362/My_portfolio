@@ -1,6 +1,6 @@
 # Architecture
 
-Status: the direction is **CONFIRMED** (P-01–P-15). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
+Status: the direction is **CONFIRMED** (P-01–P-17). Implementation state is in [STATUS.md](STATUS.md). The module contract (§5) is frozen as v1 since GATE-1 (Lead, 2026-11-15). Decision IDs (P-xx) refer to [CONTEXT §4](CONTEXT.md#4-architecture-decisions).
 
 ## 1. Technology choices
 
@@ -21,23 +21,21 @@ Not used: SSR or meta-frameworks, a backend, a database, auth, CMS, microfronten
 ```text
 index.html                 Core
 package.json, lockfile     Core
-vite.config.ts, tsconfig*.json, eslint.config.js   Core
-public/                    Core: favicon, robots.txt, OG image (stable-URL files only)
+vite.config.ts, tsconfig.json, eslint.config.js, run.bat   Core
+public/                    Core: stable-URL files only (none yet)
 scripts/                   Core: build-time tools (image optimizer)
 data/                      Raw source material. Never imported by app code (P-08)
 docs/                      See AGENT_RULES §2 for edit rights
 src/
   main.tsx                 Core
-  core/                    Core: shell, router, registry, hub, transitions, 404
+  core/                    Core: App (router), registry, hub, shell
     registry.ts
-    shell/                 AppShell, WorldFrame (back-to-hub, Suspense, ErrorBoundary)
+    shell/                 AppShell, WorldFrame, BackToHub, 404, settings panel, transitions, audio
     hub/                   HubNav (DOM cards), 2D celestial canvas and orbit
-    transitions/
   shared/                  Core-owned; the ONLY internal code worlds may import
     contract.ts            WorldId, WorldMeta, WorldDefinition
     settings.tsx           SettingsProvider + useSettings (motion, quality, sound, appearance, palette)
     tokens.css             Design tokens
-    ui/                    Genuinely reusable primitives (added only when 2+ worlds need them)
   worlds/
     information/           Information agent
     production/            Production agent
@@ -46,7 +44,7 @@ src/
     ethereal/              Ethereal agent
 ```
 
-Each world folder holds `meta.ts`, `index.tsx` and any of `components/`, `data/`, `assets/`, `types.ts` and `*.module.css`.
+Each world folder holds `meta.ts`, `index.tsx` and any of `components/`, `data/`, `assets/`, `types.ts` and `*.module.css`. A shared UI primitive goes into `src/shared/` only when two or more worlds need it.
 
 ## 3. Boundaries and import rules
 
@@ -59,10 +57,7 @@ worlds/<a>/**  ──✕──► worlds/<b>/**, core/**
 shared/**      ──✕──► core/**, worlds/**
 ```
 
-- ESLint enforces these rules for **both** alias imports (`@core/*`, `@shared/*`, `@worlds/*`) and relative imports (for example `../production/x` or `../../core/x`).
-  - String-only `no-restricted-imports` patterns cannot reliably catch relative paths.
-  - CORE-01 must use a rule that resolves the target file path, with a TypeScript resolver so aliases resolve too. The recommended rule is a `no-restricted-paths` zone rule from an import plugin.
-  - CORE-01 records the chosen rule and proves it with probe imports ([PLAN M1](PLAN.md#m1-shared-foundation-and-integration-contract)).
+- ESLint (`import-x/no-restricted-paths` with the TypeScript resolver, in `eslint.config.js`) enforces these rules for **both** alias imports (`@core/*`, `@shared/*`, `@worlds/*`) and relative imports (for example `../production/x`).
 - World CSS must be CSS Modules or selectors scoped under the world root class. Worlds must not style `html` or `body`, change global tokens, or leave global listeners without cleanup.
 - A world may define its own look by setting CSS variables on its root element.
 - Dependencies between Core and worlds: worlds depend on `shared/contract.ts`, `shared/settings.tsx`, `shared/tokens.css` and the npm packages chosen in `package.json`. Core depends only on each world's `meta.ts` and its default export.
@@ -81,7 +76,7 @@ shared/**      ──✕──► core/**, worlds/**
 
 ## 5. Module contract
 
-The contract is Core-owned. **Contract v1 is frozen** since GATE-1, approved by the Lead on 2026-11-15 after CORE-02 was implemented and verified ([PLAN](PLAN.md#m1-shared-foundation-and-integration-contract)). Any change now needs a Core change request and an update to every affected world in the same integration step ([§13](#13-changing-shared-architecture)).
+The contract is Core-owned. **Contract v1 is frozen** since GATE-1 (Lead, 2026-11-15). Any change now needs a Core change request and an update to every affected world in the same integration step ([§13](#13-changing-shared-architecture)).
 
 ```ts
 // src/shared/contract.ts
@@ -171,27 +166,30 @@ export default function CharacterWorld() {
 
 ## 7. Shell behavior (Core)
 
-- `WorldFrame` wraps every world. It renders a back-to-hub control that is always visible and is the first keyboard stop. It also sets `document.title`, moves focus to the world's `<main>` after navigation, and shows a `Suspense` loading state.
-- An `ErrorBoundary` around each world shows a message with **Retry** and **Back to Hub**, so a crashing world never breaks the shell or the hub.
+- `WorldFrame` wraps every world. It renders a "Return to the Portal" control that is always visible and is the first keyboard stop. It also sets `document.title`, moves focus to the world's `<main>` after navigation, and shows a `Suspense` loading state.
+- An `ErrorBoundary` around each world shows a message with **Retry** and a way back to the Portal, so a crashing world never breaks the shell or the hub.
 - Lazy components are created once per world from `load()`. Hovering or focusing a hub card calls `load()` to prefetch the world.
 - Settings (`shared/settings.tsx`), per the Lead decision of 2026-11-15 ([P-13](CONTEXT.md#4-architecture-decisions)):
   - `motion: 'full' | 'reduced'` follows `prefers-reduced-motion` only.
   - `quality: 'full' | 'lite' | 'static'` starts at `full`.
   - `sound: boolean` defaults to `true`.
   - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
-  - `palette: 'moonlit' | 'rosewater' | 'tidal'` defaults to `moonlit`.
-- Core renders the settings control (the Atmosphere panel). Only `appearance` and `palette` can be chosen there and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
+  - `palette: 'iris' | 'sakura' | 'jade' | 'pearl' | 'dream'` defaults to `iris` (P-17). Retired values migrate: moonlit → iris, rosewater → sakura, tidal → jade, lagoon → dream.
+  - `language: 'en' | 'vi'` defaults to the browser language and sets `<html lang>` (P-17).
+- Core renders the settings control (the Atmosphere panel). Only `appearance`, `palette` and `language` can be chosen there (language beside the Atmosphere button) and restored from `localStorage`; saved `motion`, `quality` and `sound` values are ignored. Storage uses try/catch, and the app works without it.
+- Paired themes ([P-16](CONTEXT.md#4-architecture-decisions)): the Atmosphere panel is the only color control, and it stays visible in worlds. Each world reads `appearance` and `palette` from `useSettings()`, renders light or dark to match, and maps each of the five palettes to one paired world theme (for example Information's `PAIRED_THEMES` in `theme.config.ts`). Worlds do not add their own palette or light/dark controls.
+- Languages ([P-17](CONTEXT.md#4-architecture-decisions)): `@shared/i18n` provides `Localized<T>` (`{ en, vi }`), `useLanguage()` and `useCopy(dictionary)`. Core keeps its copy and the hub names of the worlds in `core/copy.ts`; each world keeps its own copy and content translations (for example `data/locale.ts`). Approved originals are never edited to translate them. A language switch must not move focus or scroll.
 
-## 8. Möbius Hub
+## 8. Hub (Celestial Portal)
 
-The hub is the Celestial Portal from HUB-REV (merged 2026-11-15, [P-14](CONTEXT.md#4-architecture-decisions)). HUB-02 (a lazy WebGL HubScene with a Möbius ribbon) and the pixel reconstruction effect were dropped by the Lead on 2026-11-15.
+The hub is the 2D Celestial Portal from HUB-REV ([P-14](CONTEXT.md#4-architecture-decisions)). There is no WebGL hub scene, Möbius ribbon or pixel reconstruction effect.
 
 - **HubNav (DOM, always rendered):** five `<a>` cards inside the hub `<main>`. This layer is the accessible navigation.
 - **Decoration:** a 2D canvas of celestial rings (`hub/celestialCanvas.ts`, `hub/useCelestialOrbit.ts`), hidden from assistive technology. It uses no WebGL. Cards orbit it, and the nearest card stays above the core.
 - **Motion:** the orbit and canvas animation stop under reduced motion (`settings.motion`, which follows the system setting, P-13).
 - **Sound:** an ambient soundscape (`shell/useCelestialAudio.ts`), on by default (P-13).
 
-Hub ↔ world transitions (HUB-03, Core): water-style scene transitions in `shell/useSceneTransition.ts`. The selected card lifts and dissolves, the route changes, and the world fades in. With reduced motion the change is instant. Navigation never waits on a transition.
+Page transitions (HUB-03, P-17, Core): `shell/useSceneTransition.ts`. A celestial veil closes from the pressed link, the route changes, and the new page opens through it; a hub card also lifts and dissolves first. With reduced motion the change is instant. Navigation never waits on a transition.
 
 World routes are full-bleed (P-15): `AppShell` drops the content column and the brand header, and `BackToHub` floats top-left. Placeholder worlds (`[data-placeholder]`) keep a readable column.
 
@@ -221,7 +219,7 @@ World routes are full-bleed (P-15): `AppShell` drops the content column and the 
 - **Initial load:** the main bundle holds the shell and HubNav only. `three` and R3F load only in the 3D world chunks that need them, and each world is its own chunk.
 - **Images:** use `loading="lazy"`, `decoding="async"` and explicit `width`/`height`. Use thumbnails in grids and full size on demand.
 - **GPU:** one active canvas at a time, capped DPR, paused while hidden or offscreen (use IntersectionObserver for canvases inside worlds), and resources disposed on unmount.
-- **Mobile:** use the `lite` tier by default and make touch targets at least 44 px.
+- **Mobile:** touch targets are at least 44 px. Quality starts at `full` (P-13), so 3D worlds must still stay usable on weak phones.
 - **Reduced motion:** follows the system `prefers-reduced-motion` setting. The hub then stops its automatic animation, and worlds must not animate automatically either. There is no in-app toggle (Lead decision, 2026-11-15).
 - **Accessibility:** all navigation works with keyboard and touch and without WebGL. Focus styles are visible, text contrast is readable, and `<html lang>` follows the content language.
 - **Browsers:** the current evergreen desktop and mobile browsers, including iOS Safari. Without WebGL2, 3D worlds fall back to a static view.

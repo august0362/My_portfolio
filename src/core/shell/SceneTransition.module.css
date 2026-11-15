@@ -37,4 +37,18 @@
 @keyframes emissionRing { 0% { transform: scale(.1); opacity: 0; } 10% { opacity: .85; } 55% { opacity: .4; } 100% { transform: scale(var(--pulse-scale)); opacity: 0; } }
 @keyframes emissionHalo { 0% { transform: scale(.1); opacity: 0; } 18% { opacity: .8; } 100% { transform: scale(3.4); opacity: 0; } }
 @keyframes emissionSpark { 0% { transform: rotate(var(--spark-angle)) translateX(4px) scale(.2); opacity: 0; } 12% { opacity: .9; } 100% { transform: rotate(var(--spark-angle)) translateX(calc(var(--spark-reach) * var(--spark-factor))) scale(.15); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .scene[data-leaving='true'], .scene[data-leaving='true'][data-card-exit='true'], .selected, .surface, .surface *, .ripple, .ripple circle { animation: none; } .water, .surface { display: none; } }
+.veil { position: absolute; inset: 0; z-index: 2; pointer-events: none; background:
+    radial-gradient(1.5px 1.5px at 18% 26%, rgba(var(--portal-star-rgb), .9), transparent),
+    radial-gradient(1px 1px at 72% 18%, rgba(var(--portal-star-rgb), .8), transparent),
+    radial-gradient(1.5px 1.5px at 84% 64%, rgba(var(--portal-gold-rgb), .9), transparent),
+    radial-gradient(1px 1px at 34% 78%, rgba(var(--portal-star-rgb), .7), transparent),
+    radial-gradient(1px 1px at 56% 44%, rgba(var(--portal-gold-rgb), .6), transparent),
+    radial-gradient(circle at var(--veil-x, 50%) var(--veil-y, 50%), color-mix(in srgb, var(--portal-glow) 80%, var(--portal-bg)), var(--portal-mid) 38%, var(--portal-bg) 78%);
+  clip-path: circle(0 at var(--veil-x, 50%) var(--veil-y, 50%)); animation: veilClose .52s cubic-bezier(.55,0,.35,1) both; }
+.veil > i { position: absolute; left: var(--veil-x, 50%); top: var(--veil-y, 50%); width: 40px; height: 40px; margin: -20px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--portal-gold) 85%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--portal-gold) 45%, transparent), inset 0 0 18px color-mix(in srgb, var(--portal-accent) 35%, transparent); animation: veilRing .52s cubic-bezier(.55,0,.35,1) both; }
+@property --veil-hole { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+.veilOpen { --veil-x: 50%; --veil-y: 46%; clip-path: none; -webkit-mask-image: radial-gradient(circle at 50% 46%, transparent var(--veil-hole), #000 calc(var(--veil-hole) + 12%)); mask-image: radial-gradient(circle at 50% 46%, transparent var(--veil-hole), #000 calc(var(--veil-hole) + 12%)); animation: veilOpen .8s cubic-bezier(.3,0,.2,1) both; }
+@keyframes veilClose { to { clip-path: circle(150% at var(--veil-x, 50%) var(--veil-y, 50%)); } }
+@keyframes veilRing { 0% { transform: scale(.2); opacity: 0; } 25% { opacity: 1; } 100% { transform: scale(60); opacity: 0; } }
+@keyframes veilOpen { 0% { --veil-hole: 0%; opacity: 1; } 75% { opacity: 1; } 100% { --veil-hole: 150%; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .scene[data-leaving='true'], .scene[data-leaving='true'][data-card-exit='true'], .selected, .surface, .surface *, .ripple, .ripple circle { animation: none; } .water, .surface, .veil { display: none; } }

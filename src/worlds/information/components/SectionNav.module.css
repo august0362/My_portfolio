@@ -83,3 +83,89 @@
     display: none;
   }
 }
+
+/* ---------- Section transitions ---------- */
+.nav ol {
+  position: relative;
+  z-index: 1;
+}
+
+/* The active marker glides between sections instead of jumping. */
+.orb {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--nav-ink) 18%, transparent), transparent 70%),
+    color-mix(in srgb, var(--nav-ink) 9%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--nav-ink) 14%, transparent), 0 0 18px color-mix(in srgb, var(--nav-ink) 12%, transparent);
+  translate: 0 calc(var(--at, 0) * 44px);
+  transition: translate 0.65s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+
+.link[aria-current='true'] {
+  background: transparent;
+}
+
+.sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sweep::before {
+  content: '';
+  position: absolute;
+  inset: -40% 0 auto;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--glow) 34%, transparent) 45%,
+    color-mix(in srgb, var(--accent) 22%, transparent) 55%,
+    transparent
+  );
+  filter: blur(6px);
+  animation: sectionSweep 1.3s 0.25s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+.sweep > i {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent) 20%, color-mix(in srgb, var(--accent) 40%, #fff) 50%, var(--accent) 80%, transparent);
+  box-shadow: 0 0 14px var(--accent);
+  animation: sectionLine 1.3s 0.25s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+:global([data-arriving]) :is(h1, h2) {
+  animation: titleSettle 1.1s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sectionSweep {
+  from { translate: 0 0; opacity: 0; }
+  15% { opacity: 1; }
+  to { translate: 0 330%; opacity: 0; }
+}
+
+@keyframes sectionLine {
+  0% { translate: 0 0; scale: 0.2 1; opacity: 0; }
+  15% { opacity: 1; scale: 1 1; }
+  100% { translate: 0 100vh; opacity: 0; }
+}
+
+@keyframes titleSettle {
+  from { opacity: 0.25; filter: blur(8px); letter-spacing: 0.06em; }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { transition: none; }
+  .sweep { display: none; }
+  :global([data-arriving]) :is(h1, h2) { animation: none; }
+}

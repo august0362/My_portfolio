@@ -16,7 +16,7 @@ Presents the creator's identity, life journey, photos, skills and resume. V1 is 
 
 | Task | Deliverable | Acceptance |
 |---|---|---|
-| INFO-01 | Identity, Knowledge & Skills (category groups, no percentage bars), Resume & Connect | Text matches the JSON exactly. Skills come only from the Lead-confirmed list. The CV link appears only once a public CV file exists. Links open correctly |
+| INFO-01 | Identity, Knowledge & Skills (category groups, no percentage bars), Resume & Connect | Text matches the JSON exactly. Skills come only from the Lead-confirmed list. The public CV is an HTML sheet with no phone and no file link (P-15). Links open correctly |
 | INFO-02 | My Journey: celestial timeline component with entries (`period`, `title`, `description`, optional `image`) | Renders placeholder entries clearly marked as placeholders. Keyboard accessible. Static under reduced motion |
 | INFO-03 | Fragments of Me: albums → photo grid → enlarged view | Images come only from CORE-03 output with metadata stripped. Thumbnails in the grid. Lazy loading. Lightbox works with keyboard and Esc. No dates shown for the Birthday album |
 
@@ -26,13 +26,14 @@ Sub-routes per section, album filtering, captions in multiple languages, animate
 
 ## Module architecture
 
-- `data/identity.json`, copied from the raw file.
-- `data/journey.ts`, `data/albums.ts`, `data/skills.ts`.
+- `data/identity.ts` (copied from the raw JSON), `data/journey.ts`, `data/albums.ts`, `data/skills.ts`, `data/cv.ts`.
+- `theme.config.ts` holds every color: five themes, each from exactly one of the owner's moodboards and `PAIRED_THEMES` (P-16, P-17). `theme.ts` derives dark mode and enforces WCAG AA contrast.
+- `data/locale.ts` holds the interface copy and the translations (P-17): English for the Vietnamese bio, journey and personal lists; Vietnamese for the English headline, role, CV and album text. The originals stay untouched.
 - `components/` holds one component per section.
 - `assets/photos/<album>/` holds the optimized images and `assets/CREDITS.md` records their provenance.
 - No WebGL. Celestial accents are CSS or SVG. The hero orbit rings are SVG paths projected each frame from two 3D circles (`components/orbit.ts`, `Orbit3D.tsx`).
 - `sensor.ts` gives one smoothed tilt signal (pointer on desktop, device orientation on phones, iOS asks on first tap). It tilts the portrait, its rings and the CV sheet. Off under reduced motion.
-- `data/cv.ts` and `components/CvSheet.tsx` render the public CV as HTML.
+- `components/CvSheet.tsx` renders the public CV from `data/cv.ts` as HTML.
 
 ## Owned paths
 
@@ -40,19 +41,18 @@ Sub-routes per section, album filtering, captions in multiple languages, animate
 
 ## Shared dependencies
 
-`@shared/contract`, `@shared/settings` (motion), `@shared/tokens.css`, React Router, and the CORE-03 image script, which Core runs or the agent runs without modifying it.
+`@shared/contract`, `@shared/settings` (motion, appearance, palette), `@shared/tokens.css`, React Router, and the CORE-03 image script, which Core runs or the agent runs without modifying it.
 
 ## Missing assets/data
 
-- Journey milestones: SUPPLIED by the Lead (2026-11-15), four chapters 2024 → present with GPA notes. Milestone images are still missing.
-- Skills list: CONFIRMED by the Lead (2026-11-15) as the four professional fields from the identity JSON.
-- Public CV: SHOWN at the Lead's request (2026-11-15) as an HTML sheet in Resume & Connect, transcribed verbatim from `data/CV/CV.pdf` without the phone number. No CV file is linked or shipped. GPA and course grades are shown; `SHOW_GRADES` in `data/cv.ts` hides them. The CV's technical skills appear only inside that sheet, not in Knowledge & Skills.
-- A portrait.
-- Photo captions.
-- Album mapping P-09 CONFIRMED by the Lead (2026-11-15): `Tiên hiệp` → Studio Photography, `Cosplay Festival` → Cosplay Collection, `Birthday` → Life Moments. 16 photos ADDED to the prototype at the Lead's request (2026-11-15) as metadata-free WebP (2048 px plus a 1024 px thumbnail), made by a stopgap Chrome re-encode before CORE-03 existed and accepted as is (P-15); a test checks every file has only the `VP8 ` chunk. Provenance and review notes are in `src/worlds/information/assets/CREDITS.md`. The fourth `Cosplay Festival` photo is left out (third-party shop sign) and no photographer credit is shown (Lead decisions, 2026-11-15). Raw photos: `Tiên hiệp` (8), `Cosplay Festival` (4, 6–11 MB each), `Birthday` (5).
-- Album shoot dates (Lead, 2026-11-15): Studio Photography 2026-06-06; Cosplay Collection 2025-12-28. Life Moments shows the year 2024 only, because its source folder is a birthday shoot and the day and month would reveal the private date of birth.
-- The site language decision.
+Missing: a portrait, milestone images, photo captions, and the site language decision.
+
+Settled by the Lead (2026-11-15):
+- Journey: four chapters, 2024 → present, with GPA notes. Skills: the four professional fields from the identity JSON.
+- Public CV: an HTML sheet transcribed from `data/CV/CV.pdf` without the phone number; no file is linked or shipped. `SHOW_GRADES` in `data/cv.ts` hides GPA and grades. The CV's technical skills appear only in that sheet.
+- Albums (P-09): 16 metadata-free WebP photos (2048 px + 1024 px thumbnail; a test checks each has only the `VP8 ` chunk). The fourth `Cosplay Festival` photo is left out (third-party shop sign), and no photographer credit is shown. Provenance is in `assets/CREDITS.md`.
+- Album dates: Studio Photography 2026-06-06, Cosplay Collection 2025-12-28. Life Moments shows the year 2024 only, because the day and month would reveal the private date of birth.
 
 ## Current verified state
 
-INFO-01, INFO-02 and INFO-03 integrated from the Chronicle prototype (2026-11-15, P-15). The world root is a `<div>` inside WorldFrame's `<main>`; reduced motion comes from `useSettings()`; `meta.ts` is static so the main chunk stays small. The world keeps its own theme picker (bottom-left, `?theme=N`) and light/dark toggle, separate from the hub's Atmosphere settings. Verification is in [STATUS.md](../STATUS.md).
+INFO-01..03 integrated from the Chronicle prototype (2026-11-15, P-15). Colors follow the Atmosphere panel (P-16, P-17): Iris → 01 Iris Reverie, Sakura → 02 Sakura Rose, Jade → 03 Jade Silk, Pearl → 04 Pearl Sheen, Dream → 05 Dream Haze (each from one moodboard), light or dark per `appearance`. Copy follows `settings.language`. The section index has a gliding marker and a light sweep on arrival; album tabs hand over their line and slide the new album in. Verification is in [STATUS.md](../STATUS.md).

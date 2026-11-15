@@ -1,4 +1,6 @@
 import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
+import { useCopy } from '@shared/i18n';
+import { COPY } from '../data/locale';
 import type { Photo } from '../types';
 import styles from './Lightbox.module.css';
 import Plate from './Plate';
@@ -16,6 +18,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 /** Modal viewer on native <dialog>: focus containment, Esc and top-layer come from the platform. */
 export default function Lightbox({ photos, title, index, onIndex, onClose, reduced }: Props) {
+  const t = useCopy(COPY);
   const ref = useRef<HTMLDialogElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const swipeX = useRef<number | null>(null);
@@ -79,7 +82,7 @@ export default function Lightbox({ photos, title, index, onIndex, onClose, reduc
       ref={ref}
       className={styles.dialog}
       data-motion={reduced ? 'reduced' : 'full'}
-      aria-label={`${title}: photo viewer`}
+      aria-label={`${title}: ${t.viewer}`}
       onKeyDown={onKeyDown}
       onClick={onClick}
       onPointerDown={onPointerDown}
@@ -95,11 +98,11 @@ export default function Lightbox({ photos, title, index, onIndex, onClose, reduc
               </span>
             </p>
             <button type="button" className={styles.close} onClick={close}>
-              Close <span aria-hidden="true">✕</span>
+              {t.close} <span aria-hidden="true">✕</span>
             </button>
           </header>
 
-          <button type="button" className={`${styles.nav} ${styles.prev}`} onClick={() => step(-1)} aria-label="Previous photo">
+          <button type="button" className={`${styles.nav} ${styles.prev}`} onClick={() => step(-1)} aria-label={t.previousPhoto}>
             <span aria-hidden="true">←</span>
           </button>
 
@@ -110,12 +113,12 @@ export default function Lightbox({ photos, title, index, onIndex, onClose, reduc
             <figcaption className={styles.caption}>{photo.caption ?? photo.alt}</figcaption>
           </figure>
 
-          <button type="button" className={`${styles.nav} ${styles.next}`} onClick={() => step(1)} aria-label="Next photo">
+          <button type="button" className={`${styles.nav} ${styles.next}`} onClick={() => step(1)} aria-label={t.nextPhoto}>
             <span aria-hidden="true">→</span>
           </button>
 
           <p className={styles.hint} aria-hidden="true">
-            ← → to browse · Esc to close
+            {t.viewerHint}
           </p>
         </div>
       )}

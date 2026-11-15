@@ -36,7 +36,7 @@ Not decided until WAND-01. Constraints:
 
 ## Shared dependencies
 
-- `@shared/contract`, `@shared/settings` (motion, quality, sound), `@shared/tokens.css`.
+- `@shared/contract`, `@shared/settings` (motion, quality, sound, and appearance + palette for colors, P-16; language for copy, P-17), `@shared/tokens.css`.
 - `three`/R3F if chosen. Any other library needs a change request.
 
 ## Missing assets/data

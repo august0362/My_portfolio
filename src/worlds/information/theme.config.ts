@@ -1,15 +1,16 @@
+import type { Settings } from '@shared/settings';
 import type { ThemeDef } from './theme';
 
 /* ══════════════════════════════════════════════════════════════════════════
    CHRONICLE · COLOR CONFIG   (the only file you need to edit for colors)
 
-   1. ACTIVE_THEME       theme a first-time visitor sees.
-   2. SHOW_THEME_PICKER  visitor theme picker (bottom-left). Visitors choose a theme;
-                         their choice is remembered in their browser, and `?theme=3`
-                         in a link opens that theme directly.
-   3. DEFAULT_MODE       'light' or 'dark' for a first-time visitor. The site's own
-      SHOW_MODE_TOGGLE   sun/moon button switches it; the browser/OS dark setting is ignored.
-   4. THEMES             edit any hex value; save and the page updates.
+   1. PAIRED_THEMES      the Chronicle theme shown for each site palette. Visitors pick
+                         the palette and light/dark in the site's Atmosphere panel, so
+                         every page stays in one color story (P-16). Point a palette at
+                         any theme number below to re-pair it.
+   2. ACTIVE_THEME       fallback theme; it is the one paired with the default palette.
+   3. THEMES             edit any hex value; save and the page updates. Each theme uses only the colors
+                         of one moodboard in data/Image/Theme (P-17).
 
    Each section needs:  tone ('light' | 'dark'), bg, text, accent, particle, cloudA, cloudB.
    Optional overrides:  bgAlt, textMuted, accentInk, surface, border, glow.
@@ -23,10 +24,14 @@ import type { ThemeDef } from './theme';
    New theme: copy a block, give it the next `no`.
    ══════════════════════════════════════════════════════════════════════════ */
 
-export const ACTIVE_THEME = 1;
-export const SHOW_THEME_PICKER = true;
-export const DEFAULT_MODE: 'light' | 'dark' = 'light';
-export const SHOW_MODE_TOGGLE = true;
+export const PAIRED_THEMES: Record<Settings['palette'], number> = {
+  iris: 1, // Iris Reverie: f996cc3f2a1f556469bc6e165d8d476f.jpg
+  sakura: 2, // Sakura Rose: bf9369d6ef4568bb9d20c610b23d6163.jpg
+  jade: 3, // Jade Silk: 4c65dc070bc7af2bf5ef456285cb80ba.jpg
+  pearl: 4, // Pearl Sheen: 417300860fc91c1ac899b0bf28bb66b3.jpg
+  dream: 5, // Dream Haze: 7a23aac0d5b3974c2c3e7331746eca5e.jpg
+};
+export const ACTIVE_THEME = PAIRED_THEMES.iris;
 
 export const FONTS = {
   display: "'Cormorant Garamond', 'Cormorant', 'Times New Roman', serif",
@@ -34,108 +39,73 @@ export const FONTS = {
 };
 
 export const themes: ThemeDef[] = [
-  /* ── 01 · Chronicle ── Moonlit Reverie · Angel's Breath · Sunset Clouds · Pastel Dream.
-     The original, hand-tuned theme: every value is set explicitly. */
+  /* ── 01 · Iris Reverie ── only the colors of f996cc3f2a1f556469bc6e165d8d476f.jpg. */
   {
     no: 1,
-    name: 'Chronicle',
-    palette: ['#344979', '#c6c6e8', '#f7e5eb', '#ecb8a6', '#fcd6c1', '#d6b0bf', '#d2c296', '#bdd1d3'],
+    name: 'Iris Reverie',
+    palette: ['#c7c6df',  '#8d91b5',  '#6f6d97',  '#383b67'],
     sections: {
-      identity: {
-        tone: 'light', bg: '#faf3ee', bgAlt: '#ede0dc', text: '#26355c', textMuted: '#5a5470',
-        surface: '#ffffff8c', border: '#3449792e', accent: '#ecb8a6', accentInk: '#344979',
-        glow: '#fcd6c1', particle: '#ecb8a6', cloudA: '#fcd6c1', cloudB: '#c6c6e8',
-      },
-      journey: {
-        tone: 'dark', bg: '#18213b', bgAlt: '#344979', text: '#f7e5eb', textMuted: '#c6c6e8',
-        surface: '#ffffff0d', border: '#c6c6e833', accent: '#c6c6e8', accentInk: '#f7e5eb',
-        glow: '#9896bb', particle: '#f7e5eb', cloudA: '#5d6da5', cloudB: '#ae9cb7',
-      },
-      gallery: {
-        tone: 'light', bg: '#fdf1ec', bgAlt: '#fbd8c6', text: '#4a3a55', textMuted: '#634f68',
-        surface: '#ffffff73', border: '#4a3a552b', accent: '#d6b0bf', accentInk: '#4a3a55',
-        glow: '#f4c4c3', particle: '#ffffff', cloudA: '#f4c4c3', cloudB: '#ae9cb7',
-      },
-      skills: {
-        tone: 'light', bg: '#f3f1e9', bgAlt: '#e0decd', text: '#2f3546', textMuted: '#555a69',
-        surface: '#ffffff80', border: '#2f35462b', accent: '#d2c296', accentInk: '#2f3546',
-        glow: '#d2c296', particle: '#d2c296', cloudA: '#bdd1d3', cloudB: '#d2c296',
-      },
-      connect: {
-        tone: 'dark', bg: '#2b3c68', bgAlt: '#344979', text: '#f7e5eb', textMuted: '#c6c6e8',
-        surface: '#ffffff12', border: '#f7e5eb33', accent: '#d6b0bf', accentInk: '#f7e5eb',
-        glow: '#d6b0bf', particle: '#f7e5eb', cloudA: '#d6b0bf', cloudB: '#5d6da5',
-      },
+      identity: { tone: 'light', bg: '#f5f5f9', text: '#383b67', accent: '#8d91b5', accentInk: '#636186', particle: '#6f6d97', cloudA: '#e0e0ed', cloudB: '#c0c2d6', glow: '#d8d7e9' },
+      journey: { tone: 'dark', bg: '#191b2e', text: '#f4f4f9', accent: '#cdcce2', particle: '#ddddec', cloudA: '#6f6d97', cloudB: '#8d91b5', glow: '#8d91b5' },
+      gallery: { tone: 'light', bg: '#f7f7fb', text: '#383b67', accent: '#6f6d97', particle: '#ffffff', cloudA: '#bbbdd3', cloudB: '#d8d7e9', glow: '#e3e2ef' },
+      skills: { tone: 'light', bg: '#f1f2f6', text: '#383b67', accent: '#c7c6df', particle: '#6f6d97', cloudA: '#ddddec', cloudB: '#d8d7e9' },
+      connect: { tone: 'dark', bg: '#25263d', text: '#f7f6fa', accent: '#cdcce2', particle: '#ddddec', cloudA: '#6f6d97', cloudB: '#383b67', glow: '#8d91b5' },
     },
   },
 
-  /* ── 02 · Cotton Sky ── pink cloud, orchid, lavender, periwinkle, sky, mist. */
+  /* ── 02 · Sakura Rose ── only the colors of bf9369d6ef4568bb9d20c610b23d6163.jpg. */
   {
     no: 2,
-    name: 'Cotton Sky',
-    palette: ['#fbd8e0', '#cf90c1', '#8d80b0', '#8397c4', '#aacbe0', '#dde9ef'],
+    name: 'Sakura Rose',
+    palette: ['#a77370',  '#c87377',  '#d38f8f',  '#eeadaa',  '#fdd4d7',  '#fee3e5'],
     sections: {
-      identity: { tone: 'light', bg: '#fdf3f6', text: '#33305a', accent: '#cf90c1', particle: '#cf90c1', cloudA: '#fbd8e0', cloudB: '#aacbe0' },
-      journey: { tone: 'dark', bg: '#262a52', text: '#f4eef6', accent: '#aacbe0', particle: '#fbd8e0', cloudA: '#8d80b0', cloudB: '#cf90c1', glow: '#8397c4' },
-      gallery: { tone: 'light', bg: '#f0f5f9', text: '#2d3760', accent: '#8397c4', particle: '#ffffff', cloudA: '#aacbe0', cloudB: '#fbd8e0', glow: '#dde9ef' },
-      skills: { tone: 'light', bg: '#f8f1f6', text: '#3b3159', accent: '#8d80b0', particle: '#cf90c1', cloudA: '#fbd8e0', cloudB: '#dde9ef' },
-      connect: { tone: 'dark', bg: '#3a3060', text: '#fdf0f4', accent: '#cf90c1', particle: '#fbd8e0', cloudA: '#cf90c1', cloudB: '#8397c4' },
+      identity: { tone: 'light', bg: '#fffafa', text: '#704d4b', accent: '#d38f8f', accentInk: '#9c5a5d', particle: '#c87377', cloudA: '#f6d2d0', cloudB: '#e7c1c1', glow: '#f3c6c4' },
+      journey: { tone: 'dark', bg: '#1c1413', text: '#fff9fa', accent: '#f0b5b2', particle: '#feeeef', cloudA: '#c87377', cloudB: '#d38f8f', glow: '#d38f8f' },
+      gallery: { tone: 'light', bg: '#fdf4f3', text: '#6d4b49', accent: '#c87377', particle: '#ffffff', cloudA: '#e5bcbc', cloudB: '#feebed', glow: '#f6d6d4' },
+      skills: { tone: 'light', bg: '#faf2f2', text: '#6b4a48', accent: '#eeadaa', particle: '#c87377', cloudA: '#f5cecc', cloudB: '#feebed' },
+      connect: { tone: 'dark', bg: '#342121', text: '#fffbfb', accent: '#f0b5b2', particle: '#feeeef', cloudA: '#c87377', cloudB: '#a77370', glow: '#d38f8f' },
     },
   },
 
-  /* ── 03 · Muted Summer ── misty aqua, sage, sunset apricot, faded almond, cloud white. */
+  /* ── 03 · Jade Silk ── only the colors of 4c65dc070bc7af2bf5ef456285cb80ba.jpg. */
   {
     no: 3,
-    name: 'Muted Summer',
-    palette: ['#96b9b9', '#b3beaf', '#e4a273', '#c3a77f', '#dddfdb'],
+    name: 'Jade Silk',
+    palette: ['#0d3021',  '#406250',  '#688777',  '#8aaca0',  '#bedbd3'],
     sections: {
-      identity: { tone: 'light', bg: '#f6f3ee', text: '#2c4343', accent: '#e4a273', particle: '#e4a273', cloudA: '#f3d6be', cloudB: '#c9dddd' },
-      journey: { tone: 'dark', bg: '#1f3436', text: '#f3efe6', accent: '#96b9b9', particle: '#f2c9a3', cloudA: '#5f8a8a', cloudB: '#a07e5a', glow: '#96b9b9' },
-      gallery: { tone: 'light', bg: '#f2f4f0', text: '#2f3f3c', accent: '#96b9b9', particle: '#ffffff', cloudA: '#c9dcdc', cloudB: '#f2cfb3', glow: '#dddfdb' },
-      skills: { tone: 'light', bg: '#f7f1e7', text: '#47392a', accent: '#c3a77f', particle: '#e4a273', cloudA: '#b3beaf', cloudB: '#ecd5b4', glow: '#e9c9a4' },
-      connect: { tone: 'dark', bg: '#3b2e27', text: '#f8eee4', accent: '#e4a273', particle: '#f6d2b0', cloudA: '#a8714a', cloudB: '#5f8a8a', glow: '#e4a273' },
+      identity: { tone: 'light', bg: '#f3f9f7', text: '#0d3021', accent: '#688777', accentInk: '#406250', particle: '#406250', cloudA: '#bfd1cb', cloudB: '#acbdb4', glow: '#adc5bc' },
+      journey: { tone: 'dark', bg: '#092217', text: '#f2f8f6', accent: '#96b4aa', particle: '#d8e9e5', cloudA: '#406250', cloudB: '#688777', glow: '#688777' },
+      gallery: { tone: 'light', bg: '#eff3f2', text: '#0d3021', accent: '#406250', particle: '#ffffff', cloudA: '#a4b7ad', cloudB: '#d2e6e0', glow: '#c4d6d0' },
+      skills: { tone: 'light', bg: '#edf1ef', text: '#0d3021', accent: '#8aaca0', particle: '#406250', cloudA: '#b9cdc6', cloudB: '#d2e6e0' },
+      connect: { tone: 'dark', bg: '#112b1f', text: '#f5faf8', accent: '#96b4aa', particle: '#d8e9e5', cloudA: '#406250', cloudB: '#0d3021', glow: '#688777' },
     },
   },
 
-  /* ── 04 · Northern Quiet ── shadow navy, misty indigo, soft graphite, warm wood. */
+  /* ── 04 · Pearl Sheen ── only the colors of 417300860fc91c1ac899b0bf28bb66b3.jpg. */
   {
     no: 4,
-    name: 'Northern Quiet',
-    palette: ['#0b2b51', '#3c4d70', '#7a7b8f', '#807073', '#c5a8a1'],
+    name: 'Pearl Sheen',
+    palette: ['#af9292',  '#bcaec4',  '#b7937a',  '#c8b5a9',  '#e6dedd'],
     sections: {
-      identity: { tone: 'light', bg: '#f6f0ed', text: '#0b2b51', accent: '#c5a8a1', particle: '#c5a8a1', cloudA: '#ead9d3', cloudB: '#cfd4e0' },
-      journey: { tone: 'dark', bg: '#0b2b51', text: '#f3ebe8', accent: '#c5a8a1', particle: '#f0dfd9', cloudA: '#3c4d70', cloudB: '#807073', glow: '#7a7b8f' },
-      gallery: { tone: 'light', bg: '#f1eff1', text: '#26334f', accent: '#7a7b8f', particle: '#ffffff', cloudA: '#e3d3cf', cloudB: '#cdd2df', glow: '#c5a8a1' },
-      skills: { tone: 'light', bg: '#f4ece8', text: '#3b2f32', accent: '#807073', particle: '#c5a8a1', cloudA: '#e6d2cb', cloudB: '#d5d8e2', glow: '#c5a8a1' },
-      connect: { tone: 'dark', bg: '#28344f', text: '#f6ece8', accent: '#c5a8a1', particle: '#f0dfd9', cloudA: '#807073', cloudB: '#3c4d70', glow: '#c5a8a1' },
+      identity: { tone: 'light', bg: '#faf9f9', text: '#625252', accent: '#bcaec4', accentInk: '#7e6554', particle: '#b7937a', cloudA: '#e1d6d0', cloudB: '#dad2df', glow: '#d8cbc3' },
+      journey: { tone: 'dark', bg: '#1a1616', text: '#faf8f8', accent: '#cebcb2', particle: '#f0ebeb', cloudA: '#b7937a', cloudB: '#bcaec4', glow: '#bcaec4' },
+      gallery: { tone: 'light', bg: '#f7f5f3', text: '#5e4f4f', accent: '#b7937a', particle: '#ffffff', cloudA: '#d7cedc', cloudB: '#eee8e7', glow: '#e4dad4' },
+      skills: { tone: 'light', bg: '#f7f5f8', text: '#605050', accent: '#c8b5a9', particle: '#b7937a', cloudA: '#ded3cb', cloudB: '#eee8e7' },
+      connect: { tone: 'dark', bg: '#302824', text: '#fbfafa', accent: '#cebcb2', particle: '#f0ebeb', cloudA: '#b7937a', cloudB: '#af9292', glow: '#bcaec4' },
     },
   },
 
-  /* ── 05 · Nocturne Violet ── shadow black, iris blue, foggy purple, cloud violet. Night-heavy. */
+  /* ── 05 · Dream Haze ── only the colors of 7a23aac0d5b3974c2c3e7331746eca5e.jpg. */
   {
     no: 5,
-    name: 'Nocturne Violet',
-    palette: ['#000002', '#252c5c', '#2f357e', '#7978ba', '#cbc9e7'],
+    name: 'Dream Haze',
+    palette: ['#7181c8',  '#ababdc',  '#b7d3f4',  '#f1cfed',  '#f1e5f6'],
     sections: {
-      identity: { tone: 'light', bg: '#f1f0f9', text: '#1f2552', accent: '#7978ba', particle: '#7978ba', cloudA: '#cbc9e7', cloudB: '#dcdcf2' },
-      journey: { tone: 'dark', bg: '#0b0d24', text: '#eceaf8', accent: '#7978ba', particle: '#cbc9e7', cloudA: '#2f357e', cloudB: '#7978ba', glow: '#7978ba' },
-      gallery: { tone: 'dark', bg: '#1a1f4a', text: '#efeefa', accent: '#cbc9e7', particle: '#cbc9e7', cloudA: '#2f357e', cloudB: '#7978ba', glow: '#7978ba' },
-      skills: { tone: 'light', bg: '#eceaf6', text: '#252c5c', accent: '#7978ba', particle: '#7978ba', cloudA: '#cbc9e7', cloudB: '#d9dcf0' },
-      connect: { tone: 'dark', bg: '#05061a', text: '#e9e7f7', accent: '#7978ba', particle: '#cbc9e7', cloudA: '#2f357e', cloudB: '#252c5c', glow: '#7978ba' },
-    },
-  },
-
-  /* ── 06 · Dream Prism ── deep grape, violet ice, pale iris, cloud mist. */
-  {
-    no: 6,
-    name: 'Dream Prism',
-    palette: ['#2b388d', '#6465bb', '#8f6ad1', '#8f99d6', '#d9e0e9'],
-    sections: {
-      identity: { tone: 'light', bg: '#f0f2f8', text: '#1f2a6e', accent: '#8f6ad1', particle: '#8f99d6', cloudA: '#ddd2f4', cloudB: '#d9e0e9', glow: '#cfd5f2' },
-      journey: { tone: 'dark', bg: '#1c2463', text: '#eef0fb', accent: '#8f99d6', particle: '#d9cdf5', cloudA: '#6465bb', cloudB: '#8f6ad1', glow: '#8f99d6' },
-      gallery: { tone: 'light', bg: '#f3f1fb', text: '#2a2d6b', accent: '#6465bb', particle: '#ffffff', cloudA: '#d9e0e9', cloudB: '#e0d3f6', glow: '#c9c0ef' },
-      skills: { tone: 'light', bg: '#edf0f8', text: '#22306e', accent: '#8f99d6', particle: '#8f6ad1', cloudA: '#d9e0e9', cloudB: '#e3d8f6' },
-      connect: { tone: 'dark', bg: '#2e2470', text: '#f4effd', accent: '#b79cec', particle: '#e4dafa', cloudA: '#8f6ad1', cloudB: '#2b388d', glow: '#8f6ad1' },
+      identity: { tone: 'light', bg: '#fcfafd', text: '#495482', accent: '#b7d3f4', accentInk: '#6a6a88', particle: '#ababdc', cloudA: '#f7e5f5', cloudB: '#d7e7f9', glow: '#f5ddf2' },
+      journey: { tone: 'dark', bg: '#171a28', text: '#fcfafd', accent: '#f2d4ef', particle: '#f7effa', cloudA: '#ababdc', cloudB: '#b7d3f4', glow: '#b7d3f4' },
+      gallery: { tone: 'light', bg: '#fdf8fc', text: '#485380', accent: '#ababdc', particle: '#ffffff', cloudA: '#d4e5f8', cloudB: '#f5edf9', glow: '#f8e7f6' },
+      skills: { tone: 'light', bg: '#f6fafe', text: '#485380', accent: '#f1cfed', particle: '#ababdc', cloudA: '#f7e2f4', cloudB: '#f5edf9' },
+      connect: { tone: 'dark', bg: '#2c2e41', text: '#fdfbfe', accent: '#f2d4ef', particle: '#f7effa', cloudA: '#ababdc', cloudB: '#7181c8', glow: '#b7d3f4' },
     },
   },
 ];

@@ -99,7 +99,7 @@ function startSources() {
 }
 
 /** Calls `fn` with the smoothed tilt whenever it changes. Returns the unsubscribe function. */
-export function subscribeTilt(fn: (t: Tilt) => void) {
+function subscribeTilt(fn: (t: Tilt) => void) {
   listeners.add(fn);
   stopSources ??= startSources();
   fn(tilt);

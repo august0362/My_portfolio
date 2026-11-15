@@ -1,4 +1,5 @@
-import { journeyLede, milestones } from '../data/journey';
+import { useCopy, useLanguage } from '@shared/i18n';
+import { COPY, localizedJourney } from '../data/locale';
 import { delay } from '../motion';
 import styles from './Journey.module.css';
 import { Sparkle } from './celestial';
@@ -12,19 +13,21 @@ const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 const STARS: [number, number][] = [[20, 140], [70, 90], [128, 112], [176, 50], [230, 78], [262, 24], [292, 120]];
 
 export default function Journey() {
+  const t = useCopy(COPY);
+  const { lede, milestones } = localizedJourney(useLanguage());
   const hasPlaceholders = milestones.some((m) => m.placeholder);
 
   return (
     <Section
       id="journey"
       number="02"
-      kicker="Chronicle"
+      kicker={t.journeyKicker}
       title={
         <>
-          My <em>Journey</em>
+          {t.journeyTitle[0]}<em>{t.journeyTitle[1]}</em>
         </>
       }
-      lede={hasPlaceholders ? 'Milestones below are placeholders until the creator supplies verified entries.' : <em>{journeyLede}</em>}
+      lede={hasPlaceholders ? t.journeyPending : <em>{lede}</em>}
     >
       <svg className={styles.constellation} viewBox="0 0 312 160" aria-hidden="true" data-reveal="draw" style={delay(400)}>
         <polyline points={STARS.map((s) => s.join(',')).join(' ')} pathLength="1" />
@@ -54,11 +57,11 @@ export default function Journey() {
               <div className={styles.text}>
                 <p className={styles.meta}>
                   <span className={styles.period}>{m.period}</span>
-                  {m.placeholder && <span className={shared.badge}>Placeholder</span>}
-                  {m.current && <span className={shared.badge}>Now</span>}
+                  {m.placeholder && <span className={shared.badge}>{t.placeholder}</span>}
+                  {m.current && <span className={shared.badge}>{t.now}</span>}
                 </p>
                 <h3 className={styles.itemTitle}>{m.title}</h3>
-                <div className={styles.desc} lang={m.lang}>
+                <div key={m.lang} className={styles.desc} lang={m.lang} data-language-swap="">
                   {m.description.map((para) => (
                     <p key={para}>{para}</p>
                   ))}

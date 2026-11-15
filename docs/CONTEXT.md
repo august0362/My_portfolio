@@ -32,7 +32,7 @@ Möbius Universe is the creator's interactive personal universe, made of interco
 
 ## 4. Architecture decisions
 
-Lead review on 2026-11-15: P-01–P-15 are CONFIRMED (P-09 was DEFERRED until the Information integration).
+Lead review on 2026-11-15: P-01–P-17 are CONFIRMED (P-09 was DEFERRED until the Information integration).
 
 | ID | Status | Decision | Rationale |
 |---|---|---|---|
@@ -50,7 +50,9 @@ Lead review on 2026-11-15: P-01–P-15 are CONFIRMED (P-09 was DEFERRED until th
 | P-12 | CONFIRMED | The public name is **Celestial Portal**, used in the page title and the launcher. "Möbius Universe" stays the internal project name (repository, package, docs) | Lead decision, 2026-11-15 (HUB-REV) |
 | P-13 | CONFIRMED | Hub settings follow HUB-REV: visitors choose only appearance (dark or light) and palette. Sound is on by default with no off switch. Motion follows the system setting. Quality starts at full ([ARCHITECTURE §7](ARCHITECTURE.md#7-shell-behavior-core), [§11](ARCHITECTURE.md#11-performance-and-accessibility)) | Lead decision, 2026-11-15. Replaces the earlier rule that sound stays off and motion can be toggled in the app |
 | P-14 | CONFIRMED | The hub stays the HUB-REV 2D Celestial Portal. HUB-02 (lazy WebGL HubScene with the Möbius ribbon) is dropped. The pixel reconstruction effect is dropped. HUB-03 is met by the existing water-style scene transitions | Lead decision, 2026-11-15. `three`/R3F (P-03) stay available for worlds only |
-| P-15 | CONFIRMED | The Information world ships the Chronicle prototype as built: hub title "Chronicle", the public identity JSON including the email contact, the supplied journey, the three P-09 albums, and the public CV as an HTML sheet without the phone number (no CV file). Fonts: Cormorant Garamond and Be Vietnam Pro (SIL OFL) from Google Fonts in `index.html`. World routes are full-bleed, with a floating Back to Hub link | Lead decision, 2026-11-15 (integrate the prototype as is) |
+| P-15 | CONFIRMED | The Information world ships the Chronicle prototype as built: hub title "Chronicle", the public identity JSON including the email contact, the supplied journey, the three P-09 albums, and the public CV as an HTML sheet without the phone number (no CV file). Fonts: Cormorant Garamond and Be Vietnam Pro (SIL OFL) from Google Fonts in `index.html`. World routes are full-bleed, with a floating link back to the Portal (P-17) | Lead decision, 2026-11-15 (integrate the prototype as is) |
+| P-16 | CONFIRMED | Paired themes: the Atmosphere panel (`settings.appearance` and `settings.palette`) is the only color control on the site. Every world follows it: light/dark follows `appearance`, and each palette (five color stories since P-17) maps to one paired world theme in a matching color story. Worlds do not add their own palette or light/dark controls | Lead decision, 2026-11-15: pages must stay color-compatible with each other |
+| P-17 | CONFIRMED | Site redesign: five color stories, each using the colors of exactly one of the owner's moodboards in `data/Image/Theme` (Iris, Sakura, Jade, Pearl, Dream; each light and dark, with tints and shades only where text needs contrast), replace Moonlit/Rosewater/Tidal (and the first-draft Lagoon), which migrate to Iris/Sakura/Jade/Dream. The whole site is bilingual (English/Vietnamese): `settings.language`, switched beside the Atmosphere button, defaults to the browser language. Approved originals stay as written; the other language is a faithful translation that adds no facts. The hub's way home is named after the public name: "Return to the Portal" / "Về Cổng Thiên Hà". Page changes pass through a celestial veil; Information sections and albums have their own transitions | Lead decision, 2026-11-15 (REDESIGN-01) |
 
 ## 5. Not yet decided
 
@@ -64,15 +66,10 @@ Lead review on 2026-11-15: P-01–P-15 are CONFIRMED (P-09 was DEFERRED until th
 - **Custom domain**, and whether to add any analytics. The default is no analytics.
 - **Hosting account:** the Cloudflare account is still needed for M5. The Lead supplied `https://github.com/august0362/My_portfolio` as the Git remote. It was empty before the first push.
 
-## 6. Verified implementation state (2026-11-15)
+## 6. Raw material in `data/` (outside Git, P-08)
 
-- Git was initialized on `main` at the Lead's request. The remote is `origin` (see §5). `.gitignore` excludes the root `/data/` folder per P-08.
-- Application code and its state are tracked in [STATUS.md](STATUS.md).
-- Existing files:
-  - `data/Information/mobius_identity_public.json`
-  - `data/CV/CV.pdf`, `data/CV/CV_png.png`
-  - `data/Image/Tiên hiệp/` (8 JPG, about 1.4–1.8 MB each)
-  - `data/Image/Cosplay Festival/` (4 JPG, about 6–11 MB each)
-  - `data/Image/Birthday/` (5 JPG, about 0.1 MB each)
-- The image files were not checked for EXIF metadata. Assume it is present and strip it on export.
-- Documentation in `README.md`, `CLAUDE.md` and `docs/` was created in M0 and updated after the Lead's decision review.
+- `Information/mobius_identity_public.json`: approved public identity.
+- `CV/CV.pdf`, `CV/CV_png.png`: private source; the public CV is the HTML sheet in the Information world (P-15).
+- `Image/Tiên hiệp/` (8 JPG), `Image/Cosplay Festival/` (4 JPG), `Image/Birthday/` (5 JPG): raw photos with metadata. Publish only through `npm run images`.
+
+Implementation state lives in [STATUS.md](STATUS.md).
