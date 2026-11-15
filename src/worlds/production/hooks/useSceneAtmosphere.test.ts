@@ -16,7 +16,7 @@ vi.mock('@shared/settings', () => ({ useSettings: () => ({ settings: state.setti
 let cleanup: void | (() => void);
 afterEach(() => { cleanup?.(); cleanup = undefined; state.effects.length = 0; state.refs.length = 0; vi.unstubAllGlobals(); });
 
-function setup(options: { reduced?: boolean; quality?: string; canvas?: boolean } = {}) {
+function setup(options: { systemReduced?: boolean; motion?: string; quality?: string; canvas?: boolean } = {}) {
   const surface = new EventTarget();
   Object.assign(surface, { dataset: {} as Record<string, string>, style: { setProperty: vi.fn(), removeProperty: vi.fn() } });
   const scene = Object.assign(new EventTarget(), {
@@ -27,7 +27,7 @@ function setup(options: { reduced?: boolean; quality?: string; canvas?: boolean 
   const context = Object.fromEntries(['clearRect', 'setTransform', 'beginPath', 'arc', 'fill', 'moveTo', 'lineTo', 'stroke', 'ellipse'].map(method => [method, vi.fn()]));
   Object.assign(context, { createRadialGradient: () => gradient, createLinearGradient: () => gradient });
   const canvas = { width: 0, height: 0, getContext: () => options.canvas === false ? null : context };
-  const media = Object.assign(new EventTarget(), { matches: options.reduced ?? false });
+  const media = Object.assign(new EventTarget(), { matches: options.systemReduced ?? false });
   const document = Object.assign(new EventTarget(), { hidden: false });
   const window = Object.assign(new EventTarget(), { devicePixelRatio: 3, matchMedia: () => media });
   const frames = new Map<number, FrameRequestCallback>();
@@ -43,7 +43,7 @@ function setup(options: { reduced?: boolean; quality?: string; canvas?: boolean 
     constructor(callback: (entries: { isIntersecting: boolean }[]) => void) { observers.push(callback); }
     observe() {} disconnect = disconnect;
   });
-  state.settings = { motion: 'full', quality: options.quality ?? 'full' };
+  state.settings = { motion: options.motion ?? 'full', quality: options.quality ?? 'full' };
   state.refs.push(scene, canvas);
   useSceneAtmosphere();
   cleanup = state.effects.pop()?.();
@@ -70,16 +70,18 @@ test('one bounded animation loop pauses on visibility / intersection and release
   expect(env.frames.size).toBe(0);
 });
 
-test.each([{ reduced: true }, { quality: 'static' }])('static settings do not schedule ambient animation: %o', options => {
+test.each([{ motion: 'reduced' }, { quality: 'static' }])('static settings do not schedule ambient animation: %o', options => {
   const env = setup(options);
   expect(env.scene.dataset.motion).toBe('false'); expect(env.frames.size).toBe(0);
   expect(env.surface.dataset.sceneMotion).toBe('false');
 });
 
-test('live reduced motion and missing canvas both stop continuous frames', () => {
+test('the system reduced-motion setting does not stop the animation', () => {
+  const env = setup({ systemReduced: true });
+  expect(env.scene.dataset.motion).toBe('true'); expect(env.frames.size).toBe(1);
+});
+
+test('a missing canvas stops continuous frames', () => {
   const env = setup({ canvas: false });
   env.tick(); expect(env.frames.size).toBe(0);
-  env.media.matches = true; env.media.dispatchEvent(new Event('change'));
-  expect(env.scene.dataset.active).toBe('false');
-  expect(env.frames.size).toBe(0);
 });

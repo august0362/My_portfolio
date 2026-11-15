@@ -242,10 +242,3 @@
   .heroContent h1 { font-size: 49px; }
   .approaches { grid-template-columns: 1fr; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .world *, .world *::before, .world *::after { transition-duration: 0s !important; scroll-behavior: auto !important; }
-  .world :is(.sceneFrame, .floatingPiece, .dust, .sceneGlow, .worldRipple circle, .waterLens) { animation: none !important; }
-  .world .sceneGlow::before, .world .sceneGlow::after { animation: none !important; }
-  .world :is(.base, .sceneFrame, .spriteDepth) { transform: none !important; }
-  .worldRipple { display: none; }
-}

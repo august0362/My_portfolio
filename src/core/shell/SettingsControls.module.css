@@ -61,4 +61,3 @@
 }
 @media (max-width: 599px) { .atmosphere { top: 76px; right: 20px; }.trigger { font-size: 11px; padding: 0 13px; gap: 7px; }.panel { top: 54px; right: -4px; width: 340px; padding: 23px 20px 18px; }.paletteNote { font-size: 7.5px; } }
 @media (max-height: 620px) { .panel { max-height: calc(100svh - 150px); overflow-y: auto; } }
-@media (prefers-reduced-motion: reduce) { .atmosphere * { animation: none !important; transition: none !important; } }

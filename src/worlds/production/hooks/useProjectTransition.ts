@@ -46,7 +46,7 @@ export default function useProjectTransition() {
     if (pending.current) return;
     const root = rootRef.current, anchor = event.currentTarget;
     destination.current = new URL(anchor.href).pathname;
-    if (!root || settings.motion === 'reduced' || settings.quality === 'static' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!root || settings.motion === 'reduced' || settings.quality === 'static') {
       void navigate(destination.current); return;
     }
     pending.current = true;

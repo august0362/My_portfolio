@@ -170,7 +170,7 @@ export default function CharacterWorld() {
 - An `ErrorBoundary` around each world shows a message with **Retry** and a way back to the Portal, so a crashing world never breaks the shell or the hub.
 - Lazy components are created once per world from `load()`. Hovering or focusing a hub card calls `load()` to prefetch the world.
 - Settings (`shared/settings.tsx`), per the Lead decision of 2026-11-15 ([P-13](CONTEXT.md#4-architecture-decisions)):
-  - `motion: 'full' | 'reduced'` follows `prefers-reduced-motion` only.
+  - `motion: 'full' | 'reduced'` is always `full`; `prefers-reduced-motion` is not read (Lead decision, 2026-11-15).
   - `quality: 'full' | 'lite' | 'static'` starts at `full`.
   - `sound: boolean` defaults to `true`.
   - `appearance: 'dark' | 'light'` defaults to `dark` and does not follow the browser colour scheme.
@@ -186,7 +186,7 @@ The hub is the 2D Celestial Portal from HUB-REV ([P-14](CONTEXT.md#4-architectur
 
 - **HubNav (DOM, always rendered):** five `<a>` cards inside the hub `<main>`. This layer is the accessible navigation.
 - **Decoration:** a 2D canvas of celestial rings (`hub/celestialCanvas.ts`, `hub/useCelestialOrbit.ts`), hidden from assistive technology. It uses no WebGL. Cards orbit it, and the nearest card stays above the core.
-- **Motion:** the orbit and canvas animation stop under reduced motion (`settings.motion`, which follows the system setting, P-13).
+- **Motion:** the orbit and canvas animation always run (`settings.motion` is always `full`, P-13); they still pause when the tab is hidden or the scene is offscreen.
 - **Sound:** an ambient soundscape (`shell/useCelestialAudio.ts`), on by default (P-13).
 
 Page transitions (HUB-03, P-17, Core): `shell/useSceneTransition.ts`. A celestial veil closes from the pressed link, the route changes, and the new page opens through it; a hub card also lifts and dissolves first. With reduced motion the change is instant. Navigation never waits on a transition.
@@ -220,7 +220,7 @@ World routes are full-bleed (P-15): `AppShell` drops the content column and the 
 - **Images:** use `loading="lazy"`, `decoding="async"` and explicit `width`/`height`. Use thumbnails in grids and full size on demand.
 - **GPU:** one active canvas at a time, capped DPR, paused while hidden or offscreen (use IntersectionObserver for canvases inside worlds), and resources disposed on unmount.
 - **Mobile:** touch targets are at least 44 px. Quality starts at `full` (P-13), so 3D worlds must still stay usable on weak phones.
-- **Reduced motion:** follows the system `prefers-reduced-motion` setting. The hub then stops its automatic animation, and worlds must not animate automatically either. There is no in-app toggle (Lead decision, 2026-11-15).
+- **Reduced motion:** not honoured. Every visitor gets full motion, whatever their system `prefers-reduced-motion` setting; there is no in-app toggle. Accepted deviation from WCAG 2.3.3 (Lead decision, 2026-11-15). Code paths for `motion: 'reduced'` remain so a toggle can be added later.
 - **Accessibility:** all navigation works with keyboard and touch and without WebGL. Focus styles are visible, text contrast is readable, and `<html lang>` follows the content language.
 - **Browsers:** the current evergreen desktop and mobile browsers, including iOS Safari. Without WebGL2, 3D worlds fall back to a static view.
 - **Audio:** no `AudioContext` or playback before a user gesture. Sound is on by default (Lead decision, 2026-11-15): the hub soundscape starts on the visitor's first pointer or key gesture, and the app has no switch to turn it off. The Lead accepted that this does not meet WCAG 1.4.2 (Audio Control). Worlds read the global `sound` setting.

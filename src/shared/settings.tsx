@@ -41,9 +41,8 @@ function browserLanguage(): Language {
 
 function initialSettings(): Settings {
   const defaults: Settings = {
-    motion: typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-      ? 'reduced'
-      : 'full',
+    // Effects always run, even when the OS asks for reduced motion (Lead decision P-13, 2026-11-15).
+    motion: 'full',
     quality: 'full',
     sound: true,
     appearance: 'dark',

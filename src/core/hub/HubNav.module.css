@@ -165,4 +165,3 @@
   .hub[data-animated='false'] { padding-bottom: 140px; }
   .hub[data-animated='false'] .bottom { bottom: 65px; }
 }
-@media (prefers-reduced-motion: reduce) { .hub *, .hub *::before, .hub *::after { animation: none; } }

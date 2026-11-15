@@ -16,7 +16,6 @@ export default function useSceneAtmosphere() {
     const field = createAtmosphere(settings.quality === 'full' ? 150 : 80);
     const style = getComputedStyle(scene);
     const colors = createAtmosphereColors(style.getPropertyValue('--forge-effects'), style.getPropertyValue('--forge-highlight'), style.getPropertyValue('--forge-scene-accent'));
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     let visible = true, active = false, frame = 0, previousTime = 0, disposed = false, elapsed = 0, width = 1, height = 1;
     let x = 0, y = 0, targetX = 0, targetY = 0, lastX = '', lastY = '';
     const write = () => {
@@ -27,7 +26,7 @@ export default function useSceneAtmosphere() {
       surface.style.setProperty('--look-x', nextX); surface.style.setProperty('--look-y', nextY);
     };
     const updateActivity = () => {
-      const motion = settings.motion === 'full' && settings.quality !== 'static' && !media.matches;
+      const motion = settings.motion === 'full' && settings.quality !== 'static';
       active = motion && visible && !document.hidden;
       scene.dataset.motion = String(motion); scene.dataset.active = String(active);
       surface.dataset.sceneMotion = String(motion); surface.dataset.sceneActive = String(active);
@@ -82,12 +81,11 @@ export default function useSceneAtmosphere() {
     surface.addEventListener('pointerdown', press, { passive: true });
     window.addEventListener('blur', leave);
     document.addEventListener('visibilitychange', updateActivity);
-    media.addEventListener('change', updateActivity);
     return () => {
       disposed = true; cancelAnimationFrame(frame); observer?.disconnect(); resizeObserver.disconnect();
       surface.removeEventListener('pointermove', move); surface.removeEventListener('pointerleave', leave);
       surface.removeEventListener('pointerdown', press);
-      window.removeEventListener('blur', leave); document.removeEventListener('visibilitychange', updateActivity); media.removeEventListener('change', updateActivity);
+      window.removeEventListener('blur', leave); document.removeEventListener('visibilitychange', updateActivity);
       delete surface.dataset.sceneMotion; delete surface.dataset.sceneActive;
       surface.style.removeProperty('--look-x'); surface.style.removeProperty('--look-y');
     };

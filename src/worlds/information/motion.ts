@@ -1,7 +1,7 @@
 import { useEffect, type CSSProperties, type DependencyList, type RefObject } from 'react';
 import { useSettings } from '@shared/settings';
 
-/** True when motion should be static. Core settings own this (P-13: it follows the system setting). */
+/** True when motion should be static. Core settings own this (P-13: always full, the system setting is ignored). */
 export function useReducedMotion(): boolean {
   return useSettings().settings.motion === 'reduced';
 }

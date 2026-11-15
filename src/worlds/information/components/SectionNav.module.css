@@ -164,8 +164,3 @@
   to { opacity: 1; filter: blur(0); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .orb { transition: none; }
-  .sweep { display: none; }
-  :global([data-arriving]) :is(h1, h2) { animation: none; }
-}

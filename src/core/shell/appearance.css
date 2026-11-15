@@ -201,4 +201,3 @@
 
 /* Changing palette or appearance glides instead of snapping. */
 :root[data-appearance] body { transition: background-color .6s ease, color .6s ease; }
-@media (prefers-reduced-motion: reduce) { :root[data-appearance] body { transition: none; } }

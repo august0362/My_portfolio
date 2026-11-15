@@ -13,9 +13,9 @@ function renderSettings() {
   return renderToStaticMarkup(<SettingsProvider><ReadSettings /></SettingsProvider>);
 }
 
-test('respects reduced motion while keeping full detail and sound enabled', () => {
+test('keeps full motion, detail and sound even when the system asks for reduced motion', () => {
   vi.stubGlobal('window', { matchMedia: () => ({ matches: true }) });
-  expect(renderSettings()).toContain('reduced/full/true/dark/iris/');
+  expect(renderSettings()).toContain('full/full/true/dark/iris/');
 });
 
 test('restores the site appearance, palette and language', () => {
