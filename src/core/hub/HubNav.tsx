@@ -6,6 +6,7 @@ import { WORLDS } from '../registry';
 import usePageFocus from '../shell/usePageFocus';
 import WorldGlyph from './WorldGlyph';
 import useCelestialOrbit from './useCelestialOrbit';
+import { RAY_COUNT } from './celestialMotion';
 import styles from './HubNav.module.css';
 
 const descriptions = ['The story behind the person.', 'Ideas brought into being.', 'A collection of other selves.', 'Where the light takes you.', 'Somewhere beyond the tangible.'];
@@ -15,11 +16,12 @@ export default function HubNav() {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const raysRef = useRef<(HTMLButtonElement | null)[]>([]);
   const { settings } = useSettings();
   const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState(0);
   const animated = settings.motion === 'full' && settings.quality !== 'static';
-  const orbit = useCelestialOrbit({ stageRef, canvasRef, cardsRef, animated, paused, quality: settings.quality, appearance: settings.appearance, palette: settings.palette, onSelect: setSelected });
+  const orbit = useCelestialOrbit({ stageRef, canvasRef, cardsRef, raysRef, animated, paused, quality: settings.quality, appearance: settings.appearance, palette: settings.palette, onSelect: setSelected });
 
   return (
     <main ref={mainRef} tabIndex={-1} className={styles.hub} aria-labelledby="hub-title" data-animated={animated} data-paused={paused}>
@@ -47,6 +49,14 @@ export default function HubNav() {
         <canvas ref={canvasRef} className={styles.cosmos} aria-hidden="true" />
         <div className={styles.nebula} aria-hidden="true" />
         <div className={styles.centerpiece} aria-hidden="true"><span>✧</span><i /><i /></div>
+        {animated && <div className={styles.rays} role="group" aria-label="Interactive light rays">
+          <span id="ray-help" className={styles.srOnly}>Drag a light, or use arrow keys to move it. It drifts back to its orbit after release. Home returns it sooner.</span>
+          {Array.from({ length: RAY_COUNT }, (_, index) => <button
+            key={index} type="button" ref={(node) => { raysRef.current[index] = node; }}
+            className={styles.ray} data-ray={index} aria-label={`Move light ray ${index + 1}`} aria-describedby="ray-help"
+            onKeyDown={(event) => orbit.onRayKeyDown(event, index)} onClick={(event) => orbit.onRayClick(event, index)}
+          ><span aria-hidden="true">✧</span></button>)}
+        </div>}
         <nav className={styles.worlds} aria-label="Worlds">
           <ul>
             {WORLDS.map((world, index) => {
@@ -60,7 +70,7 @@ export default function HubNav() {
                   aria-label={`Enter ${world.title}`}
                   onPointerEnter={(event) => { if (event.pointerType === 'mouse') orbit.hover(index); prefetch(); }}
                   onPointerLeave={() => orbit.hover(null)}
-                  onFocus={() => { orbit.focus(index); prefetch(); }}
+                  onFocus={(event) => { if (event.currentTarget.matches(':focus-visible')) orbit.focus(index); prefetch(); }}
                   onBlur={() => orbit.focus(null)}
                 >
                   <span className={styles.cardHalo} aria-hidden="true" />
@@ -84,7 +94,7 @@ export default function HubNav() {
           <button type="button" className={styles.pause} aria-label={paused ? 'Resume orbit' : 'Pause orbit'} aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? '▶' : 'Ⅱ'}</button>
           <button type="button" aria-label="Next world" onClick={() => orbit.step(1)}>→</button>
         </div>}
-        <p className={styles.hint}>{animated ? 'Drag to orbit · Select to explore' : 'Choose a world to explore'}<span>{WORLDS[selected].title}</span></p>
+        <p className={styles.hint}>{animated ? 'Drag a light · Discover its orbit' : 'Choose a world to explore'}<span>{WORLDS[selected].title}</span></p>
       </footer>
     </main>
   );

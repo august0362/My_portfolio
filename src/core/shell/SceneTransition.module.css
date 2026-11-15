@@ -1,0 +1,14 @@
+.scene { transform-origin: 50% 45%; }
+.scene[data-leaving='true'] { pointer-events: none; animation: dissolve .42s cubic-bezier(.4,0,.65,1) both; }
+.water { position: fixed; inset: 0; z-index: 100; pointer-events: none; overflow: hidden; }
+.water::after { content: ''; position: absolute; inset: 0; background: var(--portal-bg); opacity: 0; transition: opacity .36s .06s; }
+.water[data-leaving='true']::after { opacity: .25; }
+.ripple { position: absolute; width: 44px; height: 44px; margin: -22px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--portal-gold) 18%, transparent), transparent 70%); animation: bloom .85s ease-out both; }
+.ripple svg { position: absolute; inset: 0; width: 44px; height: 44px; overflow: visible; fill: none; stroke: color-mix(in srgb, var(--portal-gold) 70%, transparent); stroke-width: 1.2; }
+.ripple circle { transform-origin: 22px 22px; animation: waterRing .9s cubic-bezier(.15,.6,.25,1) both; }
+.ripple svg:last-child { stroke: color-mix(in srgb, var(--portal-accent) 45%, transparent); stroke-width: .8; }
+.ripple svg:last-child circle { animation-delay: .09s; }
+@keyframes waterRing { from { transform: scale(.1); opacity: 0; } 12% { opacity: .8; } to { transform: scale(8); opacity: 0; } }
+@keyframes bloom { from { opacity: .85; } to { opacity: 0; } }
+@keyframes dissolve { 0%, 14% { opacity: 1; filter: blur(0); transform: scale(1); } 100% { opacity: .06; filter: blur(7px); transform: scale(1.014); } }
+@media (prefers-reduced-motion: reduce) { .scene[data-leaving='true'], .ripple, .ripple circle { animation: none; } .water { display: none; } }
